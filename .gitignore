@@ -1,0 +1,31 @@
+node_modules/
+.DS_Store
+*.log
+
+# Generated build and Open Design preview (recreated by npm run build).
+/dist/
+/bundles/
+/index.html
+*.artifact.json
+
+# Local credentials and editor metadata.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.od-skills/
+.agents/
+.codex/
+
+# Uploaded originals, reference captures, and design-session reports.
+# Runtime images, fonts, and the camera model live under assets/.
+/*.png
+/*.jpg
+/*.JPG
+/*.zip
+/reference/*
+!/reference/sony-asset-report.md
+/PLAN.md
+/critique.json
+/premium-audit.json
