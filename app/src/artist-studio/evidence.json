@@ -1,0 +1,187 @@
+{
+  "AS_HERO_RENDER": {
+    "src": "./assets/artist-studio/hero-gallery-curved-wall-oct27.png",
+    "label": "Artist Studio curved gallery wall with Black Japan and B&W Miniature Paintings displays",
+    "caption": "Paintings share a curved gallery wall: an invitation to step inside the artist’s portfolio. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "position": "50% 45%",
+    "width": 2234,
+    "height": 1600
+  },
+  "AS_CONCEPT_BOARD": {
+    "src": "./assets/artist-studio/gallery-artist-corridor-oct27.png",
+    "label": "Artist profile, Oil Paintings display and Pristine Forests entrance wall",
+    "caption": "The artist display and paintings share the same space. This is a current gallery view, not an early concept sketch. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1858,
+    "capture": true
+  },
+  "AS_EXTERIOR_RENDER": {
+    "src": "./assets/artist-studio/hero-gallery-brand-wall.png",
+    "label": "Artist Studio entrance wall with Black Japan and Miniature Paintings displays",
+    "caption": "The current gallery’s entrance wall introduces the exhibition. This is an interior view, not an exterior render. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1856,
+    "capture": true
+  },
+  "AS_INTERIOR_RENDER": {
+    "src": "./assets/artist-studio/gallery-artist-corridor-oct27.png",
+    "label": "Artist profile, Oil Paintings display and Pristine Forests entrance wall",
+    "caption": "Sightlines connect the artist display, paintings and entrance wall. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1858,
+    "capture": true
+  },
+  "AS_ARTWORK_COMPOSITION": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "Collection labels, spacing and light give individual paintings a shared setting. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_SCENE_LAYOUT": {
+    "src": "./assets/artist-studio/gallery-artist-corridor-oct27.png",
+    "label": "Artist profile, Oil Paintings display and Pristine Forests entrance wall",
+    "caption": "A view across the current gallery places the artist within the surrounding portfolio. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1858,
+    "capture": true
+  },
+  "AS_MATERIAL_STUDIES": {
+    "src": "./assets/artist-studio/source-views/materials.html",
+    "kind": "document",
+    "viewportWidth": 1400,
+    "viewportHeight": 900,
+    "label": "The exported wall material",
+    "caption": "Exported base-colour, normal and roughness maps from the project. These inputs support surface consistency; they are not proof of a measured improvement."
+  },
+  "AS_EXPORT_BREAKDOWN": {
+    "src": "./assets/artist-studio/source-views/export.html",
+    "kind": "document",
+    "viewportWidth": 1400,
+    "viewportHeight": 900,
+    "label": "The active GLB package",
+    "caption": "The active GLB package supports the browser gallery. Model attribution: Art Gallery by denis_cliofas, CC BY 4.0."
+  },
+  "AS_LIGHTING_STUDIES": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "Focused light draws attention to Black Japan and B&W Miniature Paintings. Current browser capture, not a separate lighting experiment. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_ATMOSPHERE_INTERIOR": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "Off-white walls and darker surfaces establish depth around the paintings. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_CAMERA_INTERACTION": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "The visible Wall Zoom control offers a closer look at artwork in its gallery setting. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_ENTRANCE_VIEWPOINT": {
+    "src": "./assets/artist-studio/hero-gallery-brand-wall.png",
+    "label": "Artist Studio entrance wall with Black Japan and Miniature Paintings displays",
+    "caption": "Gallery screenshot supplied on 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1856,
+    "capture": true
+  },
+  "AS_OPPOSITE_WALL_VIEWPOINT": {
+    "src": "./assets/artist-studio/gallery-artist-corridor-oct27.png",
+    "label": "Artist profile, Oil Paintings display and Pristine Forests entrance wall",
+    "caption": "Gallery screenshot supplied on 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1858,
+    "capture": true
+  },
+  "AS_ARTWORK_ROOM_VIEWPOINT": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "Gallery screenshot supplied on 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_FINAL_GALLERY": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "An exhibition view connects framed paintings with the room around them. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_FINAL_EXTERIOR": {
+    "src": "./assets/artist-studio/hero-gallery-brand-wall.png",
+    "label": "Artist Studio entrance wall with Black Japan and Miniature Paintings displays",
+    "caption": "Gallery screenshot supplied on 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1856,
+    "capture": true
+  },
+  "AS_FINAL_INTERIOR": {
+    "src": "./assets/artist-studio/gallery-artist-corridor-oct27.png",
+    "label": "Artist profile, Oil Paintings display and Pristine Forests entrance wall",
+    "caption": "Gallery screenshot supplied on 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1858,
+    "capture": true
+  },
+  "AS_ARTWORK_ROOM": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "Gallery screenshot supplied on 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_WEBSITE_SCREENSHOT": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "The browser experience presents the paintings together with gallery navigation. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "experienceUrl": "https://www.pristineforests.com/pages/artist-studio?gallery=artist-profile",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_BROWSER_COMPARISON": {
+    "src": "./assets/artist-studio/gallery-artwork-wall-oct27.png",
+    "label": "Black Japan and B&W Miniature Paintings displays with gallery lighting and wall-zoom control",
+    "caption": "Current browser rendering of the artwork wall. No matched Blender viewpoint is available for a direct comparison. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2234,
+    "height": 1600,
+    "capture": true
+  },
+  "AS_GALLERY_ENTRANCE_CAPTURE": {
+    "src": "./assets/artist-studio/gallery-entrance-oct27.png",
+    "label": "Gallery entrance with curved story walls, a central bench and Wall Zoom control",
+    "caption": "Curved story walls and a central bench establish the visitor’s arrival. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2220,
+    "height": 1584,
+    "capture": true
+  },
+  "AS_ARTIST_PROFILE_CAPTURE": {
+    "src": "./assets/artist-studio/artist-profile-selected-works-oct27.png",
+    "label": "Pankaj Saroj artist profile with portrait, biography and selected works",
+    "caption": "Pankaj Saroj’s portrait, biography and selected paintings connect the artist with the work. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1612,
+    "capture": true
+  },
+  "AS_COLLECTION_CAPTURE": {
+    "src": "./assets/artist-studio/bw-miniature-collection-oct27.png",
+    "label": "B&W Miniature Paintings collection index with artwork titles, medium and dimensions",
+    "caption": "The connected B&W Miniature Paintings catalogue presents titles, medium and dimensions for individual works. Supplied capture · 27 October 2026. Artwork: Pankaj Saroj.",
+    "width": 2940,
+    "height": 1850,
+    "capture": true
+  }
+}

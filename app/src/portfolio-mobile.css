@@ -1,0 +1,143 @@
+/* Phone/tablet composition. Mouse/trackpad desktop choreography starts at
+   1000px as before; touch tablets retain this layout up to 1200px.
+   These queries complement DESKTOP_CAMERA_QUERY in mobile-camera.js. */
+.hero-camera-slot,.screen-camera-slot{display:none}
+html.portfolio-modal-open{overflow:hidden}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media(max-width:999px), (max-width:1199px) and (pointer:coarse), (max-width:1199px) and (pointer:none){
+ :root{--gutter:clamp(20px,5vw,40px);--hero-gutter:var(--gutter)}
+ .container{padding-inline:max(var(--gutter),env(safe-area-inset-left)) max(var(--gutter),env(safe-area-inset-right))}
+ .topnav .topnav-inner{height:auto;min-height:76px;padding:calc(12px + env(safe-area-inset-top)) var(--gutter) 12px;gap:16px}
+ .topnav nav{display:flex;gap:16px}
+ .topnav nav a{font-size:12px;min-width:44px;justify-content:center}
+ .hero-wordmark{min-height:44px;display:flex;align-items:center}
+ .hero-wordmark span,.hero-record{display:none}
+ .camera-hero{display:flex;flex-direction:column;min-height:100svh;height:auto;padding:calc(88px + env(safe-area-inset-top)) var(--gutter) 28px;gap:22px}
+ .camera-hero .hero-copy{position:relative;inset:auto;width:100%;height:auto;padding:0;margin:0;flex:none}
+ .camera-hero h1.hero-name{font-size:clamp(88px,25vw,180px);line-height:.96;letter-spacing:.004em;white-space:normal}
+ .hero-name span{display:block}
+ .hero-name span:first-child{font-size:1.35em}
+ .hero-camera-slot{display:block;width:100%;height:clamp(240px,36svh,400px);flex:none;margin-top:-38px}
+ .hero-intro{position:relative;inset:auto;width:100%;max-width:44ch;margin:0;align-self:flex-start}
+ .hero-intro .hero-role{font-size:11px;line-height:1.6;margin-bottom:8px}
+ .hero-intro .lead{font-size:15px;line-height:1.65;max-width:40ch}
+ .hero-work-link{font-size:12px;min-height:48px;margin-top:10px}
+ .hero-focus-scale{position:relative;inset:auto;width:100%;min-height:48px;margin:0;gap:12px}
+ .scale-label{font-size:10px;letter-spacing:.06em}
+ .hero-viewfinder{inset:10px;opacity:.6}
+ .hero-side-note,.chapter-rail,.chapter-status{display:none}
+ .hero-model-status{top:40%;font-size:12px}
+ .focus-section{min-height:0;display:block;padding:64px 0 48px;z-index:2;background:var(--bg)}
+ .focus-grid{display:block}
+ .focus-visual{display:none}
+ .focus-copy{width:100%;max-width:42rem;margin:auto}
+ .focus-copy h2{font-size:clamp(36px,7vw,60px);line-height:1.08;margin:18px 0 24px}
+ .focus-copy .lead{font-size:16px;line-height:1.7;max-width:48ch}
+ .focus-notes{gap:12px 24px;flex-wrap:wrap;font-size:10px;margin-top:24px}
+ .focus-copy .lead,.roll-body,.about-copy .lead,.about-approach{text-align:start;text-align-last:auto;hyphens:none;-webkit-hyphens:none}
+ /* One viewport to arrive, then 75% of a viewport for turn → align → zoom. */
+ .screen-entry{height:175svh;min-height:0}
+ .screen-camera-slot{display:flex;position:sticky;top:0;height:100svh;align-items:flex-end;justify-content:center;padding:0 var(--gutter) calc(24px + env(safe-area-inset-bottom))}
+ .screen-camera-slot>span{font:10px/1.5 var(--font-mono);letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;width:100%;z-index:2}
+ .roll-section{margin-top:0;height:auto}
+ .roll-stage{position:relative;top:auto;height:auto;min-height:0}
+ .roll-layout{grid-template-columns:minmax(0,1fr);height:auto;padding:48px var(--gutter) 32px;gap:32px}
+ .roll-intro h2{font-size:clamp(38px,7vw,64px);margin-bottom:24px}
+ .roll-kicker{font-size:10px;margin-bottom:20px}
+ .roll-body{font-size:16px;line-height:1.7;max-width:46ch}
+ .roll-disciplines{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 20px;font-size:14px;line-height:1.5}
+ .roll-visual{grid-row:2;height:360px;min-height:0;max-width:300px;width:100%;margin:0 auto}
+ .roll-projects{display:block;grid-column:1;align-self:auto}
+ .roll-context{max-width:46ch;margin:0 0 28px}
+ .roll-project-heading h3{font-size:25px}
+ .roll-project-list .log-row{font-size:16px;padding-block:18px}
+ .roll-archive{font-size:12px;min-height:48px}
+ .roll-next{position:relative;inset:auto;transform:none;margin:0 var(--gutter);justify-content:space-between;padding-bottom:32px;font-size:10px}
+ .roll-corners{display:none}
+ /* Projects are readable and tappable immediately, without a pinned spread. */
+ .project-stack-stage{min-height:0;padding:60px var(--gutter) 32px}
+ .project-stack-heading{display:block}
+ .project-stack-heading h2{font-size:clamp(30px,5vw,46px);max-width:24ch;line-height:1.15}
+ .project-stack-heading p{font-size:10px;margin:0 0 18px}
+ .project-stack-deck{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 24px;padding:32px 0}
+ .project-film-plane{height:auto;aspect-ratio:5/4;transform:none;pointer-events:auto}
+ .project-caption{padding:16px 0 0;text-align:left;display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px}
+ .project-caption-line{display:none}
+ .project-caption-index{font-size:11px;line-height:1.5;margin:4px 0 0}
+ .project-caption h3{font-size:21px;line-height:1.25;max-width:none;margin:0;text-wrap:pretty}
+ .project-film-edge{font-size:9px;line-height:1.4;inset:auto 0 0;padding:10px 14px;letter-spacing:.04em}
+ .project-brand-cover{padding:8%;inset:0 0 34px}
+ .project-gsc-logo{flex-direction:row;gap:8%}
+ .project-gsc-symbol{width:34%;flex:none}
+ .project-gsc-wordmark{width:58%}
+ .project-development-status{font-size:11px;margin-top:16px;padding:8px 12px}
+ .project-stack-footer{font-size:12px}
+ .project-stack-footer>a{width:100%;justify-content:space-between}
+ .about-stage{padding-block:48px 32px}
+ .about-grid{display:grid;grid-template-columns:1fr;gap:32px}
+ .portrait{width:min(64%,300px);max-width:300px;justify-self:center;align-self:auto}
+ .portrait img{max-height:none}
+ .portrait-caption{font-size:10px;line-height:1.5;gap:6px}
+ .about-heading{display:block}
+ .about-heading .chapter-label{max-width:none;text-align:left;font-size:10px;margin:0 0 16px}
+ .about-heading h2{font-size:clamp(60px,12vw,90px);margin:0 0 28px}
+ .about-statement{font-size:clamp(28px,6vw,42px);line-height:1.15;margin-bottom:24px}
+ .about-columns{display:grid;grid-template-columns:1fr;gap:18px;max-width:48ch}
+ .about-columns .lead,.about-columns .about-approach{font-size:16px;line-height:1.75}
+ .about-actions{display:block}
+ .about-copy .resume-link{font-size:14px;min-height:48px}
+ .about-social-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+ .about-social-links .social-link{min-height:48px;font-size:13px;padding:10px 14px}
+ .off-screen-title{font-size:clamp(28px,5.5vw,44px);line-height:1.2}
+ .contact-section{padding:48px 0 24px;min-height:0}
+ .contact-copy{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+ .contact-copy h2{font-size:clamp(36px,7.8vw,58px);line-height:1.08}
+ .contact-copy .lead{font-size:16px;line-height:1.65;margin:0;max-width:40ch}
+ .contact-copy .contact-cta{font-size:30px;min-height:48px;padding:0;align-self:flex-start}
+ .contact-copy .email-row{margin:0;display:flex;flex-wrap:wrap;gap:4px 18px;max-width:100%}
+ .email-row a{font-size:14px;overflow-wrap:anywhere;min-height:44px;display:flex;align-items:center}
+ .copy-email{font-size:12px;min-height:44px}
+ .contact-camera-stage{height:240px;margin:12px auto}
+ .contact-bottom .social-links{gap:12px 24px;font-size:13px}
+ .contact-bottom .social-links a,.contact-bottom>.text-link{min-height:44px;display:inline-flex;align-items:center;font-size:12px}
+ .closing-film{margin-top:32px}
+ .pagefoot{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+ .pagefoot .row-between{display:flex;flex-wrap:wrap;gap:12px;font-size:10px;line-height:1.6}
+ .pagefoot .meta{display:none}
+ .pagefoot a{min-height:44px;display:flex;align-items:center}
+ .work-index{width:calc(100% - 24px);max-height:calc(100dvh - 32px);overscroll-behavior:contain}
+ .index-content{padding:24px 18px}
+ .index-content h2{font-size:44px}
+ .index-filters{display:flex;flex-wrap:wrap;gap:8px}
+ .index-filters button{min-height:44px;font-size:12px}
+ .index-project{grid-template-columns:64px minmax(0,1fr) 44px;gap:12px}
+ .index-project img{width:64px;height:64px;object-fit:cover}
+ .index-project h3{font-size:19px}
+ .index-project p{font-size:13px;line-height:1.6}
+ .index-project>a{width:44px;height:44px}
+ .index-project .missing-link{font-size:10px;overflow-wrap:anywhere}
+ [data-scene='fallback'] .screen-entry{display:none}
+ [data-scene='fallback'] .hero-camera-slot{height:160px}
+ [data-scene='fallback'] .hero-model-status{top:300px}
+}
+@media(max-width:599px){
+ .project-stack-deck{grid-template-columns:minmax(0,1fr);gap:36px}
+ .project-film-plane{aspect-ratio:5/4}
+ .project-development>span:first-child{font-size:36px}
+ .project-development small{font-size:14px}
+ .project-stack-heading h2{font-size:32px}
+ .hero-intro{max-width:none}
+}
+@media(max-width:999px) and (max-height:500px), (max-width:1199px) and (pointer:coarse) and (max-height:500px), (max-width:1199px) and (pointer:none) and (max-height:500px){
+ .camera-hero h1.hero-name{font-size:20vw}
+ .hero-name span{display:inline}
+ .hero-name span:first-child{font-size:1em}
+ .hero-camera-slot{height:260px}
+ .screen-entry{height:200svh}
+}
+@media(max-width:999px) and (prefers-reduced-motion:reduce), (max-width:1199px) and (pointer:coarse) and (prefers-reduced-motion:reduce), (max-width:1199px) and (pointer:none) and (prefers-reduced-motion:reduce){
+ .screen-entry{display:none}
+ .roll-stage{min-height:0}
+ .roll-layout{min-height:0}
+ .roll-visual{min-height:0}
+}

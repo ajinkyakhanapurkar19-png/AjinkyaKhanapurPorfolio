@@ -1,0 +1,5 @@
+import React from "react";
+export default function NavCaseStudyIndex() { return ( <button type="button" data-template-index aria-label="Open case study chapters" className="ft-234 ft-243 ft-245 ft-820 ft-1910 ft-2162" data-node-id="4665:2757" data-name="Nav - Case study index"> <span className="ft-28 ft-82 ft-117 ft-169 ft-200 ft-234 ft-243 ft-245 ft-818 ft-1395 ft-1410 ft-1425 ft-1910 ft-1998 ft-2090 ft-2101 ft-3100" data-node-id="4665:2758" data-name="Background+Border+Shadow+OverlayBlur">
+<span className="ft-1394 ft-1910 ft-1993 ft-2101 ft-2140" data-node-id="4665:2759" data-name="Button - Open case study index"> <span className="ft-110 ft-118 ft-177 ft-200 ft-234 ft-243 ft-245 ft-325 ft-818 ft-822 ft-1396 ft-1910 ft-2162"> <span className="ft-37 ft-472 ft-1910 ft-2014 ft-2101 ft-2949" data-node-id="4665:2760" data-name="Horizontal Divider" /> <span className="ft-37 ft-472 ft-1910 ft-2014 ft-2101 ft-2949" data-node-id="4665:2761" data-name="Horizontal Divider" />
+<span className="ft-37 ft-472 ft-1910 ft-2014 ft-2101 ft-2949" data-node-id="4665:2762" data-name="Horizontal Divider" /> </span> </span> </span>
+</button> ); }

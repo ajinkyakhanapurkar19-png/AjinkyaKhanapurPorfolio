@@ -5,7 +5,7 @@ node_modules/
 # Generated build and Open Design preview (recreated by npm run build).
 /dist/
 /bundles/
-/index.html
+/*.html
 *.artifact.json
 
 # Local credentials and editor metadata.
@@ -24,6 +24,9 @@ node_modules/
 /*.jpg
 /*.JPG
 /*.zip
+/*.mov
+/*.mp4
+/*.pdf
 /reference/*
 !/reference/sony-asset-report.md
 /PLAN.md

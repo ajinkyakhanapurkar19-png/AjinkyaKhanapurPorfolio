@@ -1,0 +1,74 @@
+.pf-mobile-browse{display:none}
+@media(max-width:999px){
+ .pf-met{--gutter:clamp(20px,4vw,32px);--chapter-space:64px;font-size:16px;line-height:1.7}
+ .pf-met :is(.pf-hero-intro,.pf-editorial-row,.pf-challenge-grid,.pf-board-heading,.pf-reflection-grid,.pf-final-detail-heading){grid-template-columns:minmax(0,1fr);gap:24px}
+ .pf-met :is(.pf-copy,.pf-about,.pf-name,.pf-visual,.pf-device,.pf-device-shell){min-width:0}
+ .pf-met :is(.pf-about>p,.pf-board-heading p,.pf-reflection-fields dd,.pf-final-detail-heading p){font-size:16px;line-height:1.7;max-width:60ch}
+ .pf-met .pf-question-list li{font-size:15px;line-height:1.6}
+ .pf-met .pf-about h2{margin-bottom:20px}
+ .pf-met .pf-hero-intro{padding-top:32px}
+ .pf-met .pf-project-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding-block:28px 0}
+ .pf-met .pf-project-facts p{font-size:14px;line-height:1.6}
+ .pf-met .pf-overview>.pf-container{display:flex;flex-direction:column}
+ .pf-met .pf-hero-intro{order:0}
+ .pf-met .pf-project-facts{order:1;border-top:1px solid var(--border);margin-top:32px}
+ .pf-met .pf-preview-intro{order:2;font-size:16px;padding-block:36px}
+ .pf-met .pf-name .pf-label{font-size:11px;margin-bottom:24px}
+ .pf-met .pf-wordmark{font-size:clamp(76px,14vw,110px);line-height:.91}
+ .pf-met .pf-label{font-size:11px;line-height:1.5}
+ .pf-met .pf-chapter-head h2{min-width:0;font-size:clamp(30px,5.8vw,44px);line-height:1.12;letter-spacing:-.035em}
+ .pf-met .pf-chapter-head sup{white-space:nowrap;margin-top:5px}
+ .pf-met .pf-note{font-size:13px;line-height:1.65}
+ .pf-met .pf-editorial-row{padding-block:24px 32px}
+ .pf-met .pf-next{width:44px;min-width:44px}
+ .pf-met .pf-paired-devices{grid-template-columns:minmax(0,1fr);padding:24px;gap:32px}
+ .pf-met .pf-paired-devices>.pf-phone{width:min(100%,280px);min-width:0;justify-self:center}
+ .pf-met .pf-shopping-composition{grid-template-columns:minmax(0,1fr);padding:24px;gap:32px}
+ .pf-met .pf-detail-phone{width:min(100%,280px);min-width:0;justify-self:center}
+ .pf-met .pf-showcase-bar [role=tablist]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .pf-met .pf-showcase-bar [role=tab]{font-size:13px;line-height:1.4;min-height:48px;padding:10px 12px;white-space:normal}
+ .pf-met .pf-browser-bar{font-size:10px;line-height:1.5;min-height:32px}
+ .pf-met .pf-device-viewport{overscroll-behavior-y:contain}
+ .pf-met :is(figcaption,.pf-showcase-caption,.pf-shopping-composition>div>p){font-size:13px;line-height:1.6}
+ .pf-met .pf-mobile-heading{grid-template-columns:1fr;gap:20px}
+ .pf-met .pf-mobile-heading>p:last-child{font-size:16px;max-width:48ch}
+ .pf-met .pf-index-lines p{font-size:14px;line-height:1.5}
+ .pf-met .pf-footer>span{display:block;max-width:32ch}
+}
+@media(max-width:600px){
+ .pf-met .pf-contact-sheet{grid-template-areas:'word type' 'desktop desktop' 'detail detail' 'mobile mobile' 'palette palette';grid-template-columns:repeat(2,minmax(0,1fr))}
+ .pf-met .pf-collage-desktop{padding:32px 20px}
+ .pf-met .pf-collage-mobile{padding:30px 20px}
+ .pf-met .pf-collage-mobile>.pf-phone{width:min(78%,250px)}
+ .pf-met .pf-collage-detail .pf-product-carousel{padding:24px 20px}
+ .pf-met .pf-collage-word .pf-label,.pf-met .pf-collage-type .pf-label{font-size:10px}
+ .pf-met .pf-collage-word>p{font-size:clamp(25px,7vw,34px)}
+ .pf-met .pf-colour-board{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+ .pf-met .pf-colour-board>div{height:160px;padding:16px}
+ .pf-met .pf-colour-board>div:last-child{grid-column:1/-1;height:120px;flex-direction:row;align-items:center}
+ .pf-met .pf-colour-board>div>span:first-child,.pf-met .pf-colour-board>div>span:last-child{font-size:11px;letter-spacing:0}
+ .pf-met .pf-colour-board .pf-swatch-glyph{font-size:55px}
+ .pf-met .pf-audit-phones{grid-template-columns:minmax(0,1fr);gap:32px;padding:28px}
+ .pf-met .pf-audit-phones figure{width:min(100%,270px);justify-self:center}
+ .pf-met .pf-audit-phones figcaption{font-size:14px}
+ .pf-met .pf-type-samples{padding-inline:20px}
+ .pf-met .pf-type-specimen{min-height:280px}
+ .pf-met .pf-type-specimen>p{font-size:200px}
+ .pf-met .pf-laptop-stage{padding:32px 20px 24px}
+ .pf-met .pf-paired-devices,.pf-met .pf-shopping-composition{padding:20px 12px}
+ .pf-met .pf-product-page{padding:12px}
+ .pf-met .pf-product-track{grid-auto-columns:86%;--product-gap:16px}
+ .pf-met .pf-product-heading h3{font-size:27px}
+ .pf-met .pf-product-card h4{font-size:15px}
+ .pf-met .pf-product-card>p{font-size:13px}
+ /* Seven full-sized screens in a native horizontal rail, not tiny columns. */
+ .pf-met .pf-mobile-grid{position:relative;display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(82%,278px);gap:24px;justify-content:start;overflow-x:auto;overflow-y:hidden;padding:8px 2px 20px;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--border) var(--accent)}
+ .pf-met .pf-mobile-grid>figure{scroll-snap-align:center;max-width:none;width:100%}
+ .pf-met .pf-mobile-grid:focus-visible{outline:2px solid var(--bg);outline-offset:5px}
+ .pf-met .pf-mobile-browse{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;font-size:12px}
+ .pf-met .pf-mobile-browse>div{display:flex;gap:8px;flex:none}
+ .pf-met .pf-mobile-browse button{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--border);font-size:22px}
+ .pf-met .pf-mobile-browse button:disabled{opacity:.35}
+ .pf-met .pf-mobile-browse button:focus-visible{outline-color:var(--bg)}
+ .pf-met .pf-closing>p{font-size:clamp(38px,11vw,50px);line-height:1.1}
+}

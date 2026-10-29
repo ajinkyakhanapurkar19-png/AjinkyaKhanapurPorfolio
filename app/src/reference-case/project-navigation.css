@@ -1,0 +1,116 @@
+/* Shared portfolio navigation; colour and type inherit from each case study. */
+:is(.pf-met,.gs-page,.as-exhibition) a.case-project-back[data-portfolio-home] {
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ flex-shrink:0;
+ gap:9px;
+ min-height:44px;
+ max-width:none;
+ padding:8px 14px;
+ border:1px solid color-mix(in srgb,currentColor 35%,transparent);
+ border-radius:999px;
+ color:inherit;
+ background:transparent;
+ font-family:inherit;
+ font-size:12px;
+ font-weight:500;
+ line-height:1.25;
+ letter-spacing:0;
+ text-decoration:none;
+ white-space:nowrap;
+ cursor:pointer;
+ transition:background-color 180ms ease;
+}
+:is(.pf-met,.gs-page,.as-exhibition) .case-project-back svg {
+ flex:none;
+ width:18px;
+ height:18px;
+}
+.case-project-next {
+ margin:0 auto;
+ padding:0 var(--gutter,var(--gs-gutter,24px)) 32px;
+ width:100%;
+ max-width:1440px;
+ color:inherit;
+}
+.gs-page .case-project-next { max-width:none; color:var(--gs-paper); }
+:is(.pf-met,.gs-page,.as-exhibition) .case-project-next-link {
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:24px;
+ min-height:136px;
+ padding:28px 0;
+ border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);
+ color:inherit;
+ background:transparent;
+ text-decoration:none;
+ cursor:pointer;
+}
+.case-project-next-copy { min-width:0; }
+.case-project-next-copy small {
+ display:block;
+ margin-bottom:12px;
+ font-size:11px;
+ font-weight:500;
+ line-height:1.4;
+ letter-spacing:.08em;
+ text-transform:uppercase;
+}
+.case-project-next-copy strong {
+ display:block;
+ font-size:clamp(28px,3.2vw,46px);
+ font-weight:400;
+ line-height:1.12;
+ letter-spacing:-.035em;
+ overflow-wrap:break-word;
+}
+.case-project-next-link>svg {
+ width:clamp(28px,3vw,40px);
+ height:clamp(28px,3vw,40px);
+ flex:none;
+ transition:transform 180ms ease;
+}
+:is(.pf-met,.gs-page,.as-exhibition) :is(.case-project-back,.case-project-next-link):focus-visible {
+ outline:2px solid currentColor;
+ outline-offset:5px;
+}
+@media(hover:hover) {
+ :is(.pf-met,.gs-page,.as-exhibition) a.case-project-back[data-portfolio-home]:hover {
+  background:color-mix(in srgb,currentColor 8%,transparent);
+  text-decoration:none;
+ }
+ .case-project-next-link:hover strong { text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:7px; }
+ .case-project-next-link:hover>svg { transform:translateX(6px); }
+}
+.case-project-back:active,.case-project-next-link:active { opacity:.75; }
+@media(max-width:600px) {
+ .case-project-next-link { gap:16px; }
+ .case-project-next { padding-bottom:24px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ :is(.pf-met,.gs-page,.as-exhibition) a.case-project-back[data-portfolio-home],.case-project-next-link>svg { transition:none; }
+ .case-project-next-link:hover>svg { transform:none; }
+}
+@media print { .case-project-next { display:none; } }
+
+/* Live-site actions share the same treatment in the intro and closing. */
+.case-project-actions { display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px; margin-top:24px; }
+.pf-met { --case-live-bg:var(--accent); --case-live-fg:#fff; }
+.gs-page { --case-live-bg:var(--gs-paper); --case-live-fg:#0e261a; }
+:is(.pf-met,.gs-page) a.case-project-live[data-live-website] {
+ display:inline-flex; align-items:center; justify-content:space-between; gap:20px;
+ min-height:46px; max-width:100%; margin:0; padding:12px 20px;
+ border:1px solid transparent; border-radius:999px;
+ background:var(--case-live-bg); color:var(--case-live-fg);
+ font-family:inherit; font-size:13px; font-weight:500; line-height:1.4;
+ letter-spacing:0; text-decoration:none; white-space:nowrap; cursor:pointer;
+ transition:opacity 180ms ease;
+}
+:is(.pf-met,.gs-page) .case-project-live:focus-visible { outline:2px solid var(--case-live-bg); outline-offset:5px; }
+.gs-cover-heading .case-project-actions>a { margin-top:0; }
+.gs-cover-heading .case-project-actions>a:not(.case-project-live) { width:100%; }
+@media(hover:hover) { :is(.pf-met,.gs-page) a.case-project-live[data-live-website]:hover { opacity:.82; } }
+:is(.pf-met,.gs-page) a.case-project-live[data-live-website]:active { opacity:.7; }
+@media(prefers-reduced-motion:reduce) { :is(.pf-met,.gs-page) a.case-project-live[data-live-website] { transition:none; } }

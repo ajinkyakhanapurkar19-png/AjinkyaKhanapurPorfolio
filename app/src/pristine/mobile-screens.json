@@ -1,0 +1,715 @@
+{
+  "fileKey": "PtcjagsXzlGFsFkCV4H6GL",
+  "groups": [
+    {
+      "id": "shopping",
+      "label": "Browse & discover",
+      "description": "From the brand opening to product categories and detailed product information.",
+      "screens": [
+        "PF_MOBILE_HOME",
+        "PF_MOBILE_BODY_OILS_OPENING",
+        "PF_MOBILE_BODY_OILS_LISTING",
+        "PF_MOBILE_BODY_MISTS_OPENING",
+        "PF_MOBILE_BODY_MISTS_LISTING",
+        "PF_MOBILE_FACE_MISTS_OPENING",
+        "PF_MOBILE_FACE_MISTS_LISTING",
+        "PF_MOBILE_ESSENTIAL_OILS",
+        "PF_MOBILE_SHOP_ALL",
+        "PF_MOBILE_CANDY_GLAZE",
+        "PF_MOBILE_CANDY_GLAZE_ITERATION"
+      ]
+    },
+    {
+      "id": "right-by-you",
+      "label": "Right by You",
+      "description": "The introduction and five screens of the replacement-request journey.",
+      "screens": [
+        "PF_MOBILE_RIGHT_BY_YOU",
+        "PF_MOBILE_REPLACEMENT_START",
+        "PF_MOBILE_REPLACEMENT_ORDER",
+        "PF_MOBILE_REPLACEMENT_QUESTIONS",
+        "PF_MOBILE_REPLACEMENT_RECOMMENDATIONS",
+        "PF_MOBILE_REPLACEMENT_REVIEW"
+      ]
+    },
+    {
+      "id": "account",
+      "label": "Account & orders",
+      "description": "Profile, order details, saved addresses and personal preferences.",
+      "screens": [
+        "PF_MOBILE_PROFILE",
+        "PF_MOBILE_ORDER_HISTORY",
+        "PF_MOBILE_ORDER_SUMMARY",
+        "PF_MOBILE_EDIT_PROFILE_EXPANDED",
+        "PF_MOBILE_EDIT_PROFILE_COMPACT",
+        "PF_MOBILE_NEW_ADDRESS",
+        "PF_MOBILE_PREFERENCES"
+      ]
+    },
+    {
+      "id": "checkout",
+      "label": "Cart & checkout",
+      "description": "Signed-in and new-customer paths, from the bag to payment confirmation.",
+      "screens": [
+        "PF_MOBILE_CART_MEMBER",
+        "PF_MOBILE_CART_GUEST",
+        "PF_MOBILE_SIGN_IN",
+        "PF_MOBILE_CHECKOUT_MEMBER",
+        "PF_MOBILE_CHECKOUT_GUEST",
+        "PF_MOBILE_PAYMENT_SUCCESS"
+      ]
+    },
+    {
+      "id": "journal",
+      "label": "Journal",
+      "description": "Editorial browsing and the long-form article experience.",
+      "screens": [
+        "PF_MOBILE_JOURNAL",
+        "PF_MOBILE_ARTICLE"
+      ]
+    },
+    {
+      "id": "support",
+      "label": "Support & policies",
+      "description": "Contact information and the supporting pages of the shopping experience.",
+      "screens": [
+        "PF_MOBILE_CONTACT",
+        "PF_MOBILE_SHIPPING",
+        "PF_MOBILE_RETURNS",
+        "PF_MOBILE_PRIVACY",
+        "PF_MOBILE_TERMS"
+      ]
+    }
+  ],
+  "screens": {
+    "PF_MOBILE_HOME": {
+      "src": "./assets/pristine-forests/mobile/home.webp",
+      "label": "Homepage",
+      "width": 390,
+      "height": 4681,
+      "sourceNode": "1115:2407",
+      "sourceName": "Landing Page V1 3",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-2407",
+      "caption": "",
+      "crop": [
+        0,
+        18,
+        390,
+        4699
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_BODY_OILS_OPENING": {
+      "src": "./assets/pristine-forests/mobile/body-oils-opening.webp",
+      "label": "Body oils \u00b7 opening",
+      "width": 390,
+      "height": 2640,
+      "sourceNode": "1115:2718",
+      "sourceName": "PLP Hover Card Body Oil",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-2718",
+      "caption": "Full-height category introduction",
+      "crop": [
+        0,
+        0,
+        390,
+        2640
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_BODY_OILS_LISTING": {
+      "src": "./assets/pristine-forests/mobile/body-oils-listing.webp",
+      "label": "Body oils \u00b7 listing",
+      "width": 390,
+      "height": 2127,
+      "sourceNode": "1115:2778",
+      "sourceName": "PLP Hover Card Body Oil",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-2778",
+      "caption": "Product browsing layout",
+      "crop": [
+        0,
+        0,
+        390,
+        2127
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_BODY_MISTS_OPENING": {
+      "src": "./assets/pristine-forests/mobile/body-mists-opening.webp",
+      "label": "Body mists \u00b7 opening",
+      "width": 390,
+      "height": 2150,
+      "sourceNode": "1115:3093",
+      "sourceName": "PLP Hover Card Face Mist",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3093",
+      "caption": "Full-height category introduction",
+      "crop": [
+        0,
+        0,
+        390,
+        2150
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_BODY_MISTS_LISTING": {
+      "src": "./assets/pristine-forests/mobile/body-mists-listing.webp",
+      "label": "Body mists \u00b7 listing",
+      "width": 390,
+      "height": 1858,
+      "sourceNode": "1115:3166",
+      "sourceName": "PLP Hover Card Face Mist",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3166",
+      "caption": "Product browsing layout",
+      "crop": [
+        0,
+        0,
+        390,
+        1858
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_FACE_MISTS_OPENING": {
+      "src": "./assets/pristine-forests/mobile/face-mists-opening.webp",
+      "label": "Face mists \u00b7 opening",
+      "width": 390,
+      "height": 2371,
+      "sourceNode": "1115:3239",
+      "sourceName": "PLP Hover Card Body Mist",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3239",
+      "caption": "Full-height category introduction",
+      "crop": [
+        0,
+        0,
+        390,
+        2371
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_FACE_MISTS_LISTING": {
+      "src": "./assets/pristine-forests/mobile/face-mists-listing.webp",
+      "label": "Face mists \u00b7 listing",
+      "width": 390,
+      "height": 1872,
+      "sourceNode": "1115:3289",
+      "sourceName": "PLP Hover Card Body Mist",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3289",
+      "caption": "Product browsing layout",
+      "crop": [
+        0,
+        0,
+        390,
+        1872
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_ESSENTIAL_OILS": {
+      "src": "./assets/pristine-forests/mobile/essential-oils.webp",
+      "label": "Essential oils",
+      "width": 390,
+      "height": 4356,
+      "sourceNode": "1115:2970",
+      "sourceName": "PLP Hover Card Essential oil",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-2970",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        4356
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_SHOP_ALL": {
+      "src": "./assets/pristine-forests/mobile/shop-all.webp",
+      "label": "Shop all",
+      "width": 390,
+      "height": 2065,
+      "sourceNode": "1115:3342",
+      "sourceName": "PLP Hover Card Shop All",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3342",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        2065
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_CANDY_GLAZE": {
+      "src": "./assets/pristine-forests/mobile/candy-glaze.webp",
+      "label": "Candy Glaze \u00b7 product detail",
+      "width": 390,
+      "height": 4999,
+      "sourceNode": "1115:7050",
+      "sourceName": "PDP V1",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-7050",
+      "caption": "",
+      "crop": [
+        0,
+        50,
+        390,
+        5049
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_CANDY_GLAZE_ITERATION": {
+      "src": "./assets/pristine-forests/mobile/candy-glaze-iteration.webp",
+      "label": "Product detail \u00b7 earlier iteration",
+      "width": 390,
+      "height": 4601,
+      "sourceNode": "1115:6781",
+      "sourceName": "PDP V1",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-6781",
+      "caption": "Marked for revision in the source canvas",
+      "crop": [
+        0,
+        50,
+        390,
+        4651
+      ],
+      "stage": "iteration"
+    },
+    "PF_MOBILE_RIGHT_BY_YOU": {
+      "src": "./assets/pristine-forests/mobile/right-by-you.webp",
+      "label": "Right by You \u00b7 introduction",
+      "width": 390,
+      "height": 3791,
+      "sourceNode": "1115:2832",
+      "sourceName": "right by you",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-2832",
+      "caption": "",
+      "crop": [
+        6,
+        0,
+        396,
+        3791
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_REPLACEMENT_START": {
+      "src": "./assets/pristine-forests/mobile/replacement-start.webp",
+      "label": "01 / Begin a request",
+      "width": 390,
+      "height": 930,
+      "sourceNode": "1115:3961",
+      "sourceName": "1",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3961",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        930
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_REPLACEMENT_ORDER": {
+      "src": "./assets/pristine-forests/mobile/replacement-order.webp",
+      "label": "02 / Confirm the order",
+      "width": 390,
+      "height": 930,
+      "sourceNode": "1115:3994",
+      "sourceName": "2",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3994",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        930
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_REPLACEMENT_QUESTIONS": {
+      "src": "./assets/pristine-forests/mobile/replacement-questions.webp",
+      "label": "03 / Share preferences",
+      "width": 390,
+      "height": 2622,
+      "sourceNode": "1115:4047",
+      "sourceName": "3",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-4047",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        2622
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_REPLACEMENT_RECOMMENDATIONS": {
+      "src": "./assets/pristine-forests/mobile/replacement-recommendations.webp",
+      "label": "04 / Explore recommendations",
+      "width": 390,
+      "height": 1696,
+      "sourceNode": "1115:4290",
+      "sourceName": "4",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-4290",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        1696
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_REPLACEMENT_REVIEW": {
+      "src": "./assets/pristine-forests/mobile/replacement-review.webp",
+      "label": "05 / Review the order",
+      "width": 390,
+      "height": 1045,
+      "sourceNode": "1115:4199",
+      "sourceName": "5",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-4199",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        1045
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_PROFILE": {
+      "src": "./assets/pristine-forests/mobile/profile.webp",
+      "label": "Your profile",
+      "width": 390,
+      "height": 2268,
+      "sourceNode": "1115:3536",
+      "sourceName": "Profile",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3536",
+      "caption": "",
+      "crop": [
+        100,
+        0,
+        490,
+        2268
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_ORDER_HISTORY": {
+      "src": "./assets/pristine-forests/mobile/order-history.webp",
+      "label": "Order history",
+      "width": 336,
+      "height": 1105,
+      "sourceNode": "1115:3705",
+      "sourceName": "order history",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3705",
+      "caption": "",
+      "crop": [
+        87,
+        35,
+        423,
+        1140
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_ORDER_SUMMARY": {
+      "src": "./assets/pristine-forests/mobile/order-summary.webp",
+      "label": "Order summary",
+      "width": 390,
+      "height": 1762,
+      "sourceNode": "1115:3818",
+      "sourceName": "Order summary",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3818",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        1762
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_EDIT_PROFILE_EXPANDED": {
+      "src": "./assets/pristine-forests/mobile/edit-profile-expanded.webp",
+      "label": "Edit profile \u00b7 expanded",
+      "width": 402,
+      "height": 1346,
+      "sourceNode": "1115:9573",
+      "sourceName": "edit-profile",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-9573",
+      "caption": "",
+      "crop": [
+        40,
+        40,
+        442,
+        1386
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_EDIT_PROFILE_COMPACT": {
+      "src": "./assets/pristine-forests/mobile/edit-profile-compact.webp",
+      "label": "Edit profile \u00b7 compact",
+      "width": 390,
+      "height": 647,
+      "sourceNode": "1115:9656",
+      "sourceName": "edit-profile",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-9656",
+      "caption": "Alternate profile layout",
+      "crop": [
+        68,
+        72,
+        458,
+        719
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_NEW_ADDRESS": {
+      "src": "./assets/pristine-forests/mobile/new-address.webp",
+      "label": "Add a new address",
+      "width": 402,
+      "height": 949,
+      "sourceNode": "1115:7759",
+      "sourceName": "add-new-address",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-7759",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        402,
+        949
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_PREFERENCES": {
+      "src": "./assets/pristine-forests/mobile/preferences.webp",
+      "label": "Personal preferences",
+      "width": 332,
+      "height": 811,
+      "sourceNode": "1115:7823",
+      "sourceName": "Bottom Sheet",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-7823",
+      "caption": "",
+      "crop": [
+        80,
+        65,
+        412,
+        876
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_CART_MEMBER": {
+      "src": "./assets/pristine-forests/mobile/cart-member.webp",
+      "label": "Shopping bag \u00b7 member",
+      "width": 390,
+      "height": 844,
+      "sourceNode": "1115:10621",
+      "sourceName": "cart-screen",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-10621",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_CART_GUEST": {
+      "src": "./assets/pristine-forests/mobile/cart-guest.webp",
+      "label": "Shopping bag \u00b7 guest",
+      "width": 390,
+      "height": 844,
+      "sourceNode": "3407:2103",
+      "sourceName": "cart-screen",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=3407-2103",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_SIGN_IN": {
+      "src": "./assets/pristine-forests/mobile/sign-in.webp",
+      "label": "Sign up / sign in",
+      "width": 390,
+      "height": 844,
+      "sourceNode": "3017:2407",
+      "sourceName": "mobile-signup/in",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=3017-2407",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_CHECKOUT_MEMBER": {
+      "src": "./assets/pristine-forests/mobile/checkout-member.webp",
+      "label": "Checkout \u00b7 saved addresses",
+      "width": 390,
+      "height": 1537,
+      "sourceNode": "3017:2209",
+      "sourceName": "checkout-screen",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=3017-2209",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        1537
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_CHECKOUT_GUEST": {
+      "src": "./assets/pristine-forests/mobile/checkout-guest.webp",
+      "label": "Checkout \u00b7 new customer",
+      "width": 390,
+      "height": 1790,
+      "sourceNode": "3017:2308",
+      "sourceName": "For New User Checkout Screen",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=3017-2308",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        1790
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_PAYMENT_SUCCESS": {
+      "src": "./assets/pristine-forests/mobile/payment-success.webp",
+      "label": "Payment confirmation",
+      "width": 390,
+      "height": 844,
+      "sourceNode": "3017:2161",
+      "sourceName": "payment-success",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=3017-2161",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_JOURNAL": {
+      "src": "./assets/pristine-forests/mobile/journal.webp",
+      "label": "Journal overview",
+      "width": 390,
+      "height": 2786,
+      "sourceNode": "1115:2611",
+      "sourceName": "Article",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-2611",
+      "caption": "",
+      "crop": [
+        0,
+        50,
+        390,
+        2836
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_ARTICLE": {
+      "src": "./assets/pristine-forests/mobile/article.webp",
+      "label": "Scent and Memory \u00b7 article",
+      "width": 390,
+      "height": 6285,
+      "sourceNode": "1115:3396",
+      "sourceName": "Article Page",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-3396",
+      "caption": "",
+      "crop": [
+        0,
+        59,
+        390,
+        6344
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_CONTACT": {
+      "src": "./assets/pristine-forests/mobile/contact.webp",
+      "label": "Contact us",
+      "width": 390,
+      "height": 1614,
+      "sourceNode": "1115:6707",
+      "sourceName": "Contact Us - Pristine Forests",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-6707",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        1614
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_SHIPPING": {
+      "src": "./assets/pristine-forests/mobile/shipping.webp",
+      "label": "Shipping and delivery",
+      "width": 390,
+      "height": 2141,
+      "sourceNode": "1115:6655",
+      "sourceName": "Shipping &amp; Delivery - Pristine Forests",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-6655",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        2141
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_RETURNS": {
+      "src": "./assets/pristine-forests/mobile/returns.webp",
+      "label": "Return policy",
+      "width": 388,
+      "height": 2377,
+      "sourceNode": "1115:6540",
+      "sourceName": "Return Policy - Pristine Forests",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-6540",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        388,
+        2377
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_PRIVACY": {
+      "src": "./assets/pristine-forests/mobile/privacy.webp",
+      "label": "Privacy policy",
+      "width": 385,
+      "height": 5160,
+      "sourceNode": "1115:6401",
+      "sourceName": "Privacy Policy - Pristine Forests",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-6401",
+      "caption": "",
+      "crop": [
+        99,
+        16,
+        484,
+        5176
+      ],
+      "stage": "source-design"
+    },
+    "PF_MOBILE_TERMS": {
+      "src": "./assets/pristine-forests/mobile/terms.webp",
+      "label": "Terms and conditions",
+      "width": 390,
+      "height": 13345,
+      "sourceNode": "1115:7345",
+      "sourceName": "terms and condition",
+      "sourceUrl": "https://www.figma.com/design/PtcjagsXzlGFsFkCV4H6GL/Pristine-Forests?node-id=1115-7345",
+      "caption": "",
+      "crop": [
+        0,
+        0,
+        390,
+        13345
+      ],
+      "stage": "source-design"
+    }
+  }
+}

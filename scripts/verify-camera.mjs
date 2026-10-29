@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {mobileCameraPose,mobileCameraStage} from '../app/src/mobile-camera.js';
 import assert from 'node:assert/strict';
 import * as T from 'three';
 import { LCD, WAYPOINTS, MOBILE_POSES, resolvePose, samplePose, contactFraming } from '../app/src/camera-path.js';
@@ -89,3 +90,34 @@ for(const [mobile,w,h] of [[false,1440,900],[true,390,844],[true,820,1180]]){
  assert.ok(stable.eye[2]>8,'Reduced motion must not dolly into the screen');
 }
 console.log('PASS: no near-plane collision across sampled journey poses; reduced motion stays outside the screen.');
+
+// The phone/tablet path fits the actual GLB inside document slots instead of
+// borrowing desktop world positions. Sample short phones and landscape too.
+for(const [w,h] of [[320,568],[360,640],[390,844],[430,932],[600,900],[768,1024],[820,1180],[932,430],[1024,768],[1180,820]]) {
+ const hero={x:20,y:180,width:w-40,height:Math.max(240,Math.min(400,h*.36))};
+ for(const p of [0,.25,.5,.75,1]) {
+  const pose=mobileCameraPose('hero',p,hero,w,h);
+  const box=project(pose,w,h,pose);
+  assert.ok(box.left>=hero.x/w&&box.right<=(hero.x+hero.width)/w,`${w}: mobile hero fits horizontally`);
+  assert.ok(box.top>=hero.y/h&&box.bottom<=(hero.y+hero.height)/h,`${w}: mobile hero stays outside the text`);
+ }
+ const entry={x:0,y:0,width:w,height:h};
+ for(let i=0;i<=40;i++) {
+  const pose=mobileCameraPose('entry',i/40,entry,w,h);
+  const box=project(pose,w,h,pose);
+  assert.ok(box.depth>.1,`${w}: mobile rear-turn/dolly clips at ${i/40}: ${box.depth}`);
+  if(i<=17)assert.ok(box.left>=0&&box.right<=1&&box.top>=0&&box.bottom<=1,`${w}: turn must stay in the transition area`);
+ }
+ const end=mobileCameraPose('entry',1,entry,w,h);
+ const camera=new T.PerspectiveCamera(36,w/h,.1,45);camera.position.fromArray(end.eye);camera.lookAt(new T.Vector3().fromArray(end.target));camera.updateMatrixWorld();
+ const transform=new T.Matrix4().compose(new T.Vector3(),new T.Quaternion().setFromEuler(new T.Euler(...end.rotation)),new T.Vector3().setScalar(end.scale));
+ const corners=[];
+ for(const x of [lcdMin.x,lcdMax.x])for(const y of [lcdMin.y,lcdMax.y])corners.push(new T.Vector3(x,y,lcdMin.z).applyMatrix4(transform).project(camera));
+ assert.ok(Math.min(...corners.map(v=>v.x))<-1&&Math.max(...corners.map(v=>v.x))>1&&Math.min(...corners.map(v=>v.y))<-1&&Math.max(...corners.map(v=>v.y))>1,`${w}: mobile LCD must fill the viewport`);
+ const reducedA=mobileCameraPose('hero',0,hero,w,h,true),reducedB=mobileCameraPose('hero',1,hero,w,h,true);
+ assert.deepEqual(reducedA,reducedB,'Reduced motion must hold a stable camera');
+ const slots={hero,entry:{x:0,y:2*h,width:w,end:3.75*h},contact:{x:20,y:8*h,width:w-40,height:240}};
+ assert.equal(mobileCameraStage(5*h,h,slots),null,'No camera behind work, project cards or biography');
+ assert.equal(mobileCameraStage(2*h,h,slots,true),null,'Reduced motion skips screen entry');
+ console.log(`PASS mobile ${w}×${h}: hero bounded by its slot; rear turn/dolly clear; LCD fills; reading chapters clear.`);
+}

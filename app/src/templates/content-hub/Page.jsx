@@ -1,0 +1,20 @@
+import React from "react";
+import TemplateShell from "../TemplateShell.jsx";
+import "../templates.css";
+import "../source-0.css";
+import "../source-1.css";
+import "../source-2.css";
+import "../source-3.css";
+import Node4723_1013 from "./Node4723_1013.jsx";
+import Node4723_1056 from "./Node4723_1056.jsx";
+import Node4723_1174 from "./Node4723_1174.jsx";
+import Node4723_1600 from "./Node4723_1600.jsx";
+import Node4723_1802 from "./Node4723_1802.jsx";
+import Node4723_1974 from "./Node4723_1974.jsx";
+import Node4723_2586 from "./Node4723_2586.jsx";
+import Node4723_2749 from "./Node4723_2749.jsx";
+import Node4723_2776 from "./Node4723_2776.jsx";
+import Node4723_2824 from "./Node4723_2824.jsx";
+import Node4723_2833 from "./Node4723_2833.jsx";
+const chapters=[{"id": "4723:1013", "label": "Overview", "y": 0.0}, {"id": "4723:1056", "label": "The problem", "y": 858.0700073242188}, {"id": "4723:1174", "label": "Research and mapping", "y": 2430.68408203125}, {"id": "4723:1600", "label": "The mental model", "y": 6975.55810546875}, {"id": "4723:1802", "label": "Consistency and flexibility", "y": 8898.4130859375}, {"id": "4723:1974", "label": "Iterations", "y": 11423.34765625}, {"id": "4723:2586", "label": "Roles and workflow", "y": 20510.66015625}, {"id": "4723:2749", "label": "Final product", "y": 22467.39453125}, {"id": "4723:2776", "label": "Impact and reflection", "y": 23693.7734375}];
+export default function Page(){return <TemplateShell slug="content-hub" title="Content Hub" width={1520.800048828125} height={25147.45703125} background="#fbfaf9" chapters={chapters}><section className="source-section" id="4723-1013" aria-label="Overview" data-od-id="content-hub-4723-1013" style={{left:0.0,top:0.0,width:1520.800048828125,height:858.0700073242188}}><Node4723_1013/></section><section className="source-section" id="4723-1056" aria-label="The problem" data-od-id="content-hub-4723-1056" style={{left:0.0,top:858.0700073242188,width:1520.800048828125,height:1572.614013671875}}><Node4723_1056/></section><section className="source-section" id="4723-1174" aria-label="Research and mapping" data-od-id="content-hub-4723-1174" style={{left:0.0,top:2430.68408203125,width:1520.800048828125,height:4544.8740234375}}><Node4723_1174/></section><section className="source-section" id="4723-1600" aria-label="The mental model" data-od-id="content-hub-4723-1600" style={{left:0.0,top:6975.55810546875,width:1520.800048828125,height:1922.8551025390625}}><Node4723_1600/></section><section className="source-section" id="4723-1802" aria-label="Consistency and flexibility" data-od-id="content-hub-4723-1802" style={{left:0.0,top:8898.4130859375,width:1520.800048828125,height:2524.93408203125}}><Node4723_1802/></section><section className="source-section" id="4723-1974" aria-label="Iterations" data-od-id="content-hub-4723-1974" style={{left:0.0,top:11423.34765625,width:1520.800048828125,height:9087.3134765625}}><Node4723_1974/></section><section className="source-section" id="4723-2586" aria-label="Roles and workflow" data-od-id="content-hub-4723-2586" style={{left:0.0,top:20510.66015625,width:1520.800048828125,height:1956.7340087890625}}><Node4723_2586/></section><section className="source-section" id="4723-2749" aria-label="Final product" data-od-id="content-hub-4723-2749" style={{left:0.0,top:22467.39453125,width:1520.800048828125,height:1226.379638671875}}><Node4723_2749/></section><section className="source-section" id="4723-2776" aria-label="Impact and reflection" data-od-id="content-hub-4723-2776" style={{left:0.0,top:23693.7734375,width:1520.800048828125,height:1453.6820068359375}}><Node4723_2776/></section><div className="source-section source-control" style={{left:17.66,top:309,width:54,height:55.6,zIndex:20}}><Node4723_2824/></div><div className="source-section source-control" style={{left:23.04,top:23.04,width:198.7,height:44,zIndex:20}}><Node4723_2833/></div><div className="source-progress" aria-hidden="true"/></TemplateShell>;}

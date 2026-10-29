@@ -3,14 +3,20 @@ import { createRoot } from 'react-dom/client';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { profile, projects } from './content';
+import SocialLink from './social-link.jsx';
 import { rollPhotos } from './roll-photos.js';
 import ProjectStack, { selectedWork } from './project-stack.jsx';
 import { createProjectReveal } from './project-stack-motion.js';
 import { createAboutReveal } from './about-reveal.js';
+import { rollArrival } from './roll-arrival.js';
+import { mobileCameraStage, DESKTOP_CAMERA_QUERY } from './mobile-camera.js';
 import './seed.css';
 import './portfolio.css';
+import './portfolio-mobile.css';
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile URL-bar changes must not restart the scroll choreography.
+ScrollTrigger.config({ignoreMobileResize:true});
 const Scene = lazy(() => import('./scene.jsx'));
 const pad = n => String(n).padStart(2, '0');
 const chapters = [['camera','The camera'],['focus','Focus'],['screen','Into the screen'],['work','The roll'],['projects','Selected projects'],['about','Behind the lens'],['contact','Contact']];
@@ -68,8 +74,11 @@ function App(){
  const reduced=useRef(matchMedia('(prefers-reduced-motion: reduce)').matches);
  const filtered=projects.filter(p=>filter==='All work'||(filter==='Design'? !['tudoom','still-stillness'].includes(p.id):['tudoom','still-stillness'].includes(p.id)));
  function jump(id){
+  if(id==='screen'&&(root.current?.dataset.scene==='fallback'||(modelState.current.mobile&&reduced.current)))id='work';
   const el=document.getElementById(id);if(!el)return;
   let y=el.getBoundingClientRect().top+window.scrollY-(id==='screen'?0:76);
+  // Work navigation skips the entrance and lands on readable content.
+  if(id==='work'&&!reduced.current)y=Math.max(y,modelState.current.rollArrivalEnd??y);
   // Direct navigation lands on the readable About spread, after its arrival.
   if(id==='about'){
    const arrival=el.querySelector('.about-arrival');
@@ -84,7 +93,7 @@ function App(){
   const complete=event.currentTarget.dataset.complete==='true';
   window.scrollTo({top:top+(complete?0:travel*.97),behavior:reduced.current?'instant':'smooth'});
  }
- function openIndex(){previousFocus.current=document.activeElement;allDialog.current.showModal();}
+ function openIndex(){previousFocus.current=document.activeElement;allDialog.current.showModal();document.documentElement.classList.add('portfolio-modal-open');}
  function closeIndex(){allDialog.current.close();previousFocus.current?.focus();}
  async function copyEmail(){
   try{await navigator.clipboard.writeText(profile.email);setCopyStatus('Email copied');}
@@ -102,7 +111,7 @@ function App(){
  },[]);
  useLayoutEffect(()=>{
   const mm=gsap.matchMedia();
-  mm.add({all:'(min-width: 0px)',desktop:'(min-width: 1000px)',compact:'(max-width: 699px)',short:'(max-height: 640px), (max-width: 699px) and (max-height: 740px)',reduce:'(prefers-reduced-motion: reduce)'},ctx=>{
+  mm.add({all:'(min-width: 0px)',desktop:DESKTOP_CAMERA_QUERY,compact:'(max-width: 699px)',short:'(max-height: 640px), (max-width: 699px) and (max-height: 740px)',reduce:'(prefers-reduced-motion: reduce)'},ctx=>{
    const {desktop,reduce,short}=ctx.conditions;
    modelState.current.progress=0;
    reduced.current=reduce;modelState.current.reduced=reduce;modelState.current.mobile=!desktop;
@@ -110,12 +119,14 @@ function App(){
    let maxScroll=1; let layout={focus:0,screen:0,work:0,about:0,contact:0,hero:1,turn:0,entry:1};
    const filmVisual=document.querySelector('.roll-visual');
    const rollStage=document.querySelector('.roll-stage');
-   const projectReveal=createProjectReveal(root.current,{staticLayout:reduce||short});
-   const aboutReveal=createAboutReveal(root.current,{reduced:reduce,sticky:desktop&&!short});
+   const projectReveal=createProjectReveal(root.current,{staticLayout:reduce||short||!desktop});
+   const aboutReveal=createAboutReveal(root.current,{reduced:reduce||!desktop,sticky:desktop&&!short});
+   const sceneLayer=root.current.querySelector('.scene-layer');
+   const documentRect=element=>{const r=element.getBoundingClientRect();return {x:r.left,y:r.top+scrollY,width:r.width,height:r.height};};
    const top=id=>document.getElementById(id).getBoundingClientRect().top+window.scrollY;
    const measure=()=>{
     maxScroll=Math.max(1,document.documentElement.scrollHeight-innerHeight);
-    const screen=document.getElementById('screen'),h=innerHeight;
+    const screen=document.getElementById('screen'),h=desktop?innerHeight:sceneLayer.clientHeight;
     layout={focus:top('focus'),screen:top('screen'),work:top('work'),projects:top('projects'),about:top('about'),contact:top('contact'),hero:document.getElementById('camera').offsetHeight};
     // Start turning during Focus, at its close-up, instead of holding the
     // front view until the following section. Keep all stops scroll-derived.
@@ -126,6 +137,9 @@ function App(){
     layout.film={x:rect.left,y:rect.top-stageRect.top,width:rect.width,height:rect.height};
     layout.stageHeight=rollStage.offsetHeight;
     layout.rollDistance=Math.max(h*.5,layout.projects-layout.work-layout.stageHeight);
+    layout.rollStart=!desktop?layout.work-h*.8:reduce?layout.work-h*.65:Math.min(layout.entry,layout.work);
+    const staticRoll=reduce||root.current.dataset.scene==='fallback';
+    modelState.current.rollArrivalEnd=rollArrival(layout.rollStart,layout.rollStart,h,!desktop,staticRoll).end;
     const projectSection=document.getElementById('projects');
     layout.projectDistance=Math.max(1,projectSection.offsetHeight-projectSection.querySelector('.project-stack-stage').offsetHeight);
     projectReveal.measure();
@@ -137,6 +151,12 @@ function App(){
     layout.contactFrame={x:contactRect.left,y:contactRect.top+window.scrollY,width:contactRect.width,height:contactRect.height};
     layout.contactStart=layout.about+h*.12;
     layout.contactRest=Math.max(layout.contactStart+1,layout.contact-h*.15);
+    layout.viewportHeight=h;
+    if(!desktop)layout.mobileSlots={
+     hero:documentRect(root.current.querySelector('.hero-camera-slot')),
+     entry:{x:0,y:layout.screen,width:sceneLayer.clientWidth,end:layout.work},
+     contact:layout.contactFrame
+    };
     const stops=[
      ['opening',0],['front',Math.max(h*.3,layout.focus-h*.5)],
      ['closeup',layout.turn],['rear',layout.turn+h*.5],['screen',layout.turn+h*.65],
@@ -146,19 +166,28 @@ function App(){
    };
    const paint=()=>{
     const s=modelState.current.progress*maxScroll;
+    const h=layout.viewportHeight;
+    // Native position keeps the model attached to the page on touch scroll.
+    const mobileFrame=desktop?null:mobileCameraStage(scrollY,h,layout.mobileSlots,reduce);
+    modelState.current.mobileFrame=mobileFrame;
     const screenProgress=gsap.utils.clamp(0,1,(s-layout.turn)/Math.max(1,layout.entry-layout.turn));
-    modelState.current.screenProgress=screenProgress;
+    modelState.current.screenProgress=!desktop?(mobileFrame?.stage==='entry'?mobileFrame.progress:0):screenProgress;
     modelState.current.screenActive=s>=layout.screen-innerHeight*.4&&s<layout.work;
     // The LCD fills the viewport before the roll begins. Reverse scroll uses
     // the same timeline, without timers or per-frame React state updates.
-    const workStart=reduce?layout.work-innerHeight*.65:Math.min(layout.entry,layout.work);
-    const workActive=s>=workStart&&s<layout.projects;
-    const stageY=desktop&&!reduce?Math.max(layout.work-s,Math.min(0,layout.projects-layout.stageHeight-s)):layout.work-s;
+    const workStart=layout.rollStart;
+    const workActive=desktop?s>=workStart&&s<layout.projects:scrollY>=workStart&&scrollY<layout.projects;
+    const staticRoll=reduce||root.current.dataset.scene==='fallback';
+    const arrival=rollArrival(desktop?s:scrollY,workStart,h,!desktop,staticRoll);
+    // DOM flow uses native scroll, while the entrance uses the smoothed
+    // journey. Apply its exact offset to both the HTML and WebGL clipping slot.
+    const nativeScroll=window.scrollY;
+    const stageY=desktop&&!reduce?Math.max(layout.work-nativeScroll,Math.min(0,layout.projects-layout.stageHeight-nativeScroll)):layout.work-nativeScroll;
     modelState.current.rollActive=workActive;
     modelState.current.rollProgress=reduce?0:gsap.utils.clamp(0,1,(s-layout.work)/layout.rollDistance);
-    modelState.current.rollReveal=reduce?1:gsap.utils.clamp(0,1,(s-workStart)/(innerHeight*.2));
-    modelState.current.filmRect={...layout.film,y:layout.film.y+stageY};
-    gsap.set('.roll-stage',{opacity:reduce?1:modelState.current.rollReveal});
+    modelState.current.rollReveal=arrival.opacity;
+    modelState.current.filmRect={...layout.film,y:layout.film.y+stageY+arrival.y};
+    gsap.set(rollStage,{opacity:arrival.opacity,y:arrival.y});
     projectReveal.paint((s-layout.projects)/layout.projectDistance);
     aboutReveal.paint((s-layout.aboutStart)/layout.aboutDistance);
     const contactProgress=gsap.utils.clamp(0,1,(s-layout.contactStart)/(layout.contactRest-layout.contactStart));
@@ -168,8 +197,8 @@ function App(){
     modelState.current.contactFrame={...layout.contactFrame,y:layout.contactFrame.y-window.scrollY};
     const heroProgress=reduce?0:gsap.utils.clamp(0,1,s/(layout.hero*0.86));
     modelState.current.heroProgress=heroProgress;
-    gsap.set('.hero-copy',{opacity:1-heroProgress,y:-heroProgress*44});
-    gsap.set('.hero-details',{opacity:1-heroProgress});
+    gsap.set('.hero-copy',{opacity:desktop?1-heroProgress:1,y:desktop?-heroProgress*44:0});
+    gsap.set('.hero-details',{opacity:desktop?1-heroProgress:1});
     const idx=s<layout.focus-innerHeight*.4?0:s<layout.screen-innerHeight*.35?1:s<layout.work-innerHeight*.15?2:s<layout.projects-innerHeight*.2?3:s<layout.about-innerHeight*.4?4:s<layout.contact-innerHeight*.4?5:6;
     document.querySelectorAll('[data-chapter]').forEach(el=>{
      const yes=Number(el.dataset.chapter)===idx;el.dataset.active=String(yes);
@@ -178,21 +207,29 @@ function App(){
     const chapterName=document.getElementById('current-chapter');if(chapterName){chapterName.textContent=`${pad(idx+1)} / ${chapters[idx][1]}`;chapterName.hidden=idx===6;}
     const progress=document.querySelector('.reading-progress');if(progress)progress.style.transform=`scaleX(${modelState.current.progress})`;
     const wasVisible=modelState.current.visible;
-    modelState.current.visible=workActive||idx<4||idx===6;
+    modelState.current.visible=desktop?(workActive||idx<4||idx===6):Boolean(workActive||mobileFrame);
+    if(!desktop&&mobileFrame&&!workActive){
+     const r=mobileFrame.rect;
+     sceneLayer.style.clipPath=`inset(${Math.max(0,r.y)}px ${Math.max(0,sceneLayer.clientWidth-r.x-r.width)}px ${Math.max(0,h-r.y-r.height)}px ${Math.max(0,r.x)}px)`;
+    }else sceneLayer.style.clipPath='none';
     if(modelState.current.visible||wasVisible!==modelState.current.visible)modelState.current.invalidate();
    };
    measure();
-   const timeline=gsap.timeline({scrollTrigger:{trigger:'#content',start:'top top',end:'bottom bottom',scrub:reduce?true:0.65,invalidateOnRefresh:true,onRefresh:measure}});
+   const timeline=gsap.timeline({scrollTrigger:{trigger:'#content',start:'top top',end:'bottom bottom',scrub:reduce||!desktop?true:0.65,invalidateOnRefresh:true,onRefresh:measure}});
    timeline.fromTo(modelState.current,{progress:0},{progress:1,ease:'none',duration:1,onUpdate:paint});
    const onRefresh=()=>{measure();paint();};ScrollTrigger.addEventListener('refresh',onRefresh);
    document.querySelectorAll('.portrait img').forEach(img=>{if(!img.complete)img.addEventListener('load',onRefresh,{once:true});});
    document.fonts.ready.then(()=>{if(!ctx.isReverted)ScrollTrigger.refresh();});
    // ResizeObserver observes width only to avoid pin-spacer feedback loops.
    let previousWidth=innerWidth,previousHeight=innerHeight;
-   const onResize=()=>{if(innerWidth!==previousWidth||innerHeight!==previousHeight){previousWidth=innerWidth;previousHeight=innerHeight;ScrollTrigger.refresh();}};
+   let resizeTimer;
+   const onResize=()=>{if(innerWidth!==previousWidth||(desktop?innerHeight!==previousHeight:Math.abs(innerHeight-previousHeight)>140)){
+    previousWidth=innerWidth;previousHeight=innerHeight;clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(()=>ScrollTrigger.refresh(),120);
+   }};
    window.addEventListener('resize',onResize);
    const refreshFrame=requestAnimationFrame(()=>ScrollTrigger.refresh());
-   return()=>{cancelAnimationFrame(refreshFrame);timeline.scrollTrigger?.kill();timeline.kill();projectReveal.dispose();aboutReveal.dispose();ScrollTrigger.removeEventListener('refresh',onRefresh);window.removeEventListener('resize',onResize);document.querySelectorAll('.portrait img').forEach(img=>img.removeEventListener('load',onRefresh));gsap.set('.hero-copy,.hero-details,.roll-stage',{clearProps:'opacity,transform'});};
+   return()=>{clearTimeout(resizeTimer);sceneLayer.style.removeProperty('clip-path');cancelAnimationFrame(refreshFrame);timeline.scrollTrigger?.kill();timeline.kill();projectReveal.dispose();aboutReveal.dispose();ScrollTrigger.removeEventListener('refresh',onRefresh);window.removeEventListener('resize',onResize);document.querySelectorAll('.portrait img').forEach(img=>img.removeEventListener('load',onRefresh));gsap.set('.hero-copy,.hero-details,.roll-stage',{clearProps:'opacity,transform'});};
   },root);
   return()=>mm.revert();
  },[]);
@@ -218,6 +255,7 @@ function App(){
      <h1 className="hero-name"><span>AJINKYA</span>{' '}<span>KHANAPURKAR</span></h1>
     </div>
     <div className="hero-viewfinder hero-details" aria-hidden="true"><span className="frame-corner tl"/><span className="frame-corner tr"/><span className="frame-corner bl"/><span className="frame-corner br"/></div>
+    <div className="hero-camera-slot" aria-hidden="true"/>
     <div className="hero-intro hero-details">
      <p className="hero-role">{profile.role}</p>
      <p className="lead">I craft meaningful digital experiences, with a storyteller’s eye.</p>
@@ -241,6 +279,7 @@ function App(){
        a project gallery or a page-wide overlay; the film chapter follows. */}
    <section id="screen" className="section screen-entry" data-od-id="screen" data-screen-label="03 Into the screen" aria-label="Camera rear-screen transition">
     <h2 className="sr-only">Into the screen</h2>
+    <div className="screen-camera-slot" aria-hidden="true"><span>Into the next frame <span>↓</span></span></div>
     {sceneStatus==='fallback'&&<p className="screen-fallback">The 3D camera is unavailable. <a href="#work" onClick={e=>{e.preventDefault();jump('work');}}>Continue to Work ↓</a></p>}
    </section>
    {/* Layout 2 split + Layout 7 ruled list, adapted around a live film spiral. */}
@@ -282,7 +321,10 @@ function App(){
         <div className="about-heading" data-about-reveal><p className="eyebrow chapter-label">06 / BEHIND THE LENS</p><h2>About.</h2></div>
         <h3 className="about-statement" data-about-reveal>The person behind<br/>the perspective.</h3>
         <div className="about-columns" data-about-reveal><p className="lead">{profile.biography}</p><p className="about-approach">{profile.approach}</p></div>
-        <a className="text-link resume-link" data-about-reveal href={profile.resume||`mailto:${profile.email}?subject=Portfolio%20resume%20request`}>{profile.resume?'View resume':'Resume · available on request'} <Icon/></a>
+        <div className="about-actions" data-about-reveal>
+         <a className="text-link resume-link" href={profile.resume} target="_blank" rel="noopener noreferrer" aria-label="View resume (PDF, opens in a new tab)">View resume <Icon/></a>
+         <nav className="social-links about-social-links" aria-label="Contact and professional profiles"><SocialLink network="linkedin"/><SocialLink network="behance"/><SocialLink network="email"/></nav>
+        </div>
        </div>
       </div>
      </div>
@@ -305,7 +347,7 @@ function App(){
      </div>
      <div className="contact-camera-stage" aria-hidden="true"/>
      <div className="contact-bottom">
-      <div className="social-links">{Object.entries(profile.links).map(([label,url])=><a key={label} href={url} target="_blank" rel="noreferrer">{label==='linkedin'?'LinkedIn':label==='behance'?'Behance':'Instagram'} <span>↗</span></a>)}</div>
+      <div className="social-links">{Object.keys(profile.links).map(network=><SocialLink key={network} network={network}/>)}</div>
       <a className="text-link" href="#camera" onClick={e=>{e.preventDefault();jump('camera');}}>Back to the camera <span>↑</span></a>
      </div>
     </div>
@@ -315,7 +357,7 @@ function App(){
   <footer className="pagefoot" data-od-id="footer"><div className="container row-between"><span>© {new Date().getFullYear()} AJINKYA KHANAPURKAR</span><span className="meta">MADE WITH INTENTION. SEEN THROUGH A DIFFERENT LENS.</span><a href="#camera" onClick={e=>{e.preventDefault();jump('camera');}}>BACK TO TOP ↑</a></div></footer>
   <nav className="chapter-rail" aria-label="Portfolio chapters">{chapters.map(([id,label],i)=><a href={`#${id}`} key={id} data-chapter={i} data-active={i===0} aria-label={`${pad(i+1)} ${label}`} onClick={e=>{e.preventDefault();jump(id);}}><span className="chapter-dot"/><span className="chapter-tooltip">{label}</span></a>)}</nav>
   <div className="chapter-status meta" id="current-chapter" aria-hidden="true">01 / The camera</div>
-  <dialog className="work-index" ref={allDialog} onCancel={()=>{previousFocus.current?.focus();}} onClick={e=>{if(e.target===allDialog.current)closeIndex();}} aria-label="Complete project index"><div className="index-content"><div className="row-between"><div><p className="eyebrow chapter-label">THE CONTACT SHEET</p><h2>All <em>work.</em></h2></div><button className="close-index" aria-label="Close project index" onClick={closeIndex}><Icon kind="close"/></button></div><div className="index-filters" aria-label="Filter projects">{['All work','Design','Film & photography'].map(f=><button key={f} className={filter===f?'active':''} aria-pressed={filter===f} onClick={()=>setFilter(f)}>{f}</button>)}</div><div className="index-list">{filtered.map(p=><article className="index-project" key={p.id}><Picture name={p.image} alt={p.title} width="110" height="80" loading="lazy"/><div><span className="meta">{p.category||'Project archive'}</span><h3>{p.title}</h3><p>{p.description||p.note}</p></div>{p.url?<a href={p.url} target="_blank" rel="noreferrer" aria-label={`Open ${p.title}`}><Icon/></a>:<span className="missing-link">Link unavailable</span>}</article>)}</div><p className="index-foot meta">Original projects. Different perspectives.</p></div></dialog>
+  <dialog className="work-index" ref={allDialog} onClose={()=>{document.documentElement.classList.remove('portfolio-modal-open');previousFocus.current?.focus();}} onCancel={()=>{previousFocus.current?.focus();}} onClick={e=>{if(e.target===allDialog.current)closeIndex();}} aria-label="Complete project index"><div className="index-content"><div className="row-between"><div><p className="eyebrow chapter-label">THE CONTACT SHEET</p><h2>All <em>work.</em></h2></div><button className="close-index" aria-label="Close project index" onClick={closeIndex}><Icon kind="close"/></button></div><div className="index-filters" aria-label="Filter projects">{['All work','Design','Film & photography'].map(f=><button key={f} className={filter===f?'active':''} aria-pressed={filter===f} onClick={()=>setFilter(f)}>{f}</button>)}</div><div className="index-list">{filtered.map(p=><article className="index-project" key={p.id}><Picture name={p.image} alt={p.title} width="110" height="80" loading="lazy"/><div><span className="meta">{p.category||'Project archive'}</span><h3>{p.title}</h3><p>{p.description||p.note}</p></div>{p.url?<a href={p.url} target="_blank" rel="noreferrer" aria-label={`Open ${p.title}`}><Icon/></a>:<span className="missing-link">Link unavailable</span>}</article>)}</div><p className="index-foot meta">Original projects. Different perspectives.</p></div></dialog>
   <div className="sr-only" role="status" aria-live="polite">{copyStatus==='Copy email'?'':copyStatus}</div>
  </div>;
 }

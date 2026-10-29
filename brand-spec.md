@@ -72,3 +72,7 @@ The existing portfolio content is retained. Its presentation is replaced with th
 ## About closing statement — 24 October 2026
 - Remove the Design Capabilities block and the entire favourite-films side column.
 - Center “Chasing light. Collecting stories. Finding the extraordinary in the everyday.” and its eyebrow across the available content width. Retain the existing serif, colours and portrait reveal.
+
+
+## GSC reference-led case-study override — 28 October 2026
+Applies only to `gsc-case-study.html`: six supplied reference compositions, GSC source content and native device mockups. Specification: `reference/gsc/reference-redesign/brand-spec.md`; runtime owner: `app/src/gsc/presentation.css`. Portfolio and other case-study styles are unchanged.

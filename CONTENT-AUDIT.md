@@ -14,7 +14,7 @@ Sources: [Home](https://ajinkyakhanapurkar.framer.website/) and [About](https://
 - The email's visible text omits the `r` in Khanapurkar. The actual mailto is `ajinkyakhanapurkar19@gmail.com`; this is the value used.
 - Some responsive Junction / Intent Search images link to CineJournal and reuse the wrong descriptions. The unambiguous title-specific Behance URLs are used for Junction / Intent Search. CineJournal remains separate with a null category and description.
 - The research-paper entry links to the photography case study. Its destination is set to null instead of silently retaining the wrong link. It appears in the complete work index with a clearly unavailable link.
-- No resume URL or file was found on home or about. `profile.resume = null`; the interface honestly says `Resume · available on request` and links to the verified email, with an explicit resume-request subject.
+- Resume supplied by Ajinkya on 2026-10-29: `Ajinkya_Khanapurkar__Resume_2026-10-14.pdf`. Bundled as `assets/ajinkya-khanapurkar-resume-2026.pdf`; the About section's View resume link opens the PDF in a new tab.
 - No tool list was found. `profile.tools = []`; no unverified software expertise was added.
 - The source includes a Blog menu label but supplies no blog destination or posts; no invented blog page was added.
 - CineJournal's category and description need confirmation. Its original case-study link and image are preserved.
@@ -22,4 +22,4 @@ Sources: [Home](https://ajinkyakhanapurkar.framer.website/) and [About](https://
 - Project destination URLs are preserved from the source, not claimed to have authenticated access or availability. External platforms may restrict automated browsing.
 
 ## Editable data
-`app/src/content.js` is the single content source. Set `resume`, `tools`, the CineJournal description/category and research-paper URL when ready. No client claims, metrics, testimonials, employer history or experience were invented.
+`app/src/content.js` is the single content source. The resume is populated; set `tools`, the CineJournal description/category and research-paper URL when ready. No client claims, metrics, testimonials, employer history or experience were invented.

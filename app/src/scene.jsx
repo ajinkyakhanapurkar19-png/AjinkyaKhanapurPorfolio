@@ -6,6 +6,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 import { samplePose, resolvePose, contactFraming } from './camera-path.js';
 import FilmRoll from './film-roll.jsx';
+import {mobileCameraPose,DESKTOP_CAMERA_QUERY} from './mobile-camera.js';
 
 // The supplied GLB is centered, +Y up, with its lens pointing along +Z.
 // Normalize by its longest dimension so the existing journey uses scene units.
@@ -70,7 +71,7 @@ function CameraModel({journey,onReady}){
  },[model]);
  useFrame(()=>{
   const state=journey.current;
-  const reveal=state.reduced?(state.screenActive?1:0):THREE.MathUtils.smoothstep(state.heroProgress||0,.08,.75);
+  const reveal=state.mobile?(state.mobileFrame?.stage==='hero'&&!state.reduced?THREE.MathUtils.smoothstep(state.heroProgress||0,0,.35):1):state.reduced?(state.screenActive?1:0):THREE.MathUtils.smoothstep(state.heroProgress||0,.08,.75);
   model.screenEntry.value=state.reduced?0:THREE.MathUtils.smoothstep(state.screenProgress||0,.5,.96);
   model.reveal.value=reveal;
   model.lines.material.opacity=.62*(1-reveal);
@@ -80,8 +81,14 @@ function CameraModel({journey,onReady}){
 }
 function Rig({journey,onReady,onFailure}){
  const group=useRef(),pointerGroup=useRef(),shadow=useRef();
- const {camera,invalidate,gl,setFrameloop,size}=useThree();
+ const {camera,invalidate,gl,setFrameloop,setDpr,size}=useThree();
  const pointer=useRef({x:0,y:0,currentX:0,currentY:0});const target=useMemo(()=>new THREE.Vector3(),[]);
+ useEffect(()=>{
+  const media=matchMedia(DESKTOP_CAMERA_QUERY);
+  const update=()=>setDpr(Math.min(devicePixelRatio,media.matches?1.5:1.25));
+  update();media.addEventListener('change',update);
+  return()=>media.removeEventListener('change',update);
+ },[setDpr]);
  useEffect(()=>{
   journey.current.invalidate=invalidate;invalidate();
   const onMove=e=>{if(journey.current.reduced||journey.current.mobile||journey.current.rollActive||journey.current.visible===false||journey.current.contactBlend>0)return;pointer.current.x=(e.clientX/innerWidth-.5)*.045;pointer.current.y=(e.clientY/innerHeight-.5)*.028;invalidate();};
@@ -99,6 +106,17 @@ function Rig({journey,onReady,onFailure}){
   if(camera.view?.enabled)camera.clearViewOffset();
   if(state.rollActive){
    camera.position.set(0,0,10);camera.lookAt(0,0,0);shadow.current.visible=false;
+   return;
+  }
+  const mobileFrame=state.mobileFrame;
+  if(state.mobile){
+   shadow.current.visible=false;
+   if(!mobileFrame){group.current.visible=false;return;}
+   const pose=mobileCameraPose(mobileFrame.stage,mobileFrame.progress,mobileFrame.rect,size.width,size.height,state.reduced);
+   camera.position.fromArray(pose.eye);camera.lookAt(target.fromArray(pose.target));
+   camera.setViewOffset(size.width,size.height,pose.offsetX,pose.offsetY,size.width,size.height);
+   group.current.position.fromArray(pose.position);group.current.rotation.set(...pose.rotation);group.current.scale.setScalar(pose.scale);
+   pointerGroup.current.rotation.set(0,0,0);
    return;
   }
   const frame=state.contactFrame?contactFraming(state.contactFrame,size.width,size.height):null;

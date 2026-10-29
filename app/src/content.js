@@ -5,7 +5,7 @@ export const profile = {
  biography:"I'm a UI/UX designer passionate about creating meaningful digital experiences. With a keen eye for detail and a deep understanding of user behavior, I transform complex problems into elegant, intuitive solutions.",
  approach:'My approach combines strategic thinking with creative execution, ensuring that every design not only looks beautiful but also serves its purpose effectively.',
  email:'ajinkyakhanapurkar19@gmail.com',
- resume:null, tools:[],
+ resume:new URL('../../assets/ajinkya-khanapurkar-resume-2026.pdf',import.meta.url).href, tools:[],
  links:{linkedin:'https://www.linkedin.com/in/ajinkya-khanapurkar-179a1326b/',behance:'https://www.behance.net/ajinkyakhanapu1',instagram:'https://www.instagram.com/ajinkya_khanapurkar/'}
 };
 export const capabilities = [

@@ -1,0 +1,56 @@
+{
+  "AS_HERO_RENDER": {
+    "src": "./assets/artist-studio/exhibition/as_hero_render.webp",
+    "width": 2000,
+    "height": 1432
+  },
+  "AS_GALLERY_ENTRANCE_CAPTURE": {
+    "src": "./assets/artist-studio/exhibition/as_gallery_entrance_capture.webp",
+    "width": 2000,
+    "height": 1427
+  },
+  "AS_ARTIST_PROFILE_CAPTURE": {
+    "src": "./assets/artist-studio/exhibition/as_artist_profile_capture.webp",
+    "width": 2000,
+    "height": 1097
+  },
+  "AS_COLLECTION_CAPTURE": {
+    "src": "./assets/artist-studio/exhibition/as_collection_capture.webp",
+    "width": 2000,
+    "height": 1259
+  },
+  "AS_CONCEPT_BOARD": {
+    "src": "./assets/artist-studio/exhibition/as_concept_board.webp",
+    "width": 2000,
+    "height": 1264
+  },
+  "AS_ARTWORK_COMPOSITION": {
+    "src": "./assets/artist-studio/exhibition/as_artwork_composition.webp",
+    "width": 2000,
+    "height": 1432
+  },
+  "AS_PAINTING_SEPIA": {
+    "src": "./assets/artist-studio/exhibition/as_painting_sepia.webp",
+    "width": 1400,
+    "height": 1050,
+    "label": "Sepia Village",
+    "category": "Black Japan",
+    "caption": "Sepia Village \u00b7 Black Japan. Artwork by Pankaj Saroj. Title and category retained from the gallery source."
+  },
+  "AS_PAINTING_MONO": {
+    "src": "./assets/artist-studio/exhibition/as_painting_mono.webp",
+    "width": 1400,
+    "height": 980,
+    "label": "Monochrome Landscape",
+    "category": "B&W Miniature Paintings",
+    "caption": "Monochrome Landscape \u00b7 B&W Miniature Paintings. Artwork by Pankaj Saroj. Title and category retained from the gallery source."
+  },
+  "AS_PAINTING_BLUE": {
+    "src": "./assets/artist-studio/exhibition/as_painting_blue.webp",
+    "width": 1400,
+    "height": 1153,
+    "label": "Blue Tree Landscape",
+    "category": "Watercolour Wash Paintings",
+    "caption": "Blue Tree Landscape \u00b7 Watercolour Wash Paintings. Artwork by Pankaj Saroj. Title and category retained from the gallery source."
+  }
+}

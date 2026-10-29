@@ -1,0 +1,74 @@
+/* Figma 4688:472 — original desktop visual system, isolated from the 35mm site. */
+@font-face{font-family:'Instrument Sans';src:url('../../assets/fonts/instrument-sans-400.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Instrument Sans';src:url('../../assets/fonts/instrument-sans-500.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:'Instrument Sans';src:url('../../assets/fonts/instrument-sans-600.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:'Playwrite US Trad';src:url('../../assets/fonts/playwrite-us-trad.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+:root{color-scheme:light;--bg:#fff;--surface:#f2f4f6;--fg:#1c1c1a;--muted:rgba(28,28,26,.66);--border:rgba(28,28,26,.14);--accent:#2d66f6;font-family:'Instrument Sans',sans-serif;scroll-behavior:smooth}
+*{box-sizing:border-box;border-width:0;border-style:solid;border-color:currentColor}
+body{margin:0;background:linear-gradient(to bottom,#b8ccdb 0,#c9d7e0 240.2px,#dce5eb 480.4px,#eff3f6 720.6px,#fff 960.9px);color:var(--fg)}
+.shotgun-page{max-width:1440px;margin:auto;padding-top:28px;padding-bottom:72px;font-size:16px;line-height:normal;overflow:clip}
+.shotgun-page :is(p,h1,h2,h3,figure,blockquote){margin:0}
+.shotgun-page :is(button,a){font:inherit;color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.shotgun-page button{cursor:pointer;background:none;text-align:inherit;padding:0}
+.shotgun-page img{display:block;max-width:100%;height:auto}
+.shotgun-page [role=button],.shotgun-page [role=link]{cursor:pointer}
+.shotgun-page :focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+.sg-skip{position:fixed;top:-100px;left:20px;z-index:100;background:#fff;padding:12px!important}.sg-skip:focus{top:10px}
+.sg-nav{height:52px;margin:0 56px;border:1px solid rgba(255,255,255,.65);border-radius:26px}
+.sg-shell{display:grid;grid-template-columns:248px minmax(0,1024px);gap:56px;margin:48px 56px 0}
+.sg-index{align-self:start;position:sticky;top:100px;padding-top:100px;max-height:calc(100svh - 120px)}
+.sg-index nav{display:flex;flex-direction:column;gap:12px;max-height:calc(100svh - 230px);overflow:auto}
+.sg-index a{font-size:14px;line-height:17px;opacity:.6;white-space:nowrap;width:max-content}
+.sg-index a[aria-current]{opacity:1;font-weight:600}.sg-index a:hover{opacity:1}
+.sg-index-toggle{display:none}
+.sg-content{min-width:0;width:100%}
+.sg-overview,.sg-chapter{scroll-margin-top:40px}
+.sg-back{display:flex;align-items:center;gap:6px;width:max-content;height:29px;padding:5px 10px!important;border-radius:18px;background:rgba(28,28,26,.06);font-size:14px!important;font-weight:500!important}.sg-back span{font-size:25px;line-height:14px}
+.sg-project-name{height:22px;margin-top:40px}
+.sg-project-title{width:553px;height:168px;margin-top:12px}.sg-project-title h1>span{display:block}
+.sg-summary{width:720px;height:64px;margin-top:24px}
+.sg-meta{width:647px;height:41px;margin-top:28px}
+.sg-overview-visual{height:440px;width:1024px;margin-top:48px}
+.shotgun-page .sg-caption{margin-top:14px;font-size:14px;line-height:17px;opacity:.66}
+.sg-reading{display:flex;align-items:center;gap:36px;height:40px;margin-top:48px}
+.sg-reading button{display:flex;align-items:center;gap:12px;white-space:nowrap}
+.sg-reading-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:20px;background:#f2f4f6}
+.sg-reading strong{font-size:17px;letter-spacing:-.068px;font-weight:500;display:block;opacity:.5}
+.sg-reading small{display:block;font-size:13px;opacity:.45;margin-top:2px}
+.sg-reading [aria-pressed=true] strong{opacity:1}.sg-reading [aria-pressed=true] small{opacity:.66}.sg-reading [aria-pressed=true] .sg-reading-icon{background:#2d66f6}.sg-reading [aria-pressed=false] .sg-book img{filter:brightness(.4)}
+.sg-chapter{margin-top:104px;min-height:var(--source-height);width:1024px}.sg-chapter>div{height:auto!important}
+.sg-next-project{display:block;width:1024px;height:198px;margin:104px 0}
+.sg-footer{width:calc(100% - 112px);min-height:317px;margin:0 56px}
+/* Source SVG intrinsic dimensions are retained; bitmap layers fill their slots. */
+.shotgun-page img[src$='.svg']{max-width:none;height:auto}
+.shotgun-page [data-name^='Step ·']:focus-visible{outline-offset:-2px}
+/* At smaller widths preserve readable copy; wide visual compositions scroll locally. */
+@media(max-width:1250px){
+ .sg-shell{grid-template-columns:160px minmax(0,1fr);gap:40px;margin-inline:32px}.sg-nav{margin-inline:32px}
+ .sg-content{container-type:inline-size}.sg-chapter{width:100%;min-height:0}.sg-chapter>div{width:100%}
+ .sg-overview-visual,.sg-next-project{width:100%}.sg-overview-visual{overflow:auto;height:440px;border-radius:32px}.sg-overview-visual>div{min-width:1024px}
+ .sg-chapter>div>div:not([data-name^='Header']){max-width:100%;overflow-x:auto;overflow-y:clip}
+ .sg-chapter>div>p{max-width:100%}.sg-chapter [data-name^='Header']{max-width:100%;height:auto;min-height:164px}.sg-chapter [data-name^='Header']>h2{max-width:100%;position:relative;top:auto;margin-top:66px}
+ .sg-summary,.sg-meta{max-width:100%;height:auto;min-height:41px}.sg-project-title{max-width:100%}
+ .sg-footer{width:calc(100% - 64px);margin-inline:32px;overflow:hidden}.sg-footer>div>div{max-width:100%}
+}
+@media(max-width:960px){
+ .shotgun-page{padding-top:20px}.sg-shell{display:block;margin-top:32px}.sg-index{position:relative;top:auto;padding:0;margin-bottom:28px;max-height:none}
+ .sg-index-toggle{display:flex;width:100%;justify-content:space-between;padding-block:12px!important;border-bottom:1px solid var(--border)!important;font-size:14px!important}
+ .sg-index nav{display:none}.sg-index.is-open nav{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;max-height:60svh;padding-top:12px}.sg-index a{padding:12px 0;min-height:44px}
+ .sg-project-title{height:auto;min-height:168px}.sg-summary{width:720px;max-width:100%;height:auto;min-height:64px}
+ .sg-chapter{margin-top:80px}.sg-next-project{margin-block:80px}.sg-footer{min-height:0}
+}
+@media(max-width:600px){
+ .sg-nav{margin-inline:16px}.sg-nav [data-name='Link · Home'],.sg-nav [data-name='Link · About'],.sg-nav [data-name='Link · Résumé'],.sg-nav [data-name='gap']{display:none}
+ .sg-nav [data-name='Brand'] p{font-size:14px}.sg-nav [data-name='Link · Projects']{padding-inline:10px}.sg-nav [data-name='Let’s connect']{padding-inline:12px}
+ .sg-shell{margin-inline:24px}.sg-project-title{width:100%;min-height:0}.sg-project-title h1{font-size:clamp(48px,11.5vw,69px);letter-spacing:-.04em}.sg-summary>p{font-size:19px;white-space:normal}
+ .sg-project-name{margin-top:32px}.sg-meta{width:100%;height:auto}.sg-meta>div{flex-wrap:wrap;gap:24px 32px;width:100%;height:auto}.sg-meta>div>div{min-width:calc(50% - 32px)}
+ .sg-overview-visual{margin-top:36px}.sg-reading{gap:20px}.sg-reading button{gap:8px}.sg-reading strong{font-size:15px}.sg-reading small{font-size:10px}.sg-reading-icon{width:36px;height:36px}
+ .sg-chapter{margin-top:72px}.sg-chapter [data-name^='Header']{min-height:0}.sg-chapter [data-name^='Header']>h2{font-size:32px;line-height:1.12;letter-spacing:-.8px;width:100%;white-space:normal}
+ .sg-chapter [data-name^='Header']>h2 span{line-height:1.12}.sg-chapter>div>p{font-size:17px;white-space:normal}
+ .sg-next-project{height:auto;min-height:170px}.sg-next-project>div{padding:24px;gap:16px}.sg-next-project [data-name='Copy']{flex:1;white-space:normal}.sg-next-project [data-name='Copy']>p{white-space:normal;font-size:25px}.sg-next-project [data-name='Copy']>p:first-child{font-size:14px}.sg-next-project [data-name='Cover']{width:100px;height:100px}
+ .sg-footer{margin-inline:24px;width:calc(100% - 48px)}.sg-footer>div{gap:28px}.sg-footer>div>div{flex-wrap:wrap;gap:24px}.sg-footer [data-name='Section separator']{flex-wrap:nowrap}.sg-footer [data-name='Links']{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}.shotgun-page *{animation-play-state:paused!important}}
+@media print{.sg-nav,.sg-index,.sg-reading{display:none}.sg-shell{display:block;margin:0}.sg-chapter{break-inside:avoid}.shotgun-page{padding:0}.sg-content{width:1024px}}

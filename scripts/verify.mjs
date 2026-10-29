@@ -9,7 +9,7 @@ const html=await readFile('index.html','utf8');
 assert.equal(new Set(projects.map(p=>p.id)).size,projects.length,'Project IDs must be unique');
 for(const p of projects){assert.ok(p.title);await access(`assets/${p.image}`);if(p.url)assert.match(p.url,/^https:\/\//);}
 assert.equal(projects.length,8);
-assert.equal(profile.resume,null);
+assert.equal((await readFile(new URL(profile.resume))).subarray(0,5).toString(),'%PDF-','Resume must resolve to the supplied PDF');
 assert.equal(profile.email,'ajinkyakhanapurkar19@gmail.com');
 assert.match(source,/navigator.clipboard.writeText/);
 assert.match(source,/showModal\(\)/);

@@ -51,6 +51,8 @@ export function createProjectReveal(root, {staticLayout = false} = {}) {
     const pose = state.cards[i];
     card.style.transform = `translate3d(${pose.x.toFixed(2)}px,${pose.y.toFixed(2)}px,0)`;
     card.style.opacity = pose.opacity;
+    // Hidden stack layers must not intercept clicks or keyboard navigation.
+    card.inert = pose.opacity < .95;
    });
    labels.forEach(label => {label.style.opacity=state.labels;label.style.transform=`translateY(${(1-state.labels)*8}px)`;});
    lines.forEach(line => {line.style.transform=`scaleY(${state.labels})`;});
@@ -63,6 +65,7 @@ export function createProjectReveal(root, {staticLayout = false} = {}) {
  measure();
  return {measure,paint,dispose(){
   delete section.dataset.animated;
+  cards.forEach(card => {card.inert = false;});
   [...cards,...labels,...lines].forEach(el=>{el.style.removeProperty('transform');el.style.removeProperty('opacity');});
  }};
 }

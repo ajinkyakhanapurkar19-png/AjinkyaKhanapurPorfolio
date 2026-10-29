@@ -46,7 +46,7 @@ export function createAboutReveal(root, {reduced = false, sticky = true} = {}) {
    element.style.opacity = reveal;
    element.style.transform = `translate3d(0,${(1 - reveal) * 12}px,0)`;
    // Keep screen-reader content intact; hidden interactive items cannot be tabbed to.
-   if (element.matches('a,button')) element.inert = reveal < .95;
+   if (element.matches('a,button') || element.querySelector('a,button')) element.inert = reveal < .95;
   });
  }
 

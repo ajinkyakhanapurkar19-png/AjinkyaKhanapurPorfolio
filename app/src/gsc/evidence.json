@@ -1,0 +1,66 @@
+{
+  "GSC_HOMEPAGE_DESKTOP": {
+    "src": "./assets/gsc/source-views/homepage.html",
+    "kind": "document",
+    "viewportWidth": 1440,
+    "viewportHeight": 900,
+    "label": "Growth Supercharge \u00b7 desktop homepage",
+    "caption": "Original homepage markup and styles, held in a static presentation state. The dashboard uses a frame from the original hero video. Illustrative interface numbers are not measured project outcomes."
+  },
+  "GSC_SITEMAP": {
+    "src": "./assets/gsc/source-views/implemented-structure.html",
+    "kind": "document",
+    "viewportWidth": 1440,
+    "viewportHeight": 1000,
+    "label": "The implemented consultancy structure",
+    "caption": "Compiled from the actual navigation and page files for this case study. This is an implementation map, not an original planning-stage sitemap."
+  },
+  "GSC_SERVICE_SECTIONS": {
+    "src": "./assets/gsc/source-views/service-overview.html",
+    "kind": "document",
+    "viewportWidth": 1440,
+    "viewportHeight": 1450,
+    "label": "Service introduction and Growth Strategy",
+    "caption": "Original services page markup, styling and artwork. Scroll-driven motion is frozen for inspection."
+  },
+  "GSC_NAVIGATION_DETAIL": {
+    "src": "./assets/gsc/source-views/navigation.html",
+    "kind": "document",
+    "viewportWidth": 1440,
+    "viewportHeight": 800,
+    "label": "The consultancy navigation",
+    "caption": "Home, Services, About Us and Contact, alongside links to the landing chooser and Office OS branch."
+  },
+  "GSC_SERVICE_CARD_DETAIL": {
+    "src": "./assets/gsc/source-views/service-detail.html",
+    "kind": "document",
+    "viewportWidth": 1200,
+    "viewportHeight": 760,
+    "label": "Product Analytics \u00b7 service detail",
+    "caption": "An actual service card, including the original deliverables and illustration."
+  },
+  "GSC_FINAL_WEBSITE": {
+    "src": "./assets/gsc/source-views/homepage-sections.html",
+    "kind": "document",
+    "viewportWidth": 1440,
+    "viewportHeight": 2300,
+    "label": "Homepage \u00b7 hero and service overview",
+    "caption": "Selected sections from the implemented homepage. The source markup and styling are preserved; this is an HTML design preview rather than a captured screenshot."
+  },
+  "GSC_SERVICE_PAGE": {
+    "src": "./assets/gsc/source-views/service-page.html",
+    "kind": "document",
+    "viewportWidth": 1440,
+    "viewportHeight": 1450,
+    "label": "The eight-service page",
+    "caption": "The actual service-page content. Open the enlarged view to scroll through all eight disciplines."
+  },
+  "GSC_MOBILE_SCREENS": {
+    "src": "./assets/gsc/source-views/service-overview.html",
+    "kind": "document",
+    "viewportWidth": 390,
+    "viewportHeight": 844,
+    "label": "Services \u00b7 mobile layout",
+    "caption": "The original service page rendered at its mobile breakpoint, with its existing responsive rules."
+  }
+}
