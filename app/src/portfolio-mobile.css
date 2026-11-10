@@ -13,7 +13,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .hero-wordmark{min-height:44px;display:flex;align-items:center}
  .hero-wordmark span,.hero-record{display:none}
  .camera-hero{display:flex;flex-direction:column;min-height:100svh;height:auto;padding:calc(88px + env(safe-area-inset-top)) var(--gutter) 28px;gap:22px}
- .camera-hero .hero-copy{position:relative;inset:auto;width:100%;height:auto;padding:0;margin:0;flex:none}
+ .scene-layer{transition:opacity 220ms var(--ease-out)}
+ .camera-hero .hero-copy{position:relative;z-index:2;inset:auto;width:100%;height:auto;padding:0;margin:0;flex:none}
  .camera-hero h1.hero-name{font-size:clamp(88px,25vw,180px);line-height:.96;letter-spacing:.004em;white-space:normal}
  .hero-name span{display:block}
  .hero-name span:first-child{font-size:1.35em}
@@ -27,7 +28,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .hero-viewfinder{inset:10px;opacity:.6}
  .hero-side-note,.chapter-rail,.chapter-status{display:none}
  .hero-model-status{top:40%;font-size:12px}
- .focus-section{min-height:0;display:block;padding:64px 0 48px;z-index:2;background:var(--bg)}
+ /* Transparent so the pinned camera travels behind the copy, as on desktop. */
+ .focus-section{min-height:0;display:block;padding:64px 0 48px;z-index:2;background:transparent}
  .focus-grid{display:block}
  .focus-visual{display:none}
  .focus-copy{width:100%;max-width:42rem;margin:auto}
@@ -39,7 +41,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .screen-entry{height:175svh;min-height:0}
  .screen-camera-slot{display:flex;position:sticky;top:0;height:100svh;align-items:flex-end;justify-content:center;padding:0 var(--gutter) calc(24px + env(safe-area-inset-bottom))}
  .screen-camera-slot>span{font:10px/1.5 var(--font-mono);letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;width:100%;z-index:2}
- .roll-section{margin-top:0;height:auto}
+ /* Overlap the final sticky viewport: copy arrives as the LCD zoom lands. */
+ .roll-section{margin-top:-100svh;height:auto}
  .roll-stage{position:relative;top:auto;height:auto;min-height:0}
  .roll-layout{grid-template-columns:minmax(0,1fr);height:auto;padding:48px var(--gutter) 32px;gap:32px}
  .roll-intro h2{font-size:clamp(38px,7vw,64px);margin-bottom:24px}
@@ -65,7 +68,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .project-caption-line{display:none}
  .project-caption-index{font-size:11px;line-height:1.5;margin:4px 0 0}
  .project-caption h3{font-size:21px;line-height:1.25;max-width:none;margin:0;text-wrap:pretty}
- .project-film-edge{font-size:9px;line-height:1.4;inset:auto 0 0;padding:10px 14px;letter-spacing:.04em}
+ .project-film-edge{font-size:13px;line-height:1.4;inset:auto 0 0;padding:10px 14px;letter-spacing:0}
  .project-brand-cover{padding:8%;inset:0 0 34px}
  .project-gsc-logo{flex-direction:row;gap:8%}
  .project-gsc-symbol{width:34%;flex:none}
@@ -86,8 +89,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .about-columns .lead,.about-columns .about-approach{font-size:16px;line-height:1.75}
  .about-actions{display:block}
  .about-copy .resume-link{font-size:14px;min-height:48px}
- .about-social-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
- .about-social-links .social-link{min-height:48px;font-size:13px;padding:10px 14px}
+ /* One row of three equal tabs on phones. */
+ .about-social-links{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:8px;margin-top:18px}
+ .about-social-links .social-link{flex:1 1 0;min-width:0;justify-content:center;gap:7px;min-height:48px;font-size:12px;padding:10px 6px}
+ .about-social-links .social-link>span[aria-hidden]{display:none}
  .off-screen-title{font-size:clamp(28px,5.5vw,44px);line-height:1.2}
  .contact-section{padding:48px 0 24px;min-height:0}
  .contact-copy{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
@@ -137,6 +142,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 }
 @media(max-width:999px) and (prefers-reduced-motion:reduce), (max-width:1199px) and (pointer:coarse) and (prefers-reduced-motion:reduce), (max-width:1199px) and (pointer:none) and (prefers-reduced-motion:reduce){
  .screen-entry{display:none}
+ .roll-section{margin-top:0}
  .roll-stage{min-height:0}
  .roll-layout{min-height:0}
  .roll-visual{min-height:0}

@@ -1,5 +1,7 @@
 /* Camera-led composition extending the bundled layout seed. */
-:root { --container: 1600px; --gutter: clamp(24px, 4.6vw, 88px); --fs-h1: clamp(60px, 7.6vw, 120px); --fs-h2: clamp(44px, 5.2vw, 84px); --radius: 2px; --radius-lg: 2px; }
+:root { --container: 1600px; --gutter: clamp(24px, 4.6vw, 88px); --fs-h1: clamp(60px, 7.6vw, 120px); --fs-h2: clamp(44px, 5.2vw, 84px); --radius: 2px; --radius-lg: 2px;
+ /* Simple sans for labels, nav and metadata (replaces the code-style mono). */
+ --font-mono: var(--font-body); }
 html { -webkit-tap-highlight-color: transparent; scroll-padding-top: 80px; }
 body { overflow-x: clip; }
 button,a { touch-action: manipulation; }
@@ -142,7 +144,7 @@ em { font-weight:400; }
 .social-links .social-link:focus-visible { color:var(--accent); }
 .social-links .social-link:active { opacity:.7; }
 .social-logo { flex:none;width:18px;height:18px; }
-.about-social-links { flex-wrap:wrap;gap:12px;margin-top:16px; }
+.about-social-links { flex-wrap:nowrap;justify-content:flex-start;gap:12px;margin-top:16px; }
 .about-social-links .social-link { gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);font:12px/1.5 var(--font-body); }
 @media (hover: hover) and (pointer: fine) {
 .about-social-links .social-link:hover { border-color:var(--accent); } }
@@ -545,7 +547,7 @@ html { scrollbar-color:var(--border) var(--bg); scrollbar-width:auto; }
 .project-gsc-wordmark img { width:100%;height:auto; }
 .project-gsc-wordmark .project-gsc-growth { width:79.37%; }
 .project-cover-artist img { height:100%;object-fit:cover;object-position:30% 50%; }
-.project-film-edge { position:absolute;inset:auto 0 0;display:flex;justify-content:space-between;padding:12px 10px;background:rgba(12,14,12,.88);font:8px/1 var(--font-mono);letter-spacing:.1em;color:var(--fg); }
+.project-film-edge { position:absolute;inset:auto 0 0;display:flex;justify-content:space-between;padding:12px 10px;background:rgba(12,14,12,.88);font:500 10px/1 var(--font-body);letter-spacing:0;color:var(--fg); }
 .project-development { height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px 20px 48px;text-align:center; }
 .project-development>span:first-child { font:500 clamp(24px,3vw,44px)/1.05 'Helvetica Neue',Helvetica,sans-serif;letter-spacing:-.05em; }
 .project-development small { margin-top:8px;font:12px/1.5 var(--font-body);color:var(--muted); }

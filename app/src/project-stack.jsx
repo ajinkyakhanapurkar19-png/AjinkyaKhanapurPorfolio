@@ -46,7 +46,7 @@ export default function ProjectStack({onReveal, onContinue}) {
      <div className={`project-film-plane project-cover-${project.id}`}>
       {project.brand ? <BrandCover brand={project.id}/> : project.image ? <div className="project-cover-window"><img src={project.image} alt={project.alt} width={project.width} height={project.height} loading="lazy" decoding="async"/></div>
        : <div className="project-development"><span>Office OS</span><small>Website</small><span className="project-development-status">{project.status}</span></div>}
-      <span className="project-film-edge" aria-hidden="true">{project.href ? 'VIEW CASE STUDY ↗' : 'IN DEVELOPMENT'} <span>{String(i+1).padStart(2,'0')}</span></span>
+      <span className="project-film-edge" aria-hidden="true">{project.href ? 'View case study ↗' : 'In development'} <span>{String(i+1).padStart(2,'0')}</span></span>
      </div>
      <figcaption className="project-caption">
       <span className="project-caption-line" aria-hidden="true"/>

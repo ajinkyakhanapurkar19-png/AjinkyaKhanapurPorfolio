@@ -39,18 +39,41 @@ export function mobileCameraPose(stage, progress, rect, width, height, reduced =
  return {...pose,...frame};
 }
 
-// Select only a visible slot. Hero and contact move with the document; entry
-// owns one short sticky stage. The reading chapters never have a model behind them.
+// Select only a visible slot. The hero slot travels with the page until it
+// reaches the middle of the viewport, then stays pinned (as on desktop) and
+// widens into the full viewport while the Focus copy scrolls over it. The
+// entry stage continues from that exact frame and owns one sticky stage.
 export function mobileCameraStage(scroll, height, {hero, entry, contact}, reduced = false) {
  const visible = rect => rect.y < height && rect.y + rect.height > 0;
  const inDocument = rect => ({...rect,y:rect.y-scroll});
- const entryRect = {...entry,y:Math.max(entry.y-scroll,Math.min(0,entry.end-scroll-height)),height};
- if(!reduced && scroll >= entry.y-height && scroll < entry.end) {
+ const viewport = {x:0,y:0,width:entry.width,height};
+ if(!reduced && scroll >= entry.y && scroll < entry.end) {
+  const entryRect = {...viewport,y:Math.min(0,entry.end-scroll-height)};
   return {stage:'entry',rect:entryRect,progress:clamp((scroll-entry.y)/Math.max(1,entry.end-entry.y-height))};
  }
  const contactRect = inDocument(contact);
  if(visible(contactRect)) return {stage:'contact',rect:contactRect,progress:1};
  const heroRect = inDocument(hero);
- if(visible(heroRect)) return {stage:'hero',rect:heroRect,progress:clamp(scroll/Math.max(1,hero.height))};
+ const heroProgress = clamp(scroll/Math.max(1,hero.height));
+ if(!reduced && scroll < entry.y) {
+  const restY = (height-hero.height)/2;
+  const pinStart = hero.y-restY;
+  if(scroll <= pinStart) return {stage:'hero',rect:heroRect,progress:heroProgress};
+  const t = smooth((scroll-pinStart)/Math.max(1,entry.y-pinStart));
+  const pinned = {x:hero.x,y:restY,width:hero.width,height:hero.height};
+  const rect = {
+   x:mix(pinned.x,viewport.x,t),y:mix(pinned.y,viewport.y,t),
+   width:mix(pinned.width,viewport.width,t),height:mix(pinned.height,viewport.height,t)
+  };
+  return {stage:'hero',rect,progress:heroProgress};
+ }
+ if(visible(heroRect)) return {stage:'hero',rect:heroRect,progress:heroProgress};
  return null;
+}
+
+// Portion of the slot actually occupied by the camera body (width-limited on
+// phones). Used to dim the model while copy passes in front of it.
+export function cameraFootprint(rect) {
+ const w = rect.width*.93, h = Math.min(rect.height*.9, rect.width*.48);
+ return {x:rect.x+(rect.width-w)/2,y:rect.y+(rect.height-h)/2,width:w,height:h};
 }

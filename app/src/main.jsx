@@ -9,7 +9,7 @@ import ProjectStack, { selectedWork } from './project-stack.jsx';
 import { createProjectReveal } from './project-stack-motion.js';
 import { createAboutReveal } from './about-reveal.js';
 import { rollArrival } from './roll-arrival.js';
-import { mobileCameraStage, DESKTOP_CAMERA_QUERY } from './mobile-camera.js';
+import { mobileCameraStage, cameraFootprint, DESKTOP_CAMERA_QUERY } from './mobile-camera.js';
 import './seed.css';
 import './portfolio.css';
 import './portfolio-mobile.css';
@@ -122,6 +122,7 @@ function App(){
    const projectReveal=createProjectReveal(root.current,{staticLayout:reduce||short||!desktop});
    const aboutReveal=createAboutReveal(root.current,{reduced:reduce||!desktop,sticky:desktop&&!short});
    const sceneLayer=root.current.querySelector('.scene-layer');
+   const screenLabel=root.current.querySelector('.screen-camera-slot>span');
    const documentRect=element=>{const r=element.getBoundingClientRect();return {x:r.left,y:r.top+scrollY,width:r.width,height:r.height};};
    const top=id=>document.getElementById(id).getBoundingClientRect().top+window.scrollY;
    const measure=()=>{
@@ -137,7 +138,9 @@ function App(){
     layout.film={x:rect.left,y:rect.top-stageRect.top,width:rect.width,height:rect.height};
     layout.stageHeight=rollStage.offsetHeight;
     layout.rollDistance=Math.max(h*.5,layout.projects-layout.work-layout.stageHeight);
-    layout.rollStart=!desktop?layout.work-h*.8:reduce?layout.work-h*.65:Math.min(layout.entry,layout.work);
+    // Phones: the roll overlaps the last sticky viewport of the screen entry,
+    // so its copy arrives the moment the LCD zoom completes (no blank frame).
+    layout.rollStart=!desktop?(reduce?layout.work-h*.8:layout.work):reduce?layout.work-h*.65:Math.min(layout.entry,layout.work);
     const staticRoll=reduce||root.current.dataset.scene==='fallback';
     modelState.current.rollArrivalEnd=rollArrival(layout.rollStart,layout.rollStart,h,!desktop,staticRoll).end;
     const projectSection=document.getElementById('projects');
@@ -154,9 +157,11 @@ function App(){
     layout.viewportHeight=h;
     if(!desktop)layout.mobileSlots={
      hero:documentRect(root.current.querySelector('.hero-camera-slot')),
-     entry:{x:0,y:layout.screen,width:sceneLayer.clientWidth,end:layout.work},
+     entry:{x:0,y:layout.screen,width:sceneLayer.clientWidth,end:layout.screen+screen.offsetHeight},
      contact:layout.contactFrame
     };
+    // Copy the travelling camera passes behind; it dims while overlapped.
+    if(!desktop)layout.mobileCopy=[...root.current.querySelectorAll('.camera-hero .hero-copy,.hero-intro,.hero-focus-scale,.focus-copy')].map(documentRect);
     const stops=[
      ['opening',0],['front',Math.max(h*.3,layout.focus-h*.5)],
      ['closeup',layout.turn],['rear',layout.turn+h*.5],['screen',layout.turn+h*.65],
@@ -187,7 +192,7 @@ function App(){
     modelState.current.rollProgress=reduce?0:gsap.utils.clamp(0,1,(s-layout.work)/layout.rollDistance);
     modelState.current.rollReveal=arrival.opacity;
     modelState.current.filmRect={...layout.film,y:layout.film.y+stageY+arrival.y};
-    gsap.set(rollStage,{opacity:arrival.opacity,y:arrival.y});
+    gsap.set(rollStage,desktop?{opacity:arrival.opacity,y:arrival.y}:{autoAlpha:arrival.opacity,y:arrival.y});
     projectReveal.paint((s-layout.projects)/layout.projectDistance);
     aboutReveal.paint((s-layout.aboutStart)/layout.aboutDistance);
     const contactProgress=gsap.utils.clamp(0,1,(s-layout.contactStart)/(layout.contactRest-layout.contactStart));
@@ -212,6 +217,21 @@ function App(){
      const r=mobileFrame.rect;
      sceneLayer.style.clipPath=`inset(${Math.max(0,r.y)}px ${Math.max(0,sceneLayer.clientWidth-r.x-r.width)}px ${Math.max(0,h-r.y-r.height)}px ${Math.max(0,r.x)}px)`;
     }else sceneLayer.style.clipPath='none';
+    if(!desktop){
+     // Fade the model back while any copy sits over its body.
+     let cover=0;
+     if(mobileFrame?.stage==='hero'&&!workActive){
+      const body=cameraFootprint(mobileFrame.rect);
+      for(const text of layout.mobileCopy||[]){
+       const y=text.y-scrollY;
+       const dx=Math.min(body.x+body.width,text.x+text.width)-Math.max(body.x,text.x);
+       const dy=Math.min(body.y+body.height,y+text.height)-Math.max(body.y,y);
+       if(dx>0&&dy>0)cover=Math.max(cover,Math.min(1,dy/(body.height*.35)));
+      }
+     }
+     sceneLayer.style.opacity=String(1-.78*cover);
+     if(screenLabel)screenLabel.style.opacity=String(mobileFrame?.stage==='entry'?1-gsap.utils.clamp(0,1,(mobileFrame.progress-.55)/.3):1);
+    }
     if(modelState.current.visible||wasVisible!==modelState.current.visible)modelState.current.invalidate();
    };
    measure();
@@ -229,7 +249,7 @@ function App(){
    }};
    window.addEventListener('resize',onResize);
    const refreshFrame=requestAnimationFrame(()=>ScrollTrigger.refresh());
-   return()=>{clearTimeout(resizeTimer);sceneLayer.style.removeProperty('clip-path');cancelAnimationFrame(refreshFrame);timeline.scrollTrigger?.kill();timeline.kill();projectReveal.dispose();aboutReveal.dispose();ScrollTrigger.removeEventListener('refresh',onRefresh);window.removeEventListener('resize',onResize);document.querySelectorAll('.portrait img').forEach(img=>img.removeEventListener('load',onRefresh));gsap.set('.hero-copy,.hero-details,.roll-stage',{clearProps:'opacity,transform'});};
+   return()=>{clearTimeout(resizeTimer);sceneLayer.style.removeProperty('clip-path');sceneLayer.style.removeProperty('opacity');screenLabel?.style.removeProperty('opacity');cancelAnimationFrame(refreshFrame);timeline.scrollTrigger?.kill();timeline.kill();projectReveal.dispose();aboutReveal.dispose();ScrollTrigger.removeEventListener('refresh',onRefresh);window.removeEventListener('resize',onResize);document.querySelectorAll('.portrait img').forEach(img=>img.removeEventListener('load',onRefresh));gsap.set('.hero-copy,.hero-details,.roll-stage',{clearProps:'opacity,transform'});};
   },root);
   return()=>mm.revert();
  },[]);
@@ -301,7 +321,6 @@ function App(){
        <p className="roll-body roll-context">From the Pristine Forests redesign to GSC’s website system, spatial 3D experiences and websites for office tools.</p>
        <div className="roll-project-heading"><h3>Selected projects</h3><span className="meta">01—04</span></div>
        <ol className="roll-project-list">{selectedWork.map((title,i)=><li className="log-row" key={title}><span className="num">{pad(i+1)}.</span><span>{title}</span></li>)}</ol>
-       <button className="roll-archive" onClick={openIndex}>Explore earlier work <Icon/></button>
       </div>
      </div>
      <a className="roll-next meta" href="#projects" onClick={e=>{e.preventDefault();jump('projects');}}>SELECTED PROJECTS <span>↓</span></a>
