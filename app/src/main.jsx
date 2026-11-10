@@ -123,6 +123,7 @@ function App(){
    const aboutReveal=createAboutReveal(root.current,{reduced:reduce||!desktop,sticky:desktop&&!short});
    const sceneLayer=root.current.querySelector('.scene-layer');
    const screenLabel=root.current.querySelector('.screen-camera-slot>span');
+   const contactStage=root.current.querySelector('.contact-camera-stage');
    const documentRect=element=>{const r=element.getBoundingClientRect();return {x:r.left,y:r.top+scrollY,width:r.width,height:r.height};};
    const top=id=>document.getElementById(id).getBoundingClientRect().top+window.scrollY;
    const measure=()=>{
@@ -172,6 +173,13 @@ function App(){
    const paint=()=>{
     const s=modelState.current.progress*maxScroll;
     const h=layout.viewportHeight;
+    // Re-read the contact stage every frame: late layout shifts (fonts,
+    // lazy images) otherwise leave the resting camera over the links below.
+    if(contactStage){
+     const cr=contactStage.getBoundingClientRect();
+     layout.contactFrame={x:cr.left,y:cr.top+window.scrollY,width:cr.width,height:cr.height};
+     if(layout.mobileSlots)layout.mobileSlots.contact=layout.contactFrame;
+    }
     // Native position keeps the model attached to the page on touch scroll.
     const mobileFrame=desktop?null:mobileCameraStage(scrollY,h,layout.mobileSlots,reduce);
     modelState.current.mobileFrame=mobileFrame;
@@ -216,6 +224,10 @@ function App(){
     if(!desktop&&mobileFrame&&!workActive){
      const r=mobileFrame.rect;
      sceneLayer.style.clipPath=`inset(${Math.max(0,r.y)}px ${Math.max(0,sceneLayer.clientWidth-r.x-r.width)}px ${Math.max(0,h-r.y-r.height)}px ${Math.max(0,r.x)}px)`;
+    }else if(desktop&&idx===6&&!workActive){
+     // Never let the closing camera spill below its stage onto the links.
+     const r=modelState.current.contactFrame;
+     sceneLayer.style.clipPath=`inset(0px 0px ${Math.max(0,h-(r.y+r.height))}px 0px)`;
     }else sceneLayer.style.clipPath='none';
     if(!desktop){
      // Fade the model back while any copy sits over its body.
