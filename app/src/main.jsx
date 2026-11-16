@@ -6,6 +6,7 @@ import { profile, projects } from './content';
 import SocialLink from './social-link.jsx';
 import { rollPhotos } from './roll-photos.js';
 import WorkGallery from './work-gallery.jsx';
+import ProjectStack from './project-stack.jsx';
 import { createAboutReveal } from './about-reveal.js';
 import { mobileCameraStage, cameraFootprint, DESKTOP_CAMERA_QUERY } from './mobile-camera.js';
 import './seed.css';
@@ -167,8 +168,8 @@ function App(){
     const screenProgress=gsap.utils.clamp(0,1,(s-layout.turn)/Math.max(1,layout.entry-layout.turn));
     modelState.current.screenProgress=!desktop?(mobileFrame?.stage==='entry'?mobileFrame.progress:0):screenProgress;
     modelState.current.screenActive=s>=layout.screen-innerHeight*.4&&s<layout.work;
-    // The split gallery replaces the old WebGL film and project-card stack.
-    // Preserve every camera waypoint outside this section.
+    // Keep the camera hidden through the gallery and selected-project tiles.
+    // Preserve every camera waypoint outside these sections.
     const workActive=s>=layout.work&&s<layout.about;
     modelState.current.rollActive=false;
     modelState.current.rollProgress=0;
@@ -285,7 +286,8 @@ function App(){
     <div className="screen-camera-slot" aria-hidden="true"><span>Into the next frame <span>↓</span></span></div>
     {sceneStatus==='fallback'&&<p className="screen-fallback">The 3D camera is unavailable. <a href="#work" onClick={e=>{e.preventDefault();jump('work');}}>Continue to Work ↓</a></p>}
    </section>
-   <WorkGallery onContinue={e=>{e.preventDefault();jump('about');}}/>
+   <WorkGallery onContinue={e=>{e.preventDefault();jump('projects');}}/>
+   <ProjectStack onContinue={e=>{e.preventDefault();jump('about');}}/>
    {/* Editorial portrait and biography, followed by a centered creative statement. */}
    <section id="about" className="section about-section" data-od-id="about" data-screen-label="06 Behind the lens">
     <div className="about-arrival">

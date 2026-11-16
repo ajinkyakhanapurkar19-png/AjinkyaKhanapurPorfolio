@@ -90,6 +90,11 @@ export default function WorkGallery({onContinue}) {
  useLayoutEffect(()=>{
   const restoreHash=()=>{
    if(!['#work','#projects'].includes(location.hash))return;
+   if(location.hash==='#projects'){
+    const projects=document.getElementById('projects');
+    if(projects){window.scrollTo({top:Math.max(0,projects.getBoundingClientRect().top+window.scrollY-76),behavior:'instant'});ScrollTrigger.update();}
+    return;
+   }
    const t=trigger.current;
    const top=t?t.start+(t.end-t.start)*.13:section.current.getBoundingClientRect().top+window.scrollY;
    window.scrollTo({top,behavior:'instant'});ScrollTrigger.update();
@@ -120,7 +125,6 @@ export default function WorkGallery({onContinue}) {
  }
 
  return <section id="work" ref={section} className="section work-gallery" data-od-id="work" data-screen-label="04 The roll" aria-labelledby="roll-title">
-  <span id="projects" className="wg-project-anchor" aria-hidden="true"/>
   <div className="wg-stage"><div className="wg-shell" ref={shell}>
    <div className="wg-information">
     <div className="wg-topline"><span>04 / THE ROLL</span></div>
@@ -135,7 +139,7 @@ export default function WorkGallery({onContinue}) {
       <button className="wg-playback" type="button" onClick={togglePlayback} hidden={isReduced} aria-controls="roll-images" aria-label={isPaused?'Resume moving gallery':'Pause moving gallery'}><span aria-hidden="true">{isPaused?'▷':'Ⅱ'}</span>{isPaused?'Resume':'Pause'}</button>
       <div className="wg-arrows"><button type="button" onClick={()=>step(-1)} aria-label="Previous image">←</button><button type="button" onClick={()=>step(1)} aria-label="Next image">→</button></div>
      </div>
-     <div className="wg-bottomline"><a href="#about" onClick={onContinue}>Behind the lens <span aria-hidden="true">↓</span></a></div>
+     <div className="wg-bottomline"><a href="#projects" onClick={onContinue}>Selected projects <span aria-hidden="true">↓</span></a></div>
     </div>
    </div>
    <div id="roll-images" className="wg-wall" ref={wall} role="region" aria-roledescription="carousel" aria-label="Photography and selected project images" tabIndex="0"

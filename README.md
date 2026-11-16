@@ -26,7 +26,7 @@ Deploy the contents of `dist/` to a static host. The build also creates root HTM
 
 | Page | Source |
 | --- | --- |
-| `index.html` | `app/src/main.jsx`, `content.js`, `work-gallery.jsx` |
+| `index.html` | `app/src/main.jsx`, `content.js`, `work-gallery.jsx`, `project-stack.jsx` |
 | `pristine-forests-case-study.html` | `app/src/pristine/` |
 | `gsc-case-study.html` | `app/src/gsc/` |
 | `artist-studio-case-study.html` | `app/src/artist-studio/` |
@@ -52,6 +52,8 @@ Artist Studio opens the deployed Pristine Forests experience. The unused local g
 
 Native scrolling drives the scene through a mutable GSAP progress value without React state updates every frame. Reduced motion and unavailable WebGL preserve readable content and working links. The scene is lazy-loaded, uses capped pixel ratios and stops unnecessary invalidation while hidden.
 
+The Roll contains the moving photography/project gallery. The separate Selected Projects section immediately below it contains the four clickable case-study tiles, using the original logo covers and responsive grid. `#projects` links land on those tiles. The tiles use normal document scrolling without an additional pinned sequence.
+
 ## Verification
 
 After building:
@@ -68,4 +70,4 @@ These check content, local asset paths, preview module loading, camera geometry,
 
 ## Cleanup
 
-The November 2026 cleanup removed standalone Shotgun, Content Hub, VR and generic reference pages, unused template assets, obsolete project-stack code, historical snapshots and redundant uploads. The build regenerates `dist/`, `bundles/` and root HTML previews. Active source, current assets and attribution remain.
+The November 2026 cleanup removed standalone Shotgun, Content Hub, VR and generic reference pages, unused template assets, obsolete project-stack animation code, historical snapshots and redundant uploads. The project tiles and their original brand assets are retained. The build regenerates `dist/`, `bundles/` and root HTML previews. Active source, current assets and attribution remain.

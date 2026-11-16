@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Chat PF">
+  <title>Chat PF</title>
+  <path fill="#fff" fill-rule="evenodd" d="M48 24h128v8h16v16h16v112h-16v16h-80v16H96v16H80v16H64v-48H48v-16H32V48h16z M64 56v88h112V56z"/>
+  <path fill="#fff" d="M80 80h80v16H80z M80 112h48v16H80z"/>
+  <path fill="#40b971" d="M184 184h32v32h-32z M216 216h16v16h-16z"/>
+</svg>
