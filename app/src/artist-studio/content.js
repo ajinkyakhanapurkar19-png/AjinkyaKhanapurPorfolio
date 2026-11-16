@@ -28,25 +28,7 @@ export const images = {
   AS_COLLECTION_CAPTURE: slot("B&W Miniature Paintings collection index with artwork titles, medium and dimensions", 2940, 1850, 'Supplied browser screenshot · 27 October 2026'),
   AS_HERO_RENDER: slot('Step inside the artist’s world', 1920, 1080, 'Current gallery interior · immersive portfolio cover'),
   AS_CONCEPT_BOARD: slot('An idea of space', 1600, 1000, 'Actual early renders, sketches or attributed architectural references'),
-  AS_EXTERIOR_RENDER: slot('Architecture meets landscape', 1920, 1080, 'Brutalist exterior, green trees and natural surroundings'),
-  AS_INTERIOR_RENDER: slot('A quieter space for art', 1440, 1200, 'Off-white walls, artwork and the interior gallery atmosphere'),
   AS_ARTWORK_COMPOSITION: slot('The artwork and its setting', 1200, 1500, 'Gallery wall and artwork composition from the actual scene'),
-  AS_SCENE_LAYOUT: slot('The space as a whole', 1600, 1000, 'Actual architectural layout or scene-organisation exploration'),
-  AS_BLENDER_VIEWPORT: slot('Inside the Blender scene', 1600, 1000, 'Missing evidence: add a screenshot of the actual Blender working scene'),
-  AS_MATERIAL_STUDIES: slot('Surface, texture, reflection', 1600, 1000, 'Real material and export comparison images'),
-  AS_EXPORT_BREAKDOWN: slot('Preparing the scene for the web', 1600, 900, 'Actual GLB export, asset breakdown or browser comparison'),
-  AS_LIGHTING_STUDIES: slot('Following the light', 1920, 1080, 'Golden-hour lighting studies from the existing gallery'),
-  AS_ATMOSPHERE_INTERIOR: slot('Light across the gallery walls', 1600, 1200, 'Interior light, wall material and artwork detail'),
-  AS_CAMERA_INTERACTION: slot('The gallery’s camera controls', 1600, 900, 'Actual website screenshot showing the final controls'),
-  AS_ENTRANCE_VIEWPOINT: slot('Gallery entrance', 1600, 900, 'Entrance viewpoint · actual scene still'),
-  AS_OPPOSITE_WALL_VIEWPOINT: slot('Opposite wall', 1600, 900, 'Opposite-wall viewpoint · actual scene still'),
-  AS_ARTWORK_ROOM_VIEWPOINT: slot('Artwork room', 1600, 900, 'Artwork-room viewpoint · actual scene still'),
-  AS_FINAL_GALLERY: slot('Inside Artist Studio', 1920, 1080, 'Final cinematic gallery render'),
-  AS_FINAL_EXTERIOR: slot('Outside / the approach', 1920, 1080, 'Completed gallery exterior'),
-  AS_FINAL_INTERIOR: slot('Inside / the experience', 1920, 1080, 'Completed gallery interior'),
-  AS_ARTWORK_ROOM: slot('The room around the artwork', 1920, 1080, 'Final artwork-room composition'),
-  AS_WEBSITE_SCREENSHOT: slot('The interactive website', 1600, 1000, 'Real browser capture with the implemented interface'),
-  AS_BROWSER_COMPARISON: slot('The exported browser scene', 1600, 1000, 'Same viewpoint as the Blender capture, for a fair comparison'),
 };
 
 export const chapters = [
@@ -88,11 +70,7 @@ export const chapters = [
   ]
 ];
 
-export const viewpoints = [
-  {id: 'entrance', label: 'Gallery entrance', image: 'AS_ENTRANCE_VIEWPOINT', copy: 'The first view introduces the architecture, its scale and the threshold into the gallery.'},
-  {id: 'opposite-wall', label: 'Opposite wall', image: 'AS_OPPOSITE_WALL_VIEWPOINT', copy: 'A view across the space considers the relationship between the gallery walls, light and the route through the room.'},
-  {id: 'artwork-room', label: 'Artwork room', image: 'AS_ARTWORK_ROOM_VIEWPOINT', copy: 'The viewpoint brings the artwork into focus while retaining enough architectural context to understand its setting.'},
-];
+
 
 // Imported evidence keeps the reserved template dimensions.
 for (const [key, value] of Object.entries(evidence)) Object.assign(images[key], value);

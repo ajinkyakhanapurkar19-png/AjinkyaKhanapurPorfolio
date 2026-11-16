@@ -215,12 +215,10 @@ images.PF_MOBILE_HOMEPAGE = {...images.PF_MOBILE_HOME};
 images.PF_MOBILE_AUDIT_AFTER = {...images.PF_MOBILE_HOME};
 images.PF_MOBILE_PRODUCT_LISTING = {...images.PF_MOBILE_BODY_OILS_LISTING};
 images.PF_PRODUCT_DETAIL_MOBILE = {...images.PF_MOBILE_CANDY_GLAZE};
-// Curated showcase; retain the full export inventory above for future edits.
+// Only screens not already presented in the hero or responsive comparison.
+// Retain the complete source inventory above; no exported assets are removed.
 export const mobileScreens = [
   {name:'PF_MOBILE_NAVIGATION', label:'Menu'},
-  {name:'PF_MOBILE_HOME', label:'Home'},
-  {name:'PF_MOBILE_BODY_OILS_LISTING', label:'PLP · Product listing'},
-  {name:'PF_MOBILE_CANDY_GLAZE', label:'PDP · Product detail'},
   {name:'PF_MOBILE_ARTICLE', label:'Article'},
   {name:'PF_MOBILE_CART_GUEST', label:'Cart'},
   {name:'PF_MOBILE_CHECKOUT_GUEST', label:'Checkout'},
@@ -229,6 +227,6 @@ export const mobileScreens = [
 export const chapters = [
   ['overview', 'Overview'], ['challenge', 'The challenge'], ['audit', 'The website audit'],
   ['visual-research', 'Visual research'], ['designing', 'Designing the experience'],
-  ['responsive', 'Desktop meets mobile'], ['discovery', 'Product discovery'],
+  ['responsive', 'Desktop meets mobile'],
   ['final-website', 'The mobile experience'], ['reflection', 'Reflection'],
 ];

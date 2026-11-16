@@ -5,14 +5,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { profile, projects } from './content';
 import SocialLink from './social-link.jsx';
 import { rollPhotos } from './roll-photos.js';
-import ProjectStack, { selectedWork } from './project-stack.jsx';
-import { createProjectReveal } from './project-stack-motion.js';
+import WorkGallery from './work-gallery.jsx';
 import { createAboutReveal } from './about-reveal.js';
-import { rollArrival } from './roll-arrival.js';
 import { mobileCameraStage, cameraFootprint, DESKTOP_CAMERA_QUERY } from './mobile-camera.js';
 import './seed.css';
 import './portfolio.css';
 import './portfolio-mobile.css';
+import './work-gallery.css';
 
 gsap.registerPlugin(ScrollTrigger);
 // Mobile URL-bar changes must not restart the scroll choreography.
@@ -20,7 +19,6 @@ ScrollTrigger.config({ignoreMobileResize:true});
 const Scene = lazy(() => import('./scene.jsx'));
 const pad = n => String(n).padStart(2, '0');
 const chapters = [['camera','The camera'],['focus','Focus'],['screen','Into the screen'],['work','The roll'],['projects','Selected projects'],['about','Behind the lens'],['contact','Contact']];
-const disciplines = ['Website design','UI & UX design','Interaction design','Service design','Design systems','3D generation & AI'];
 // Supplied by Ajinkya for this chapter. No unverified case-study URLs.
 const images = import.meta.glob('../../assets/*.{jpg,png}',{eager:true,query:'?url',import:'default'});
 const asset = name => images[`../../assets/${name}`];
@@ -86,13 +84,6 @@ function App(){
   }
   window.scrollTo({top:Math.max(0,y),behavior:reduced.current?'instant':'smooth'});
  }
- function revealProjects(event){
-  const section=document.getElementById('projects');
-  const top=section.getBoundingClientRect().top+window.scrollY;
-  const travel=section.offsetHeight-section.querySelector('.project-stack-stage').offsetHeight;
-  const complete=event.currentTarget.dataset.complete==='true';
-  window.scrollTo({top:top+(complete?0:travel*.97),behavior:reduced.current?'instant':'smooth'});
- }
  function openIndex(){previousFocus.current=document.activeElement;allDialog.current.showModal();document.documentElement.classList.add('portfolio-modal-open');}
  function closeIndex(){allDialog.current.close();previousFocus.current?.focus();}
  async function copyEmail(){
@@ -117,9 +108,6 @@ function App(){
    reduced.current=reduce;modelState.current.reduced=reduce;modelState.current.mobile=!desktop;
    document.documentElement.dataset.motion=reduce?'reduced':'full';
    let maxScroll=1; let layout={focus:0,screen:0,work:0,about:0,contact:0,hero:1,turn:0,entry:1};
-   const filmVisual=document.querySelector('.roll-visual');
-   const rollStage=document.querySelector('.roll-stage');
-   const projectReveal=createProjectReveal(root.current,{staticLayout:reduce||short||!desktop});
    const aboutReveal=createAboutReveal(root.current,{reduced:reduce||!desktop,sticky:desktop&&!short});
    const sceneLayer=root.current.querySelector('.scene-layer');
    const screenLabel=root.current.querySelector('.screen-camera-slot>span');
@@ -135,18 +123,11 @@ function App(){
     layout.turn=layout.focus+h*.12;
     const travel=Math.max(0,screen.offsetHeight-h);
     layout.entry=layout.screen+travel*.86;
-    const rect=filmVisual.getBoundingClientRect(),stageRect=rollStage.getBoundingClientRect();
-    layout.film={x:rect.left,y:rect.top-stageRect.top,width:rect.width,height:rect.height};
-    layout.stageHeight=rollStage.offsetHeight;
-    layout.rollDistance=Math.max(h*.5,layout.projects-layout.work-layout.stageHeight);
-    // Phones: the roll overlaps the last sticky viewport of the screen entry,
-    // so its copy arrives the moment the LCD zoom completes (no blank frame).
-    layout.rollStart=!desktop?(reduce?layout.work-h*.8:layout.work):reduce?layout.work-h*.65:Math.min(layout.entry,layout.work);
-    const staticRoll=reduce||root.current.dataset.scene==='fallback';
-    modelState.current.rollArrivalEnd=rollArrival(layout.rollStart,layout.rollStart,h,!desktop,staticRoll).end;
-    const projectSection=document.getElementById('projects');
-    layout.projectDistance=Math.max(1,projectSection.offsetHeight-projectSection.querySelector('.project-stack-stage').offsetHeight);
-    projectReveal.measure();
+    // Gallery uses its own native sticky range; the existing camera path ends
+    // at this same work boundary, then resumes at the unchanged About section.
+    const gallery=document.getElementById('work');
+    const staticGallery=reduce||gallery.dataset.static==='true';
+    modelState.current.rollArrivalEnd=layout.work+(staticGallery?0:(gallery.offsetHeight-h)*.13);
     aboutReveal.measure();
     const arrival=document.querySelector('.about-arrival');
     layout.aboutStart=layout.about-(desktop&&!short?0:h*.45);
@@ -186,22 +167,12 @@ function App(){
     const screenProgress=gsap.utils.clamp(0,1,(s-layout.turn)/Math.max(1,layout.entry-layout.turn));
     modelState.current.screenProgress=!desktop?(mobileFrame?.stage==='entry'?mobileFrame.progress:0):screenProgress;
     modelState.current.screenActive=s>=layout.screen-innerHeight*.4&&s<layout.work;
-    // The LCD fills the viewport before the roll begins. Reverse scroll uses
-    // the same timeline, without timers or per-frame React state updates.
-    const workStart=layout.rollStart;
-    const workActive=desktop?s>=workStart&&s<layout.projects:scrollY>=workStart&&scrollY<layout.projects;
-    const staticRoll=reduce||root.current.dataset.scene==='fallback';
-    const arrival=rollArrival(desktop?s:scrollY,workStart,h,!desktop,staticRoll);
-    // DOM flow uses native scroll, while the entrance uses the smoothed
-    // journey. Apply its exact offset to both the HTML and WebGL clipping slot.
-    const nativeScroll=window.scrollY;
-    const stageY=desktop&&!reduce?Math.max(layout.work-nativeScroll,Math.min(0,layout.projects-layout.stageHeight-nativeScroll)):layout.work-nativeScroll;
-    modelState.current.rollActive=workActive;
-    modelState.current.rollProgress=reduce?0:gsap.utils.clamp(0,1,(s-layout.work)/layout.rollDistance);
-    modelState.current.rollReveal=arrival.opacity;
-    modelState.current.filmRect={...layout.film,y:layout.film.y+stageY+arrival.y};
-    gsap.set(rollStage,desktop?{opacity:arrival.opacity,y:arrival.y}:{autoAlpha:arrival.opacity,y:arrival.y});
-    projectReveal.paint((s-layout.projects)/layout.projectDistance);
+    // The split gallery replaces the old WebGL film and project-card stack.
+    // Preserve every camera waypoint outside this section.
+    const workActive=s>=layout.work&&s<layout.about;
+    modelState.current.rollActive=false;
+    modelState.current.rollProgress=0;
+    modelState.current.rollReveal=0;
     aboutReveal.paint((s-layout.aboutStart)/layout.aboutDistance);
     const contactProgress=gsap.utils.clamp(0,1,(s-layout.contactStart)/(layout.contactRest-layout.contactStart));
     modelState.current.contactBlend=reduce?Number(s>=layout.contactRest):contactProgress*contactProgress*(3-2*contactProgress);
@@ -220,7 +191,7 @@ function App(){
     const chapterName=document.getElementById('current-chapter');if(chapterName){chapterName.textContent=`${pad(idx+1)} / ${chapters[idx][1]}`;chapterName.hidden=idx===6;}
     const progress=document.querySelector('.reading-progress');if(progress)progress.style.transform=`scaleX(${modelState.current.progress})`;
     const wasVisible=modelState.current.visible;
-    modelState.current.visible=desktop?(workActive||idx<4||idx===6):Boolean(workActive||mobileFrame);
+    modelState.current.visible=desktop?((s<layout.work+h*.35)||idx===6):Boolean(mobileFrame&&!workActive);
     if(!desktop&&mobileFrame&&!workActive){
      const r=mobileFrame.rect;
      sceneLayer.style.clipPath=`inset(${Math.max(0,r.y)}px ${Math.max(0,sceneLayer.clientWidth-r.x-r.width)}px ${Math.max(0,h-r.y-r.height)}px ${Math.max(0,r.x)}px)`;
@@ -261,7 +232,7 @@ function App(){
    }};
    window.addEventListener('resize',onResize);
    const refreshFrame=requestAnimationFrame(()=>ScrollTrigger.refresh());
-   return()=>{clearTimeout(resizeTimer);sceneLayer.style.removeProperty('clip-path');sceneLayer.style.removeProperty('opacity');screenLabel?.style.removeProperty('opacity');cancelAnimationFrame(refreshFrame);timeline.scrollTrigger?.kill();timeline.kill();projectReveal.dispose();aboutReveal.dispose();ScrollTrigger.removeEventListener('refresh',onRefresh);window.removeEventListener('resize',onResize);document.querySelectorAll('.portrait img').forEach(img=>img.removeEventListener('load',onRefresh));gsap.set('.hero-copy,.hero-details,.roll-stage',{clearProps:'opacity,transform'});};
+   return()=>{clearTimeout(resizeTimer);sceneLayer.style.removeProperty('clip-path');sceneLayer.style.removeProperty('opacity');screenLabel?.style.removeProperty('opacity');cancelAnimationFrame(refreshFrame);timeline.scrollTrigger?.kill();timeline.kill();aboutReveal.dispose();ScrollTrigger.removeEventListener('refresh',onRefresh);window.removeEventListener('resize',onResize);document.querySelectorAll('.portrait img').forEach(img=>img.removeEventListener('load',onRefresh));gsap.set('.hero-copy,.hero-details',{clearProps:'opacity,transform'});};
   },root);
   return()=>mm.revert();
  },[]);
@@ -314,31 +285,7 @@ function App(){
     <div className="screen-camera-slot" aria-hidden="true"><span>Into the next frame <span>↓</span></span></div>
     {sceneStatus==='fallback'&&<p className="screen-fallback">The 3D camera is unavailable. <a href="#work" onClick={e=>{e.preventDefault();jump('work');}}>Continue to Work ↓</a></p>}
    </section>
-   {/* Layout 2 split + Layout 7 ruled list, adapted around a live film spiral. */}
-   <section id="work" className="section roll-section" data-od-id="work" data-screen-label="04 The roll" aria-labelledby="roll-title">
-    <div className="roll-stage">
-     <div className="roll-corners" aria-hidden="true"><span className="frame-corner tl"/><span className="frame-corner tr"/><span className="frame-corner bl"/><span className="frame-corner br"/></div>
-     <div className="roll-layout">
-      <div className="roll-intro">
-       <p className="meta roll-kicker">04 / THE ROLL</p>
-       <h2 id="roll-title">My work,<br/>in focus.</h2>
-       <p className="roll-body">I design websites, interfaces and experiences — connecting how something looks with how it works.</p>
-       <p className="meta roll-label">ACROSS MY PRACTICE</p>
-       <ul className="roll-disciplines">{disciplines.map(d=><li key={d}>{d}</li>)}</ul>
-      </div>
-      <div className="roll-visual" aria-hidden="true">
-       <div className="roll-fallback"><div className="fallback-negative">{rollPhotos.map(photo=><img key={photo.label} src={photo.src} alt="" loading="lazy"/>)}</div></div>
-      </div>
-      <div className="roll-projects">
-       <p className="roll-body roll-context">From the Pristine Forests redesign to GSC’s website system, spatial 3D experiences and websites for office tools.</p>
-       <div className="roll-project-heading"><h3>Selected projects</h3><span className="meta">01—04</span></div>
-       <ol className="roll-project-list">{selectedWork.map((title,i)=><li className="log-row" key={title}><span className="num">{pad(i+1)}.</span><span>{title}</span></li>)}</ol>
-      </div>
-     </div>
-     <a className="roll-next meta" href="#projects" onClick={e=>{e.preventDefault();jump('projects');}}>SELECTED PROJECTS <span>↓</span></a>
-    </div>
-   </section>
-   <ProjectStack onReveal={revealProjects} onContinue={e=>{e.preventDefault();jump('about');}}/>
+   <WorkGallery onContinue={e=>{e.preventDefault();jump('about');}}/>
    {/* Editorial portrait and biography, followed by a centered creative statement. */}
    <section id="about" className="section about-section" data-od-id="about" data-screen-label="06 Behind the lens">
     <div className="about-arrival">

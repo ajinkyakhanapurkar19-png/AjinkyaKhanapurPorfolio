@@ -275,7 +275,7 @@
 .pf-met .pf-mobile-tabs button:focus-visible,.pf-met .pf-mobile-panel:focus-visible{outline-color:var(--bg)}
 .pf-met .pf-mobile-panel[hidden]{display:none}
 .pf-met .pf-mobile-description{font-size:13px;line-height:1.6;max-width:620px;padding-block:24px 36px}
-.pf-met .pf-mobile-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 40px;max-width:1000px;margin-inline:auto;align-items:start}
+.pf-met .pf-mobile-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 24px;max-width:1100px;margin-inline:auto;align-items:start}
 .pf-met .pf-mobile-grid>figure{min-width:0;width:100%;max-width:278px;justify-self:center}
 .pf-met .pf-mobile-grid figcaption{color:var(--bg);font-size:13px;line-height:1.5;text-align:center;margin-top:18px}
 .pf-met .pf-mobile-grid figcaption>span,.pf-met .pf-mobile-grid figcaption>small{display:block}

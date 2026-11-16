@@ -125,9 +125,8 @@ function ProductCarousel({id, compact = false}) {
  </div>;
 }
 const pageViews = [
- {label:'Homepage', desktop:'PF_DESKTOP_HOMEPAGE', mobile:'PF_MOBILE_HOMEPAGE', text:'An introduction to the brand, with space for its products and their stories.'},
- {label:'Product listing', desktop:'PF_DESKTOP_PRODUCT_LISTING', mobile:'PF_MOBILE_PRODUCT_LISTING', text:'Product imagery and useful information share a consistent browsing rhythm.'},
- {label:'Product detail', desktop:'PF_PRODUCT_DETAIL_DESKTOP', mobile:'PF_PRODUCT_DETAIL_MOBILE', text:'A closer look at the product, its details, and the next step in the shopping journey.'},
+ {label:'Product listing', desktop:'PF_DESKTOP_PRODUCT_LISTING', mobile:'PF_MOBILE_PRODUCT_LISTING', text:'Product imagery, scent descriptions and prices establish a consistent browsing rhythm. Category links and a filter entry point help visitors explore the range.'},
+ {label:'Product detail', desktop:'PF_PRODUCT_DETAIL_DESKTOP', mobile:'PF_PRODUCT_DETAIL_MOBILE', text:'Candy Glaze brings imagery, product details, size and quantity choices, purchase controls and ingredients together. Desktop places imagery and information side by side; mobile follows a vertical sequence.'},
  {label:'Right by You', desktop:'PF_ADDITIONAL_REDESIGNED_PAGES', mobile:'PF_MOBILE_RIGHT_BY_YOU', text:'The replacement-request introduction, adapted across desktop and mobile.'},
 ];
 function ResponsiveShowcase() {
@@ -160,7 +159,7 @@ function MobileShowcase() {
  const move=direction=>{const node=rail.current;node.scrollBy({left:direction*(node.children[0].offsetWidth+24),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});};
  return <div className="pf-mobile-exhibition" id="mobile-designs">
   <div className="pf-container">
-   <div className="pf-mobile-heading"><p className="pf-label">The mobile experience</p><h2>The same feeling.<br/>A smaller screen.</h2><p>From the menu and homepage to products, stories and checkout. Scroll inside each phone to explore the full design.</p></div>
+   <div className="pf-mobile-heading"><p className="pf-label">The mobile experience</p><h2>The same feeling.<br/>A smaller screen.</h2><p>Navigation, stories, cart and checkout complete the mobile journey. Scroll inside each phone to explore the full design.</p></div>
    <div className="pf-mobile-browse"><span>Swipe through the screens</span><div><button type="button" aria-label="Previous mobile screen" disabled={ends.first} onClick={()=>move(-1)}>←</button><button type="button" aria-label="Next mobile screen" disabled={ends.last} onClick={()=>move(1)}>→</button></div></div>
    <div ref={rail} className="pf-mobile-grid" role="region" aria-label="Mobile website screens" tabIndex={0} onKeyDown={event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();move(event.key==='ArrowRight'?1:-1);}}}>{mobileScreens.map(({name,label})=><figure key={name}>
      <Device kind="phone" name={name}/>
@@ -195,7 +194,7 @@ export default function Page() {
   <Chapter id="audit" label="The website audit" source="metropolitan-editorial" className="pf-section pf-container">
    <Header number="02" title="Understanding the experience" next="visual-research"/>
    <Intro label="Website audit"><p>The original Essential Oils page introduces the product range through a promotional banner, category description and product listing. The redesigned homepage brings the brand introduction, Trending Now, product categories and brand pillars into a different reading order.</p><p className="pf-note">The existing UI comes from the imports at the bottom of the supplied Figma canvas; the redesigned homepage comes from its FINAL SCREENS group. These show the two visual systems on different pages, not a like-for-like page comparison or validated usability findings.</p></Intro>
-   <div className="pf-audit-layout"><div className="pf-audit-phones"><figure><Device kind="phone" name="PF_MOBILE_AUDIT_BEFORE"/><figcaption>Existing experience</figcaption></figure><figure><Device kind="phone" name="PF_MOBILE_AUDIT_AFTER"/><figcaption>Redesigned experience</figcaption></figure></div><div><div className="pf-index-lines"><p><span>01</span>Navigation and orientation</p><p><span>02</span>Content and reading order</p><p><span>03</span>Product imagery and information</p><p><span>04</span>Responsive layout</p></div></div></div>
+   <div className="pf-audit-layout"><div className="pf-audit-phones"><figure><Device kind="phone" name="PF_MOBILE_AUDIT_BEFORE"/><figcaption>Existing mobile experience</figcaption></figure></div><div><div className="pf-index-lines"><p><span>01</span>Navigation and orientation</p><p><span>02</span>Content and reading order</p><p><span>03</span>Product imagery and information</p><p><span>04</span>Responsive layout</p></div><Jump id="overview" className="pf-text-link">View the redesigned homepage <span aria-hidden="true">↑</span></Jump></div></div>
   </Chapter>
   <Chapter id="visual-research" label="Visual research" source="metropolitan-editorial" className="pf-section">
    <div className="pf-container"><Header number="03" title="Visual direction" next="designing"/><Intro label="Research & references"><p>Rituals, Kinfill, Malin + Goetz, Versed and Tatcha informed an exploration of editorial layouts, product presentation, whitespace, typography and image direction.</p><p>The intention is to create a recognisable Pristine Forests experience, while giving the products room to lead.</p></Intro><ResearchBoard/></div>
@@ -210,23 +209,15 @@ export default function Page() {
    <div className="pf-process-lines"><div><span className="pf-label">Structure</span><p>Put the next step in context.</p></div><span aria-hidden="true">→</span><div><span className="pf-label">Hierarchy</span><p>Help the product stand out.</p></div><span aria-hidden="true">→</span><div><span className="pf-label">Interface</span><p>Make the experience coherent.</p></div></div>
   </Chapter>
   <Chapter id="responsive" label="Desktop meets mobile" source="metropolitan-editorial" className="pf-section">
-   <div className="pf-container"><Header number="05" title="Web design" next="discovery"/><Intro label="One brand, two screen sizes"><p>The same visual identity needs a different composition on each screen. Desktop creates room for larger imagery and more context; mobile needs a deliberate reading order and comfortable controls.</p><p>Compare the actual homepage, After-Shower Body Oils listing and Candy Glaze product page. The desktop and mobile layouts are exported directly from the supplied designs.</p></Intro></div>
-   <div className="pf-laptop-stage"><Device kind="laptop" name="PF_DESKTOP_HOMEPAGE"/><p className="pf-label">The homepage / Desktop experience</p></div>
+   <div className="pf-container"><Header number="05" title="Web design" next="final-website"/><Intro label="One brand, two screen sizes"><p>The same visual identity needs a different composition on each screen. Desktop creates room for larger imagery and more context; mobile needs a deliberate reading order and comfortable controls.</p><p>Compare the After-Shower Body Oils listing, Candy Glaze product page and Right by You introduction. The desktop and mobile layouts are exported directly from the supplied designs.</p></Intro></div>
    <div className="pf-container"><ResponsiveShowcase/></div>
-  </Chapter>
-  <Chapter id="discovery" label="Product discovery" source="metropolitan-editorial" className="pf-section pf-discovery">
-   <div className="pf-container"><Header number="06" title="Room to discover" next="final-website"/><Intro label="Product discovery & shopping"><p>The product cards pair isolated bottle imagery with a name, a short scent description and a price. Category links and a filter entry point sit alongside the range, giving visitors different ways to narrow their browsing.</p><p>The Candy Glaze page moves from product imagery to a description, size and quantity choices, purchase controls and ingredients. Desktop places imagery and information beside each other; mobile follows a vertical sequence.</p></Intro>
-    <div className="pf-shopping-composition"><div className="pf-listing-board"><Device name="PF_DESKTOP_PRODUCT_LISTING"/><p>01 / Browsing the range</p></div><div className="pf-detail-phone"><Device kind="phone" name="PF_PRODUCT_DETAIL_MOBILE"/><p>02 / A closer look</p></div></div>
-    <div className="pf-discovery-products"><ProductCarousel id="pf-discovery-products"/><p className="pf-showcase-caption">Product imagery, scent descriptions and prices from the homepage design.</p></div>
-    <figure className="pf-product-page"><Device name="PF_PRODUCT_DETAIL_DESKTOP" label="Candy Glaze / Product detail" screenRatio="1066 / 950"/><figcaption>Candy Glaze · the complete product composition, with imagery, description, size and purchase controls together. Scroll within the frame to explore the page.</figcaption></figure>
-   </div>
   </Chapter>
   <Chapter id="final-website" label="The mobile experience" source="metropolitan-editorial" className="pf-section">
    <MobileShowcase/>
-   <div className="pf-container pf-final-details"><div className="pf-final-detail-heading"><h3>Closer to the product.</h3><p>A larger view of the product page and supporting website designs.</p></div><Device name="PF_PRODUCT_DETAIL_DESKTOP" screenRatio="16 / 9"/><Showreel/></div>
+   <div className="pf-container pf-final-details"><Showreel/></div>
   </Chapter>
   <Chapter id="reflection" label="Reflection" source="metropolitan-editorial" className="pf-section pf-container">
-   <Header number="08" title="What this redesign explored"/>
+   <Header number="07" title="What this redesign explored"/>
    <div className="pf-reflection-grid"><h3>A brand experience,<br/>considered from<br/>every screen.</h3><div className="pf-copy"><p>Translating a nature-inspired identity into e-commerce is a question of balance. Imagery and typography create the atmosphere; hierarchy and structure help visitors move through it.</p><p>Designing desktop and mobile together keeps the brand recognisable while making room for the differences in how each screen is read and used.</p><dl className="pf-reflection-fields"><div><dt>What worked well</dt><dd>{project.reflection}</dd></div><div><dt>What I would improve next</dt><dd>{project.improvements}</dd></div><div><dt>Evidence or outcomes</dt><dd>{project.outcomes}</dd></div></dl></div></div>
    <div className="pf-closing"><p>Pristine Forests</p><LiveWebsiteLink href={project.liveUrl} name={project.name} target="pristine-website-live"/></div>
   </Chapter>

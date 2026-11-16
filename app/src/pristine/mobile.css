@@ -1,4 +1,7 @@
 .pf-mobile-browse{display:none}
+/* One original mobile screen anchors the audit; the redesign lives in the hero. */
+.pf-met .pf-audit-phones{grid-template-columns:minmax(0,1fr)}
+.pf-met .pf-audit-phones>figure{width:100%;max-width:270px;justify-self:center}
 @media(max-width:999px){
  .pf-met{--gutter:clamp(20px,4vw,32px);--chapter-space:64px;font-size:16px;line-height:1.7}
  .pf-met :is(.pf-hero-intro,.pf-editorial-row,.pf-challenge-grid,.pf-board-heading,.pf-reflection-grid,.pf-final-detail-heading){grid-template-columns:minmax(0,1fr);gap:24px}
@@ -31,6 +34,7 @@
  .pf-met .pf-device-viewport{overscroll-behavior-y:contain}
  .pf-met :is(figcaption,.pf-showcase-caption,.pf-shopping-composition>div>p){font-size:13px;line-height:1.6}
  .pf-met .pf-mobile-heading{grid-template-columns:1fr;gap:20px}
+ .pf-met .pf-mobile-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .pf-met .pf-mobile-heading>p:last-child{font-size:16px;max-width:48ch}
  .pf-met .pf-index-lines p{font-size:14px;line-height:1.5}
  .pf-met .pf-footer>span{display:block;max-width:32ch}
@@ -61,7 +65,7 @@
  .pf-met .pf-product-heading h3{font-size:27px}
  .pf-met .pf-product-card h4{font-size:15px}
  .pf-met .pf-product-card>p{font-size:13px}
- /* Seven full-sized screens in a native horizontal rail, not tiny columns. */
+ /* Unique mobile screens remain full-sized in a native horizontal rail. */
  .pf-met .pf-mobile-grid{position:relative;display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(82%,278px);gap:24px;justify-content:start;overflow-x:auto;overflow-y:hidden;padding:8px 2px 20px;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--border) var(--accent)}
  .pf-met .pf-mobile-grid>figure{scroll-snap-align:center;max-width:none;width:100%}
  .pf-met .pf-mobile-grid:focus-visible{outline:2px solid var(--bg);outline-offset:5px}

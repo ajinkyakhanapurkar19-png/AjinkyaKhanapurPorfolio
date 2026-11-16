@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Chat PF mobile UX/UI case study by Ajinkya Khanapurkar: communication, Focus Mode and connected Office OS workflows, presented with original Figma screens.">
+<title>Chat PF — Mobile UX Case Study · Ajinkya Khanapurkar</title>
+<style>
+    /* ─── tokens ─────────────────────────────────────────────────────────
+       Six variables. Bind them to the active DESIGN.md and stop.
+       Do not introduce raw hex anywhere else in this file. */
+    :root {
+      --bg:      oklch(100% 0 0);   /* page background — never #fff */
+      --surface: oklch(95.05% .0346 115.9);   /* cards, modals, raised areas */
+      --fg:      oklch(0% 0 0);   /* primary text — never #000 */
+      --muted:   oklch(51.87% .0029 165);   /* secondary text, captions */
+      --border:  oklch(94.07% .0045 134.85);   /* hairlines, dividers */
+      --accent:  oklch(70.6% .1816 28.75);   /* one accent — used at most 2× per screen */
+
+      /* derived — do not change */
+      --accent-soft: color-mix(in oklch, var(--accent) 14%, transparent);
+      --fg-soft:     color-mix(in oklch, var(--fg) 6%, transparent);
+
+      /* type — display = serif (default), body = sans, mono for numerics */
+      --font-display: 'Instrument Sans', -apple-system, system-ui, sans-serif;
+      --font-body:    -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono:    ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+      /* scale — clamp() so it works at 1280, 1440, 1920 without media queries */
+      --fs-h1: clamp(44px, 6vw, 76px);
+      --fs-h2: clamp(32px, 4vw, 48px);
+      --fs-h3: 22px;
+      --fs-lead: 19px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+
+      /* spacing — 8-point grid */
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 56px;
+      --gap-2xl: 96px;
+      --container: 1120px;
+      --gutter: 32px;
+
+      --radius: 10px;
+      --radius-lg: 16px;
+    }
+
+    /* ─── reset & base ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.55;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    p { text-wrap: pretty; }
+    h1, h2, h3, h4 { text-wrap: balance; }
+
+    /* ─── layout primitives ─────────────────────────────────────────── */
+    .container {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+    .section {
+      padding-block: clamp(48px, 8vw, var(--gap-2xl));
+    }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; }
+    .stack > * + * { margin-top: var(--gap-md); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+    @media (max-width: 920px) {
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── type ──────────────────────────────────────────────────────── */
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); line-height: 1.04; letter-spacing: -0.02em; margin: 0; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); line-height: 1.1; letter-spacing: -0.015em; margin: 0; }
+    .h3, h3 { font-size: var(--fs-h3); font-weight: 600; line-height: 1.3; letter-spacing: -0.005em; margin: 0; }
+    .lead   { font-size: var(--fs-lead); line-height: 1.55; color: var(--muted); max-width: 60ch; margin: 0; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 var(--gap-md);
+    }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .num  { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+    /* ─── chrome: nav + footer ──────────────────────────────────────── */
+    .topnav {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in oklch, var(--bg) 92%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topnav-inner { display: flex; align-items: center; justify-content: space-between; padding-block: 14px; }
+    .topnav .logo { font-family: var(--font-display); font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+    .topnav nav { display: flex; gap: var(--gap-lg); }
+    .topnav nav a { font-size: 14px; color: var(--muted); }
+    .topnav nav a:hover { color: var(--fg); }
+    .pagefoot { padding-block: var(--gap-xl); color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+    .pagefoot .row-between { flex-wrap: wrap; gap: var(--gap-md); }
+
+    /* ─── buttons ───────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 20px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 8px; }
+    .btn-ghost:hover { color: var(--accent); }
+    .btn-arrow::after { content: '→'; transition: transform 0.15s ease; }
+    .btn-arrow:hover::after { transform: translateX(2px); }
+
+    /* ─── card / surface ────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+    .card-flat { background: transparent; border: 0; padding: 0; }
+    .card-rule { background: transparent; border: 0; border-top: 1px solid var(--fg); padding: 24px 0 0; border-radius: 0; }
+
+    /* ─── feature cell (icon + h3 + p) ──────────────────────────────── */
+    .feature .feature-mark {
+      width: 36px; height: 36px;
+      display: grid; place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--accent);
+      margin-bottom: var(--gap-md);
+    }
+    .feature .feature-mark svg { width: 18px; height: 18px; }
+    .feature h3 { margin-bottom: 6px; }
+    .feature p  { margin: 0; color: var(--muted); font-size: 15px; }
+
+    /* ─── stat (big number + label) ─────────────────────────────────── */
+    .stat .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 8vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .stat .stat-label { color: var(--muted); font-size: 14px; margin-top: 8px; max-width: 24ch; }
+    .stat .stat-unit  { font-size: 0.5em; opacity: 0.7; margin-left: 2px; }
+
+    /* ─── quote / testimonial ───────────────────────────────────────── */
+    .quote {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 2.6vw, 32px);
+      line-height: 1.32;
+      letter-spacing: -0.01em;
+      max-width: 28ch;
+    }
+    .quote-author { color: var(--muted); font-size: 14px; margin-top: var(--gap-md); }
+    .quote-mark   {
+      font-family: var(--font-display);
+      font-size: 140px; line-height: 0.7;
+      color: var(--accent); opacity: 0.18;
+      margin-bottom: -28px;
+    }
+
+    /* ─── pill / badge / tag ────────────────────────────────────────── */
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .tag {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    /* ─── form field ────────────────────────────────────────────────── */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 13px; color: var(--muted); }
+    .input, .textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--fg);
+      font: inherit;
+      font-size: 15px;
+    }
+    .input:focus, .textarea:focus {
+      outline: 2px solid var(--accent-soft);
+      border-color: var(--accent);
+    }
+    .textarea { min-height: 96px; resize: vertical; line-height: 1.55; }
+
+    /* ─── table (data-style, no chrome) ─────────────────────────────── */
+    .ds-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .ds-table th, .ds-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    .ds-table th { color: var(--muted); font-weight: 500; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .ds-table tbody tr:hover { background: var(--fg-soft); }
+    .ds-table .num-col { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+
+    /* ─── image placeholder (DS-tinted block, never broken <img>) ──── */
+    .ph-img {
+      background:
+        linear-gradient(135deg, var(--accent-soft), var(--fg-soft)),
+        var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      aspect-ratio: 16 / 10;
+      display: grid; place-items: center;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    .ph-img.square    { aspect-ratio: 1 / 1; }
+    .ph-img.portrait  { aspect-ratio: 3 / 4; }
+    .ph-img.wide      { aspect-ratio: 16 / 9; }
+
+    /* ─── divider ───────────────────────────────────────────────────── */
+    .rule  { border: 0; border-top: 1px solid var(--border); margin: 0; }
+    .rule-strong { border: 0; border-top: 1px solid var(--fg); margin: 0; }
+
+    /* ─── hero variants used by layouts.md ──────────────────────────── */
+    .hero          { padding-block: clamp(80px, 12vw, 160px); }
+    .hero-center   { text-align: center; max-width: 32ch; margin-inline: auto; }
+    .hero h1       { margin-bottom: var(--gap-md); }
+    .hero .lead    { margin-bottom: var(--gap-lg); }
+    .hero-cta      { display: inline-flex; gap: var(--gap-sm); flex-wrap: wrap; }
+    .hero-center .hero-cta { justify-content: center; }
+    .hero-split    { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-2xl); align-items: center; }
+    @media (max-width: 920px) { .hero-split { grid-template-columns: 1fr; } }
+
+    /* ─── log row (newsletter, blog list, changelog) ────────────────── */
+    .log-row { display: grid; grid-template-columns: 120px 1fr 100px; gap: var(--gap-lg); padding: 22px 0; border-top: 1px solid var(--border); align-items: baseline; }
+    .log-row .meta { color: var(--muted); }
+    .log-row h3 { font-size: 19px; }
+    .log-row .pull { text-align: right; }
+
+/* Talkie reference presentation. The exported application UI is never restyled. */
+@font-face{font-family:'Instrument Sans';src:url('./assets/fonts/instrument-sans-variable.ttf') format('truetype');font-weight:400 700;font-display:swap}
+:root{
+ --bg:oklch(100% 0 0);--surface:oklch(95.05% .0346 115.9);--fg:oklch(0% 0 0);
+ --muted:oklch(51.87% .0029 165);--border:oklch(94.07% .0045 134.85);--accent:oklch(70.6% .1816 28.75);
+ --font-display:'Instrument Sans',-apple-system,system-ui,sans-serif;
+ --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+ --font-mono:ui-monospace,Menlo,monospace;--container:1440px;--gutter:clamp(24px,5.5vw,88px);
+ --radius:24px;--radius-lg:32px;color-scheme:light;scrollbar-color:var(--muted) var(--bg);scrollbar-gutter:stable;
+}
+/* A tiled drafting surface connects the chapters, as in the reference. */
+html{scroll-padding-top:90px}body{overflow-x:clip;background:var(--bg);isolation:isolate}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Crect x='.5' y='.5' width='45' height='45' rx='7' fill='none' stroke='rgb(238,240,237)' stroke-width='.8'/%3E%3C/svg%3E")}
+button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}button{color:inherit;border:0}button:active{transform:scale(.98)}
+a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex="0"]:focus-visible{outline:3px solid var(--fg);outline-offset:6px}
+a:hover{text-decoration:underline;text-underline-offset:5px}figure,blockquote,dl{margin:0}p{margin:0}h1,h2,h3{font-family:var(--font-display);font-weight:500;letter-spacing:-.045em}section{scroll-margin-top:86px}
+.section{padding-block:clamp(72px,9vw,138px)}.section+.section{border:0}.light{background:transparent;color:var(--fg)}
+.kicker,.eyebrow{font:500 12px/1.5 var(--font-body);letter-spacing:0;color:var(--muted);text-transform:none}
+.muted{color:var(--muted)}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.skip-link{position:fixed;left:16px;top:-80px;z-index:100;background:var(--fg);color:var(--bg);padding:14px}.skip-link:focus{top:16px}
+/* Existing portfolio identity and destinations retain their quiet dark frame. */
+.topnav,.pagefoot{--bg:oklch(17.5% .006 80);--fg:oklch(93% .009 85);--muted:oklch(69% .012 85);--border:oklch(32% .008 85);background:var(--bg);color:var(--fg)}
+.topnav{position:relative;border:0;backdrop-filter:none}.topnav-inner{height:82px}.wordmark{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.04em}.wordmark span{color:var(--muted)}
+.topnav nav a{font-size:13px;color:var(--fg);min-height:44px;display:flex;align-items:center}.hero-record{display:flex;align-items:center;gap:9px;font-size:9px;color:var(--muted);letter-spacing:.04em}.hero-record i{width:6px;height:6px;background:var(--fg);border-radius:50%}
+.back-link{display:inline-flex;align-items:center;gap:10px;font:13px var(--font-body);border:1px solid var(--border);border-radius:999px;padding:13px 20px;min-height:46px;background:var(--bg)}.back-link:hover{background:var(--surface);text-decoration:none}
+.reading-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:90;pointer-events:none}.reading-progress span{display:block;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.pagefoot{font-size:10px;padding-block:32px}.pagefoot .meta{font-size:9px;letter-spacing:.06em}.pagefoot a{min-height:44px;display:inline-flex;align-items:center}
+/* Chapter tabs are article navigation, with a compact native disclosure on phones. */
+.chapter-nav{position:sticky;top:0;z-index:30;background:color-mix(in oklch,var(--bg) 96%,transparent);border-bottom:1px solid var(--border)}
+.chapter-nav .container{display:flex;align-items:center;justify-content:center;gap:22px;min-height:78px;padding-block:12px}.chapter-nav strong{display:none}
+.chapter-nav nav{display:flex;justify-content:center;gap:8px}.chapter-nav nav a{display:flex;align-items:center;justify-content:center;min-height:42px;padding:8px 17px;border-radius:999px;font-size:12px;background:color-mix(in oklch,var(--border) 42%,var(--bg));white-space:nowrap;color:var(--muted);transition:background 180ms ease,color 180ms ease}
+.chapter-nav nav a[aria-current]{background:var(--fg);color:var(--bg)}.chapter-nav nav a:hover{background:var(--surface);color:var(--fg);text-decoration:none}.chapter-nav details{display:none}
+.chapter-heading{display:grid;grid-template-columns:1fr 3fr;gap:52px;margin-bottom:76px;align-items:start}.chapter-heading .kicker{padding-top:12px}
+.chapter-heading h2{font-size:clamp(38px,4.6vw,66px);max-width:21ch;line-height:1.05;letter-spacing:-.055em}.chapter-heading p:not(.kicker){max-width:56ch;color:var(--muted);line-height:1.7;font-size:15px;margin-top:26px}
+.text-link{display:inline-flex;align-items:center;gap:28px;min-height:46px;border-bottom:1px solid var(--fg);font-size:13px}.caption{font-size:12px;line-height:1.65;color:var(--muted);margin-top:18px}
+/* Cover: oversized project lettering, mint field and three authentic screens. */
+.cover{padding-top:30px;padding-bottom:70px}.cover>.container{max-width:1600px;padding-inline:clamp(20px,3vw,48px)}
+.project-facts{display:grid;grid-template-columns:.9fr 1fr 1.3fr 1fr .7fr;gap:20px;padding:10px 0 30px}.project-facts>div:last-child{text-align:right}.project-facts dt{font-size:11px;color:var(--muted);margin-bottom:4px}.project-facts dd{margin:0;font-size:13px;font-weight:500;line-height:1.4}
+.cover-panel{position:relative;border-radius:28px;background:var(--surface);padding:60px 24px 26px;overflow:hidden;isolation:isolate}
+.cover h1{font:700 clamp(90px,19.5vw,290px)/.81 var(--font-display);letter-spacing:-.07em;text-align:center;white-space:nowrap;padding-right:.035em}
+.cover-stage{height:650px;margin:-38px auto 0;position:relative;max-width:1160px;isolation:isolate}
+.cover-stage .phone{position:absolute;left:50%;top:0;width:300px;max-width:none}.cover-stage .phone:nth-child(1){z-index:3;transform:translateX(-50%)}
+.cover-stage .phone:nth-child(2){z-index:1;width:242px;top:88px;transform:translateX(-157%) rotate(-11deg)}.cover-stage .phone:nth-child(3){z-index:2;width:242px;top:104px;transform:translateX(57%) rotate(11deg)}
+.cover-stage .phone-shell{box-shadow:0 4px 1px color-mix(in oklch,var(--fg) 25%,transparent),0 28px 40px color-mix(in oklch,var(--fg) 17%,transparent)}
+.cover-label{position:absolute;left:30px;bottom:80px;max-width:17ch;font-size:13px;line-height:1.5}.cover-label::before{content:'';display:block;width:65px;border-top:1px dashed var(--muted);transform:rotate(-27deg);transform-origin:left;margin-bottom:30px}
+.cover-foot{display:flex;justify-content:space-between;gap:20px;padding:14px 12px 0;font-size:11px;color:var(--muted)}
+.cover-caption{display:grid;grid-template-columns:1.5fr 1fr;gap:80px;padding:54px 36px 0;align-items:start}.cover-caption h2{font-size:clamp(26px,3.2vw,44px);max-width:24ch;line-height:1.13}.cover-caption p{font-size:14px;line-height:1.7;max-width:45ch;color:var(--muted)}.cover-caption .text-link{margin-top:16px}
+/* Neutral physical shells preserve the complete source status/navigation regions. */
+.phone{width:min(100%,290px);margin:0;min-width:0;position:relative}.phone-shell{padding:6px;border:2px solid color-mix(in oklch,var(--fg) 68%,var(--bg));border-radius:37px;background:color-mix(in oklch,var(--fg) 91%,var(--bg));box-shadow:inset 0 0 0 1px color-mix(in oklch,var(--fg) 45%,var(--bg)),0 3px 0 color-mix(in oklch,var(--fg) 24%,var(--bg)),0 18px 26px color-mix(in oklch,var(--fg) 8%,transparent);position:relative}
+.phone-shell::before,.phone-shell::after{content:'';position:absolute;width:3px;border-radius:2px;background:color-mix(in oklch,var(--fg) 70%,var(--bg))}.phone-shell::before{left:-4px;top:20%;height:11%}.phone-shell::after{right:-4px;top:25%;height:8%}
+.screen-button{display:block;padding:0;border:0;width:100%;background:transparent;border-radius:28px;overflow:hidden;cursor:zoom-in;aspect-ratio:390/844}.screen-button img{width:100%;height:auto;aspect-ratio:390/844;display:block}.screen-button:active{transform:none}
+.phone figcaption{font-size:12px;line-height:1.65;color:var(--muted);margin-top:27px}.phone figcaption strong{display:block;color:var(--fg);font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:-.02em;margin-bottom:6px}.phone small{font-size:11px}.phone .screen-button:focus-visible{outline-offset:10px}
+/* Context: broad typographic field, then a clear connected-tool diagram. */
+.context-copy{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-left:calc(25% + 13px);padding-top:34px;border-top:1px dashed var(--border)}.context-copy h3{font-size:34px;line-height:1.1}.context-copy p{font-size:14px;color:var(--muted);line-height:1.75}
+.ecosystem{margin-top:72px;padding:48px;border-radius:24px;background:var(--surface);display:grid;grid-template-columns:1fr 2.4fr;gap:64px;align-items:center}.ecosystem-brand{font:650 46px/1 var(--font-display);letter-spacing:-.05em}.ecosystem-brand small{display:block;font:12px/1.6 var(--font-body);color:var(--muted);margin-top:14px;letter-spacing:0}.ecosystem-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;position:relative}.ecosystem-tools::before{content:'';position:absolute;left:-48px;right:0;top:-24px;border-top:1px dashed color-mix(in oklch,var(--fg) 20%,transparent)}.ecosystem-tools div{position:relative;font:500 18px var(--font-display)}.ecosystem-tools div::before{content:'';position:absolute;left:0;top:-28px;width:8px;height:8px;border-radius:50%;background:var(--bg);border:1px solid var(--muted)}.ecosystem-tools small{display:block;color:var(--muted);font:12px/1.6 var(--font-body);margin-top:12px}
+/* The IA chapter uses a readable diagram beside an unchanged source screen. */
+.ia-layout{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(50px,9vw,150px);align-items:center}.ia-layout>.phone{justify-self:center;width:280px}.nav-map{border-top:1px dashed var(--muted)}.nav-map>div{display:grid;grid-template-columns:120px 1fr;gap:24px;padding:23px 0;border-bottom:1px solid var(--border);font-size:16px}.nav-map strong{font-weight:500}.nav-map span{color:var(--muted);font-size:13px;line-height:1.65}.flow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:32px;font-size:12px}.flow span{padding:10px 15px;border:1px solid var(--border);border-radius:999px;background:var(--bg)}.flow i{font-style:normal;color:var(--muted)}.ia-note{font-size:13px;line-height:1.75;color:var(--muted);max-width:52ch;margin-top:26px}.ia-note strong{font-weight:500;color:var(--fg)}
+/* Staggered screens with callouts echo the reference's open UI boards. */
+.communication-layout{display:grid;grid-template-columns:.9fr 1.9fr;gap:70px;align-items:center}.story-controls{display:grid;gap:10px}.story-controls button{text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:18px 23px;display:flex;align-items:center;gap:14px;min-height:62px;color:var(--muted);transition:background 180ms ease,color 180ms ease}.story-controls button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}.story-controls button span{font:500 18px/1.1 var(--font-display);letter-spacing:-.02em}.story-controls button small{font:11px var(--font-mono)}.story-controls button[aria-pressed=true]::after{content:'↗';margin-left:auto}.story-copy{margin-top:28px;font-size:14px;line-height:1.75;color:var(--muted);min-height:110px}.communication-phones{display:flex;justify-content:center;gap:54px;align-items:flex-start;position:relative}.communication-phones>.phone{width:270px}.communication-phones>.phone:last-child{margin-top:170px}.communication-phones::before{content:'';position:absolute;left:10%;right:10%;top:80px;border-top:1px dashed var(--muted)}
+/* Focus: one calm, expansive panel and the complete browseable screen journey. */
+#focus{background:var(--surface);margin-inline:clamp(14px,2.5vw,40px);border-radius:32px}#focus>.container{max-width:1360px}
+.focus-intro{display:grid;grid-template-columns:1fr 1.4fr;gap:90px;align-items:center}.focus-main{justify-self:center;width:min(100%,300px)}.focus-thesis{font:500 clamp(34px,4.2vw,58px)/1.04 var(--font-display);letter-spacing:-.055em;max-width:20ch;margin-bottom:38px}.focus-principles{display:grid;grid-template-columns:1fr 1fr;gap:34px}.focus-principles article{padding-top:20px;border-top:1px dashed color-mix(in oklch,var(--fg) 24%,transparent)}.focus-principles h3{font:550 17px/1.25 var(--font-display);letter-spacing:-.02em;margin-bottom:12px}.focus-principles p{font-size:13px;line-height:1.7;color:var(--muted)}
+.focus-journey{margin-top:100px;padding-top:38px;border-top:1px dashed color-mix(in oklch,var(--fg) 24%,transparent)}.journey-top{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:34px}.journey-top h3{font-size:32px;margin-top:8px}.journey-actions{display:flex;gap:8px}.arrow-button{width:46px;height:46px;border:1px solid color-mix(in oklch,var(--fg) 22%,transparent);border-radius:50%;background:transparent;font-size:21px}.arrow-button:disabled{opacity:.3;cursor:default}.screen-rail{display:flex;gap:34px;overflow:auto;scroll-snap-type:x mandatory;scroll-padding-inline:8px;padding:10px 8px 30px;scrollbar-width:thin;scrollbar-color:var(--muted) var(--surface)}.screen-rail>.phone{flex:0 0 245px;scroll-snap-align:start}.screen-rail .phone-shell{box-shadow:0 10px 18px color-mix(in oklch,var(--fg) 8%,transparent)}.screen-rail figcaption{min-height:60px}.screen-rail figcaption strong{font-size:14px}
+.focus-errors{margin-top:36px;border-top:1px dashed color-mix(in oklch,var(--fg) 24%,transparent);padding:18px 0}.focus-errors summary{font-size:14px;min-height:44px;display:flex;align-items:center;gap:12px;cursor:pointer}.focus-errors summary::before{content:'+';font-size:24px}.focus-errors[open] summary::before{content:'−'}.focus-error-grid{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:40px;align-items:center;padding:30px 0}.focus-error-grid>.phone{width:220px;justify-self:center}.focus-error-grid>p{font-size:14px;line-height:1.75;color:var(--muted)}
+/* Connected-tools composition: two staggered phones, then the third further down. */
+.tools-showcase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:100px;align-items:start;max-width:1080px;margin:0 auto}.tools-showcase>.phone{width:100%}.tools-showcase>.phone:nth-child(2){margin-top:150px}.tools-showcase>.phone:nth-child(3){margin-top:70px}.tools-showcase figcaption{padding-top:20px;border-top:1px dashed var(--muted)}
+.ai-evidence{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;align-items:center;margin-top:100px;padding:70px;border-radius:28px;background:color-mix(in oklch,var(--surface) 58%,var(--bg))}.ai-evidence>.phone{justify-self:center;width:275px}.ai-evidence h3{font-size:clamp(34px,4vw,55px);line-height:1.08;max-width:19ch;margin:20px 0 28px}.ai-evidence p:not(.kicker){font-size:14px;line-height:1.75;color:var(--muted);max-width:43ch}.evidence-note{font-size:11px;color:var(--muted);line-height:1.75;margin-top:32px;max-width:80ch}
+/* Comparison remains grounded in the original versions, without outcome claims. */
+.iteration-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:90px;max-width:1080px;margin:0 auto}.iteration-grid>.phone{width:100%}.iteration-grid>.phone:nth-child(2){margin-top:80px}.iteration-grid>.phone:nth-child(3){margin-top:160px}.iteration-grid figcaption strong{font-size:21px;line-height:1.2;margin-bottom:12px}.iteration-grid figcaption{font-size:13px;line-height:1.7}.iteration-grid .version-label{display:inline-block;padding:7px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font-size:10px;margin-bottom:16px;color:var(--muted)}.iteration-summary{display:grid;grid-template-columns:1fr 2fr;gap:80px;border-top:1px dashed var(--muted);margin-top:72px;padding-top:32px}.iteration-summary h3{font-size:28px}.iteration-summary p{font-size:14px;line-height:1.75;color:var(--muted);max-width:64ch}
+/* Closing is a final product composition, with the portfolio's original return link. */
+.closing{padding:70px clamp(14px,2.5vw,40px) 100px}.reflection-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:100px;align-items:center;background:var(--surface);border-radius:28px;padding-block:80px}.reflection-layout h2{font-size:clamp(44px,5.8vw,80px);line-height:.99;letter-spacing:-.06em;margin:25px 0 32px;max-width:16ch}.reflection-layout p:not(.kicker){font-size:14px;color:var(--muted);line-height:1.8;max-width:47ch}.reflection-layout p+p{margin-top:22px}.reflection-layout>.phone{width:290px;justify-self:center;transform:rotate(7deg)}.reflection-layout .back-link{margin-top:32px;border-color:var(--fg);background:var(--fg);color:var(--bg)}.reflection-layout .evidence-note{font-size:11px!important;margin-top:28px;max-width:52ch!important}
+/* Progressive enhancement: readable before JavaScript, subtle once-only reveals. */
+.reveal{opacity:1}.motion-ready .reveal:not(.is-visible){opacity:0;transform:translateY(18px)}.motion-ready .reveal{transition:opacity 500ms ease,transform 500ms cubic-bezier(.22,1,.36,1)}
+.screen-dialog{background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:24px;padding:0;width:min(95vw,1040px);max-height:94dvh;overflow:auto;scrollbar-color:var(--muted) var(--bg)}.screen-dialog::backdrop{background:color-mix(in oklch,var(--fg) 78%,transparent)}.dialog-bar{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 20px}.dialog-bar h2{font:500 17px/1.4 var(--font-display);letter-spacing:-.02em}.dialog-bar button{min-width:44px;min-height:44px;background:var(--surface);border-radius:50%;font-size:22px}.dialog-content{display:grid;grid-template-columns:1fr 190px;gap:36px;padding:32px;align-items:start}.dialog-content img{width:100%;max-width:540px;height:auto;justify-self:center}.dialog-content p{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:22px}.dialog-content a{display:flex;align-items:center;font-size:12px;min-height:44px;text-decoration:underline}.modal-open{overflow:hidden}
+@media(hover:hover) and (pointer:fine){.screen-button img{transition:opacity 180ms ease}.screen-button:hover img{opacity:.96}.story-controls button:not([aria-pressed=true]):hover{background:var(--surface);color:var(--fg)}.arrow-button:not(:disabled):hover{background:var(--bg)}}
+/* Laptop and tablet: preserve visual weight, reduce empty space. */
+@media(min-width:1600px){.cover-stage{height:720px}.cover-stage .phone:nth-child(1){width:325px}.cover-stage .phone:nth-child(2),.cover-stage .phone:nth-child(3){width:265px}}
+@media(max-width:1100px){.hero-record{display:none}.cover-stage{height:590px}.cover-stage .phone:nth-child(1){width:266px}.cover-stage .phone:nth-child(2),.cover-stage .phone:nth-child(3){width:214px}.cover-label{display:none}.cover-caption{gap:40px;padding-inline:10px}.chapter-nav nav{gap:5px}.chapter-nav nav a{padding-inline:13px}.communication-layout{grid-template-columns:1fr 1.9fr;gap:34px}.communication-phones{gap:30px}.communication-phones>.phone:last-child{margin-top:110px}.focus-intro{gap:55px}.tools-showcase,.iteration-grid{gap:60px}.ai-evidence{gap:55px;padding:48px}.reflection-layout{gap:50px}}
+@media(max-width:920px){.chapter-nav>.container>nav{display:none}.chapter-nav .container{min-height:66px;justify-content:space-between;padding-block:0}.chapter-nav strong{display:block;font:600 20px var(--font-display);letter-spacing:-.04em}.chapter-nav details{display:block;position:relative}.chapter-nav summary{min-height:54px;display:flex;align-items:center;gap:28px;cursor:pointer;font-size:12px}.chapter-nav summary::after{content:'+';font-size:20px}.chapter-nav details[open] summary::after{content:'−'}.chapter-nav details nav{display:grid;position:absolute;right:0;top:56px;width:230px;padding:12px;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:20px;box-shadow:0 12px 30px color-mix(in oklch,var(--fg) 10%,transparent)}.chapter-nav details nav a{justify-content:start;min-height:44px}.chapter-heading{grid-template-columns:1fr 3fr;gap:28px;margin-bottom:56px}.context-copy{margin-left:0;gap:50px}.ecosystem{grid-template-columns:1fr;gap:50px;padding:40px}.ecosystem-tools::before{left:0}.ia-layout{grid-template-columns:1.2fr 1fr;gap:50px}.nav-map>div{grid-template-columns:95px 1fr;gap:15px}.communication-layout{grid-template-columns:1fr}.communication-layout>div:first-child{max-width:650px}.story-controls{display:flex;flex-wrap:wrap;gap:8px}.story-controls button{min-height:46px;padding:13px 17px;gap:9px}.story-controls button span{font-size:15px}.story-controls button small{display:none}.story-copy{min-height:0;max-width:52ch}.communication-phones{gap:75px;margin-top:25px}.communication-phones>.phone{width:260px}.communication-phones>.phone:last-child{margin-top:120px}.focus-intro{grid-template-columns:1fr 1.3fr;gap:35px}.focus-principles{grid-template-columns:1fr;gap:23px}.focus-thesis{font-size:35px}.tools-showcase,.iteration-grid{gap:40px}.tools-showcase>.phone:nth-child(2){margin-top:100px}.ai-evidence{gap:40px;padding:40px}.iteration-summary{gap:40px}.reflection-layout{gap:35px}.reflection-layout>.phone{width:240px}}
+/* Compact tablets and phones: readable screens, purposeful vertical compositions. */
+@media(max-width:600px){:root{--gutter:24px}.topnav-inner{height:72px}.wordmark span{display:none}.topnav nav{gap:20px}.topnav nav a{font-size:12px}.section{padding-block:72px}.cover{padding-top:19px;padding-bottom:48px}.cover>.container{padding-inline:16px}.project-facts{grid-template-columns:1fr 1fr 1fr;gap:14px;padding:0 4px 22px}.project-facts>div:nth-child(3),.project-facts>div:nth-child(5){display:none}.project-facts dt{font-size:10px}.project-facts dd{font-size:11px}.cover-panel{padding:34px 8px 20px;border-radius:20px}.cover h1{font-size:20vw;letter-spacing:-.07em}.cover-stage{height:clamp(390px,110vw,550px);margin:12px auto 0}.cover-stage .phone:nth-child(1){width:clamp(174px,49vw,245px);top:0}.cover-stage .phone:nth-child(2),.cover-stage .phone:nth-child(3){width:clamp(136px,37vw,180px);top:62px}.cover-stage .phone:nth-child(2){transform:translateX(-113%) rotate(-10deg)}.cover-stage .phone:nth-child(3){transform:translateX(13%) rotate(10deg)}.cover-stage .phone-shell{padding:4px;border-radius:25px}.cover-stage .screen-button{border-radius:19px}.cover-foot{padding:16px 12px 0;align-items:center}.cover-foot span{font-size:10px}.cover-foot span:last-child{max-width:13ch;text-align:right}.cover-caption{grid-template-columns:1fr;gap:22px;padding:34px 8px 0}.cover-caption h2{font-size:30px;max-width:22ch}.cover-caption p{font-size:14px}.chapter-heading{grid-template-columns:1fr;gap:20px;margin-bottom:42px}.chapter-heading .kicker{padding:0}.chapter-heading h2{font-size:40px;max-width:17ch}.chapter-heading p:not(.kicker){font-size:14px;margin-top:22px}.context-copy{grid-template-columns:1fr;gap:22px}.context-copy h3{font-size:30px}.ecosystem{margin-top:42px;padding:30px;gap:46px}.ecosystem-brand{font-size:42px}.ecosystem-tools{grid-template-columns:1fr;gap:22px;border-left:1px dashed var(--muted);padding-left:24px}.ecosystem-tools::before{display:none}.ecosystem-tools div::before{left:-29px;top:8px}.ecosystem-tools small{margin-top:5px}.ia-layout{grid-template-columns:1fr;gap:48px}.ia-layout>.phone{width:min(100%,290px)}.nav-map>div{grid-template-columns:100px 1fr}.flow{gap:8px;font-size:11px}.flow span{padding:8px 10px}.communication-layout{gap:25px}.communication-phones{gap:60px;flex-direction:column;align-items:center;margin-top:15px}.communication-phones>.phone{width:min(100%,290px)}.communication-phones>.phone:last-child{margin-top:0}.communication-phones::before{display:none}.phone figcaption{font-size:13px}.phone figcaption strong{font-size:18px}#focus{margin-inline:12px;border-radius:24px}#focus>.container{padding-inline:22px}.focus-intro{grid-template-columns:1fr;gap:48px}.focus-main{width:min(100%,290px)}.focus-thesis{font-size:38px;max-width:17ch}.focus-principles{gap:24px}.focus-principles h3{font-size:19px}.focus-principles p{font-size:14px}.focus-journey{margin-top:56px;padding-top:28px}.journey-top{align-items:end;gap:14px}.journey-top h3{font-size:26px}.journey-top .kicker{font-size:11px}.journey-actions{gap:5px;flex:none}.arrow-button{width:44px;height:44px}.screen-rail{gap:24px}.screen-rail>.phone{flex-basis:245px}.focus-error-grid{grid-template-columns:1fr;gap:34px}.focus-error-grid>.phone{width:min(100%,270px)}.tools-showcase,.iteration-grid{grid-template-columns:1fr;gap:56px}.tools-showcase>.phone,.iteration-grid>.phone{width:min(100%,290px);justify-self:center;margin-top:0!important}.ai-evidence{grid-template-columns:1fr;padding:32px 24px;gap:42px;margin-top:64px}.ai-evidence>.phone{width:min(100%,280px)}.ai-evidence h3{font-size:38px}.iteration-summary{grid-template-columns:1fr;gap:22px;margin-top:44px}.iteration-summary h3{font-size:28px}.closing{padding:28px 12px 58px}.reflection-layout{grid-template-columns:1fr;padding:42px 24px 55px;gap:55px}.reflection-layout h2{font-size:48px;max-width:11ch}.reflection-layout>.phone{width:min(88%,270px);transform:rotate(4deg)}.reflection-layout .evidence-note{font-size:11px!important}.pagefoot .row-between{display:grid;gap:16px}.pagefoot .meta{max-width:28ch;line-height:1.7}.dialog-content{grid-template-columns:1fr;gap:24px;padding:20px}.dialog-bar{gap:14px;padding:10px 16px}.dialog-bar h2{font-size:15px}.dialog-content aside{border-top:1px solid var(--border);padding-top:20px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,.motion-ready .reveal:not(.is-visible){opacity:1;transform:none}.motion-ready .reveal,.screen-button img{transition:none}*,*::before,*::after{animation:none!important;transition-duration:0s!important}}
+@media print{body::before,.topnav,.chapter-nav,.reading-progress,.journey-actions,.screen-dialog{display:none!important}.reveal,.motion-ready .reveal:not(.is-visible){opacity:1;transform:none}.section{break-inside:avoid}.screen-rail{overflow:visible;flex-wrap:wrap}.screen-rail>.phone{flex-basis:190px}.phone{break-inside:avoid}a{color:inherit}.focus-errors{display:block}.cover-stage{height:620px}}
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#context">Skip to the case study</a>
+<div class="reading-progress" aria-hidden="true"><span></span></div>
+<header class="topnav" data-od-id="topnav"><div class="container topnav-inner"><a class="wordmark" href="./index.html" aria-label="Ajinkya Khanapurkar portfolio">AK <span>/ PORTFOLIO</span></a><nav aria-label="Main navigation"><a href="./index.html#work">Work</a><a href="./index.html#about">About</a><a href="./index.html#contact">Contact</a></nav><span class="hero-record"><i aria-hidden="true"></i>THROUGH THE 35MM LENS</span></div></header>
+<main id="content">
+<!-- Layout 1: editorial hero with source screenshots, adapted to the existing portfolio. -->
+<section class="section hero cover" id="overview" data-od-id="chat-pf-hero"><div class="container">
+<dl class="project-facts"><div><dt>Role</dt><dd>UX/UI Design</dd></div><div><dt>Platform</dt><dd>Mobile Application</dd></div><div><dt>Domain</dt><dd>Collaboration / Productivity</dd></div><div><dt>Organisation</dt><dd>Pristine Forests</dd></div><div><dt>Context</dt><dd>Office OS</dd></div></dl>
+<div class="cover-panel">
+<h1>CHAT PF<span class="sr-only"> — A connected workspace for communication and collaboration.</span></h1>
+<div class="cover-stage"><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="home" data-title="Messages and channel list" aria-label="Enlarge Messages and channel list"><img src="./assets/chat-pf/home.webp" width="780" height="1688" alt="Messages and channel list — authentic Chat PF mobile Figma screen" loading="eager" decoding="async" fetchpriority="high"></button></div></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="channel" data-title="Design channel conversation" aria-label="Enlarge Design channel conversation"><img src="./assets/chat-pf/channel.webp" width="780" height="1688" alt="Design channel conversation — authentic Chat PF mobile Figma screen" loading="eager" decoding="async" fetchpriority="high"></button></div></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-setup" data-title="Focus Mode setup" aria-label="Enlarge Focus Mode setup"><img src="./assets/chat-pf/focus-setup.webp" width="780" height="1688" alt="Focus Mode setup — authentic Chat PF mobile Figma screen" loading="eager" decoding="async" fetchpriority="high"></button></div></figure><p class="cover-label">Conversations.<br>Context.<br>A little more focus.</p></div>
+<div class="cover-foot"><span>UX/UI design by Ajinkya Khanapurkar</span><span>A mobile experience for Office OS</span></div>
+</div>
+<div class="cover-caption"><h2>A connected workspace for communication and collaboration.</h2><div><p>Exploring how conversations, collaboration and business tools can come together in one mobile experience.</p><a class="text-link" href="#context">Explore the case study <span aria-hidden="true">↘</span></a></div></div>
+</div></section>
+<div class="chapter-nav"><div class="container"><strong>Chat PF</strong><nav aria-label="Case study chapters"><a href="#context">About project</a><a href="#structure">Architecture</a><a href="#communication">UI design</a><a href="#focus">Focus Mode</a><a href="#connected">Ecosystem</a><a href="#iterations">Iterations</a><a href="#reflection">Reflection</a></nav><details><summary>In this case study</summary><nav aria-label="Case study chapters, compact"><a href="#context">About project</a><a href="#structure">Architecture</a><a href="#communication">UI design</a><a href="#focus">Focus Mode</a><a href="#connected">Ecosystem</a><a href="#iterations">Iterations</a><a href="#reflection">Reflection</a></nav></details></div></div>
+<!-- Layout 2: contextual editorial split, followed by a source-grounded ecosystem map. -->
+<section class="section light" id="context" data-od-id="project-context" aria-label="Project context"><div class="container">
+<header class="chapter-heading"><p class="kicker">01 / The project</p><div><h2>More than just another messaging application.</h2><p>Chat PF explores a communication layer for Office OS: a place where conversations sit alongside the tools, documents and decisions that give them context.</p></div></header>
+<div class="context-copy"><h3>A familiar entry point.<br>A wider workspace.</h3><p>The mobile challenge is one of structure: make conversations easy to reach while keeping a growing set of work tools understandable on a small screen. The design brings chat, shared content and contextual updates into the same environment.</p></div>
+<div class="ecosystem" aria-label="Chat PF within the Office OS design"><div class="ecosystem-brand">Chat PF<small>Communication within Office OS</small></div><div class="ecosystem-tools"><div>Content Hub<small>Reviews &amp; updates</small></div><div>Meeting Assistant<small>Summaries &amp; actions</small></div><div>ERP<small>Requests &amp; to-dos</small></div></div></div><p class="evidence-note">A design study of the mobile experience. The screens illustrate product behaviour; they do not establish a launch or implementation status.</p>
+</div></section>
+<!-- Layout 7 + split: observable navigation structure rather than invented research. -->
+<section class="section light" id="structure" data-od-id="experience-structure"><div class="container">
+<header class="chapter-heading"><p class="kicker">02 / Information architecture</p><div><h2>Bringing structure to connected workflows.</h2><p>The navigation separates everyday communication from workspace tools. Within chat, channels, direct messages and message-level actions provide progressively more context.</p></div></header>
+<div class="ia-layout"><div><div class="nav-map" role="list" aria-label="Navigation shown in the mobile designs"><div role="listitem"><strong>Chat</strong><span>Channels, direct messages, threads and mentions</span></div><div role="listitem"><strong>Canvas</strong><span>Shared documents and their conversation context</span></div><div role="listitem"><strong>Meetings</strong><span>Meeting Assistant and connected meeting knowledge</span></div><div role="listitem"><strong>Calendar</strong><span>Meetings and daily agenda</span></div><div role="listitem"><strong>Beyond the rail</strong><span>Personal, Directory and Projects</span></div></div><div class="flow" aria-label="Illustrated conversation-to-task path"><span>Conversation</span><i aria-hidden="true">→</i><span>Message actions</span><i aria-hidden="true">→</i><span>Create task</span></div><p class="ia-note"><strong>A mobile trade-off:</strong> the sliding navigation rail keeps destinations within reach, but some sit outside the first visible group. Discoverability remains an important consideration.</p><p class="caption">Navigation map reconstructed from the selected Figma screens.</p></div><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="task" data-title="Create a task from a message" aria-label="Enlarge Create a task from a message"><img src="./assets/chat-pf/task.webp" width="780" height="1688" alt="Create a task from a message — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>Keep the original context close.</strong>The task sheet carries the message into the next action.</figcaption></figure></div>
+</div></section>
+<!-- Layout 2: communication story with real screen states. -->
+<section class="section communication" id="communication" data-od-id="core-communication"><div class="container">
+<header class="chapter-heading"><p class="kicker">03 / The everyday experience</p><div><h2>Communication at the centre of work.</h2><p>Channels provide a shared space. Threads hold a focused exchange. Direct messages stay accessible from the conversation list. Each view keeps the next action close to the conversation.</p></div></header>
+<div class="communication-layout"><div><div class="story-controls" aria-label="Explore communication screens"><button type="button" data-story="channel" aria-pressed="true"><small>01</small><span>Conversations</span></button><button type="button" data-story="thread" aria-pressed="false"><small>02</small><span>Threaded replies</span></button><button type="button" data-story="task" aria-pressed="false"><small>03</small><span>Into a task</span></button><button type="button" data-story="canvas" aria-pressed="false"><small>04</small><span>Shared canvas</span></button></div><p class="story-copy" id="story-description" aria-live="polite">Channels and direct messages share the home list. The channel view brings messages, files and replies into one readable conversation.</p><p class="caption">Select a chapter to inspect its original screen.</p></div><div class="communication-phones"><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="home" data-title="Messages and channel list" aria-label="Enlarge Messages and channel list"><img src="./assets/chat-pf/home.webp" width="780" height="1688" alt="Messages and channel list — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>A place to return to.</strong>Channels and direct messages in one list.</figcaption></figure><figure class="phone story-device"><div class="phone-shell"><button class="screen-button" data-screen="channel" data-title="Design channel conversation" aria-label="Enlarge Design channel conversation"><img src="./assets/chat-pf/channel.webp" width="780" height="1688" alt="Design channel conversation — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong id="story-caption">Context in the conversation.</strong><span id="story-note">Messages, attachments and thread replies.</span></figcaption></figure></div></div>
+</div></section>
+<!-- Layout 2 + horizontal source evidence: a dedicated Focus Mode chapter. -->
+<section class="section light" id="focus" data-od-id="focus-mode"><div class="container">
+<header class="chapter-heading"><p class="kicker">04 / Attention, on purpose</p><div><h2>Making room for focused work.</h2><p>Focus Mode treats visibility, access and notifications as separate choices. A quieter workspace can still leave room for the people and information that matter.</p></div></header>
+<div class="focus-intro"><figure class="phone focus-main reveal"><div class="phone-shell"><button class="screen-button" data-screen="focus-setup" data-title="Focus Mode setup" aria-label="Enlarge Focus Mode setup"><img src="./assets/chat-pf/focus-setup.webp" width="780" height="1688" alt="Focus Mode setup — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div></figure><div><p class="focus-thesis">Choose what stays.<br>Decide what can wait.</p><div class="focus-principles"><article><h3>A profile and a duration</h3><p>The available flow starts with Default focus and offers preset or custom session duration.</p></article><article><h3>Access stays intentional</h3><p>Choose visible modules and keep direct messages accessible, independently of muted alerts.</p></article><article><h3>People can still reach you</h3><p>Selected contacts can bypass muted notifications for urgent communication.</p></article><article><h3>Tools have their own rules</h3><p>Mute integrated-tool notifications, or choose important alerts while the tools remain available.</p></article></div><p class="evidence-note">Profile creation is outside the available companion flow; the controls shown here are the verified configuration journey.</p></div></div>
+<div class="focus-journey"><div class="journey-top"><div><p class="kicker">From setup to completion</p><h3>The Focus Mode journey.</h3></div><div class="journey-actions"><button class="arrow-button" data-rail-dir="-1" aria-label="Previous Focus Mode screens">←</button><button class="arrow-button" data-rail-dir="1" aria-label="Next Focus Mode screens">→</button></div></div><div class="screen-rail" id="focus-rail" tabindex="0" role="region" aria-label="Focus Mode screen sequence, scroll horizontally">
+<figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-entry" data-title="Open Focus Mode" aria-label="Enlarge Open Focus Mode"><img src="./assets/chat-pf/focus-entry.webp" width="780" height="1688" alt="Open Focus Mode — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>01 · Open Focus Mode</strong>Start from the personal workspace.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-setup" data-title="Choose a session" aria-label="Enlarge Choose a session"><img src="./assets/chat-pf/focus-setup.webp" width="780" height="1688" alt="Choose a session — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>02 · Choose a session</strong>Profile, duration and access.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-modules" data-title="Choose visible modules" aria-label="Enlarge Choose visible modules"><img src="./assets/chat-pf/focus-modules.webp" width="780" height="1688" alt="Choose visible modules — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>03 · Choose visible modules</strong>Decide what stays in navigation.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-notifications" data-title="Set notification rules" aria-label="Enlarge Set notification rules"><img src="./assets/chat-pf/focus-notifications.webp" width="780" height="1688" alt="Set notification rules — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>04 · Set notification rules</strong>Separate message and tool alerts.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-tools" data-title="Tune each tool" aria-label="Enlarge Tune each tool"><img src="./assets/chat-pf/focus-tools.webp" width="780" height="1688" alt="Tune each tool — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>05 · Tune each tool</strong>Muted, important or all alerts.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-people" data-title="Allow urgent contacts" aria-label="Enlarge Allow urgent contacts"><img src="./assets/chat-pf/focus-people.webp" width="780" height="1688" alt="Allow urgent contacts — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>06 · Allow urgent contacts</strong>Selected people can reach you.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-active" data-title="Enter the focused view" aria-label="Enlarge Enter the focused view"><img src="./assets/chat-pf/focus-active.webp" width="780" height="1688" alt="Enter the focused view — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>07 · Enter the focused view</strong>Keep the session and context visible.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-session" data-title="Manage the session" aria-label="Enlarge Manage the session"><img src="./assets/chat-pf/focus-session.webp" width="780" height="1688" alt="Manage the session — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>08 · Manage the session</strong>Review the current focus session.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-extend" data-title="Extend the duration" aria-label="Enlarge Extend the duration"><img src="./assets/chat-pf/focus-extend.webp" width="780" height="1688" alt="Extend the duration — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>09 · Extend the duration</strong>Change the time without starting over.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-active-extended" data-title="Continue the session" aria-label="Enlarge Continue the session"><img src="./assets/chat-pf/focus-active-extended.webp" width="780" height="1688" alt="Continue the session — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>10 · Continue the session</strong>Return to the active workspace.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-complete" data-title="Complete the session" aria-label="Enlarge Complete the session"><img src="./assets/chat-pf/focus-complete.webp" width="780" height="1688" alt="Complete the session — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>11 · Complete the session</strong>A clear end to the focus flow.</figcaption></figure></div><p class="caption">Swipe or use the arrows. Select any phone to inspect the complete export.</p></div>
+<details class="focus-errors"><summary>When a focus session cannot start or end</summary><div class="focus-error-grid"><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-start-error" data-title="Focus could not start" aria-label="Enlarge Focus could not start"><img src="./assets/chat-pf/focus-start-error.webp" width="780" height="1688" alt="Focus could not start — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>Starting a session</strong>Source failure state.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="focus-end-error" data-title="Focus could not end" aria-label="Enlarge Focus could not end"><img src="./assets/chat-pf/focus-end-error.webp" width="780" height="1688" alt="Focus could not end — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>Ending a session</strong>Source failure state.</figcaption></figure><p>The available designs also account for failure. Showing these states keeps the journey grounded in more than its ideal path.</p></div></details>
+</div></section>
+<!-- Layout 2 / full-width visual: available ecosystem integrations, no unsupported claims. -->
+<section class="section" id="connected" data-od-id="connected-office-os"><div class="container">
+<header class="chapter-heading"><p class="kicker">05 / The connected workspace</p><div><h2>Moving beyond conversations.</h2><p>The mobile designs bring selected Office OS updates into chat. Content reviews, meeting context and employee requests each retain a clear source and a relevant next action.</p></div></header>
+<div class="tools-showcase"><figure class="phone reveal"><div class="phone-shell"><button class="screen-button" data-screen="content-hub" data-title="Content Hub updates in chat" aria-label="Enlarge Content Hub updates in chat"><img src="./assets/chat-pf/content-hub.webp" width="780" height="1688" alt="Content Hub updates in chat — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>Content Hub</strong>Review requests, edits and mentions, with their source context.</figcaption></figure><figure class="phone reveal"><div class="phone-shell"><button class="screen-button" data-screen="meeting" data-title="Meeting Assistant video summary" aria-label="Enlarge Meeting Assistant video summary"><img src="./assets/chat-pf/meeting.webp" width="780" height="1688" alt="Meeting Assistant video summary — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>Meeting Assistant</strong>Recording, summary and meeting detail in a mobile view.</figcaption></figure><figure class="phone reveal"><div class="phone-shell"><button class="screen-button" data-screen="erp" data-title="ERP bot requests and to-dos" aria-label="Enlarge ERP bot requests and to-dos"><img src="./assets/chat-pf/erp.webp" width="780" height="1688" alt="ERP bot requests and to-dos — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><strong>ERP</strong>Personal requests and to-dos surfaced through a dedicated bot.</figcaption></figure></div>
+<div class="ai-evidence"><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="assistant" data-title="Meeting Assistant sourced answer" aria-label="Enlarge Meeting Assistant sourced answer"><img src="./assets/chat-pf/assistant.webp" width="780" height="1688" alt="Meeting Assistant sourced answer — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div></figure><div><p class="kicker">Contextual assistance</p><h3>An answer with a way back to its source.</h3><p>The Ask screen places an answer alongside meeting references and a jump-back action. The design makes the supporting context visible instead of leaving the response as an isolated piece of text.</p><p class="evidence-note">Shown as interface design. Live AI accuracy, automation and integration behaviour are not evaluated in this case study.</p></div></div>
+</div></section>
+<!-- Layout 8 adapted to a visual comparison: every version is an original export. -->
+<section class="section light" id="iterations" data-od-id="design-iterations"><div class="container">
+<header class="chapter-heading"><p class="kicker">06 / Exploration &amp; refinement</p><div><h2>From exploration to a more structured mobile experience.</h2><p>Three source layouts show a visible change in the way the workspace is framed. The comparison focuses on what changed on screen; it does not attribute those changes to unverified testing or feedback.</p></div></header>
+<div class="iteration-grid"><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="early-home" data-title="Earlier PF Chat channel list" aria-label="Enlarge Earlier PF Chat channel list"><img src="./assets/chat-pf/early-home.webp" width="780" height="1688" alt="Earlier PF Chat channel list — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><span class="version-label">Earlier mobile layout</span><strong>Channel-first structure.</strong>A dedicated channel list establishes the basic communication hierarchy.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="floating-home" data-title="Floating-card mobile exploration" aria-label="Enlarge Floating-card mobile exploration"><img src="./assets/chat-pf/floating-home.webp" width="780" height="1688" alt="Floating-card mobile exploration — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><span class="version-label">Floating-card exploration</span><strong>A contained workspace.</strong>The conversation list and navigation sit on separate rounded surfaces.</figcaption></figure><figure class="phone "><div class="phone-shell"><button class="screen-button" data-screen="home" data-title="Current flat mobile collection" aria-label="Enlarge Current flat mobile collection"><img src="./assets/chat-pf/home.webp" width="780" height="1688" alt="Current flat mobile collection — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div><figcaption><span class="version-label">Current flat collection</span><strong>A more continuous canvas.</strong>The outer floating panel gives way to an edge-to-edge layout, while the channel and message hierarchy remains recognizable.</figcaption></figure></div>
+<div class="iteration-summary"><h3>What the comparison reveals.</h3><p>The strongest visible shift is in the container system: from a framed workspace to a flatter mobile surface. My takeaway is to judge visual structure against access and readability, rather than treating a new visual treatment as proof of better usability.</p></div>
+</div></section>
+<!-- Layout 6: a personal reflection and one meaningful return action. -->
+<section class="section closing" id="reflection" data-od-id="reflection"><div class="container reflection-layout"><div><p class="kicker">07 / Reflection</p><h2>Designing beyond individual screens.</h2><p>Chat PF makes me think about mobile design as a connected system: where a conversation begins, how its context travels, and what a person can choose to keep out of view.</p><p>The balance is between access and density. Bringing desktop-oriented tools onto a phone means deciding what stays visible, what opens when needed, and how someone finds their way back.</p><a class="back-link" href="./index.html#projects">← Back to selected work</a><p class="evidence-note">UX/UI design for Pristine Forests within Office OS. This case study presents design work and exploration, without claiming launch, measured outcomes or sole ownership of the product.</p></div><figure class="phone reveal"><div class="phone-shell"><button class="screen-button" data-screen="focus-active" data-title="Chat PF focused workspace" aria-label="Enlarge Chat PF focused workspace"><img src="./assets/chat-pf/focus-active.webp" width="780" height="1688" alt="Chat PF focused workspace — authentic Chat PF mobile Figma screen" loading="lazy" decoding="async" ></button></div></figure></div></section>
+</main>
+<footer class="pagefoot" data-od-id="footer"><div class="container row-between"><span>© <span id="year">2026</span> AJINKYA KHANAPURKAR</span><span class="meta">MADE WITH INTENTION. SEEN THROUGH A DIFFERENT LENS.</span><a href="#overview">BACK TO TOP ↑</a></div></footer>
+<dialog class="screen-dialog" aria-labelledby="viewer-title"><div class="dialog-bar"><h2 id="viewer-title">Chat PF source screen</h2><button type="button" id="viewer-close" aria-label="Close source screen">×</button></div><div class="dialog-content"><img id="viewer-image" alt="" width="780" height="1688"><aside><p>Original Figma export. The interface is shown unchanged.</p><a id="viewer-source" target="_blank" rel="noopener noreferrer">View frame in Figma ↗</a><a id="viewer-download" download>Download PNG export ↓</a></aside></div></dialog>
+
+<script>
+
+/* Article behaviour only. Screenshot controls never impersonate the application. */
+const frameIds={"home":"1806:57544","channel":"1806:42287","thread":"1806:49796","task":"1806:48087","canvas":"1806:65991","focus-entry":"1807:58641","focus-setup":"1807:58805","focus-modules":"1807:58872","focus-notifications":"1807:58933","focus-tools":"1807:59004","focus-people":"1807:59068","focus-start-error":"1807:59131","focus-active":"1807:59184","focus-session":"1807:59316","focus-extend":"1807:59373","focus-active-extended":"1807:59421","focus-end-error":"1807:59559","focus-complete":"1807:59604","content-hub":"1806:61481","erp":"1806:62771","meeting":"1806:74052","assistant":"1806:73061","floating-home":"825:17297","early-home":"189:22994"};
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+const dialog=document.querySelector('.screen-dialog');
+let previousFocus=null;
+document.addEventListener('click',event=>{
+ const trigger=event.target.closest('[data-screen]');
+ if(trigger){
+  const slug=trigger.dataset.screen,title=trigger.dataset.title;
+  if(!frameIds[slug])return;
+  previousFocus=trigger;
+  document.querySelector('#viewer-title').textContent=title;
+  const img=document.querySelector('#viewer-image');img.src='./assets/chat-pf/'+slug+'.webp';img.alt=title+' — complete original Figma export';
+  document.querySelector('#viewer-source').href='https://www.figma.com/design/Laprr6ftiO67InVfi01KZY/Chat-PF?node-id='+frameIds[slug].replace(':','-');
+  document.querySelector('#viewer-download').href='./assets/chat-pf/'+slug+'.png';
+  dialog.showModal();document.documentElement.classList.add('modal-open');document.querySelector('#viewer-close').focus();
+ }
+});
+document.querySelector('#viewer-close').addEventListener('click',()=>dialog.close());
+dialog.addEventListener('click',event=>{if(event.target===dialog){const b=dialog.getBoundingClientRect();if(event.clientX<b.left||event.clientX>b.right||event.clientY<b.top||event.clientY>b.bottom)dialog.close();}});
+dialog.addEventListener('close',()=>{document.documentElement.classList.remove('modal-open');previousFocus?.focus({preventScroll:true});});
+const stories={
+ channel:{title:'Design channel conversation',heading:'Context in the conversation.',note:'Messages, attachments and thread replies.',copy:'Channels and direct messages share the home list. The channel view brings messages, files and replies into one readable conversation.'},
+ thread:{title:'Threaded replies in the Design channel',heading:'Room for a focused exchange.',note:'A reply view with a clear route back to the channel.',copy:'A dedicated thread collects replies around the original message. Following and reply controls stay close to the exchange.'},
+ task:{title:'Create a task from a message',heading:'Carry the message forward.',note:'A task sheet opened from the conversation.',copy:'The task-creation sheet keeps the source message visible alongside the next action. The communication remains part of the work context.'},
+ canvas:{title:'Shared canvas editor',heading:'A shared space beside the chat.',note:'The original mobile canvas editor.',copy:'The canvas view gives shared writing its own space. This screen shows how a document can sit within the wider mobile workspace.'}
+};
+document.querySelectorAll('[data-story]').forEach(button=>button.addEventListener('click',()=>{
+ const key=button.dataset.story,data=stories[key];
+ document.querySelectorAll('[data-story]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+ const target=document.querySelector('.story-device .screen-button');target.dataset.screen=key;target.dataset.title=data.title;target.setAttribute('aria-label','Enlarge '+data.title);
+ const img=target.querySelector('img');img.src='./assets/chat-pf/'+key+'.webp';img.alt=data.title+' — authentic Chat PF Figma screen';
+ document.querySelector('#story-description').textContent=data.copy;document.querySelector('#story-caption').textContent=data.heading;document.querySelector('#story-note').textContent=data.note;
+}));
+const rail=document.querySelector('#focus-rail');
+const railButtons=[...document.querySelectorAll('[data-rail-dir]')];
+function updateRail(){railButtons[0].disabled=rail.scrollLeft<2;railButtons[1].disabled=rail.scrollLeft+rail.clientWidth>=rail.scrollWidth-2;}
+railButtons.forEach(b=>b.addEventListener('click',()=>rail.scrollBy({left:Number(b.dataset.railDir)*Math.max(250,rail.clientWidth*.8),behavior:reduced.matches?'instant':'smooth'})));
+rail.addEventListener('scroll',updateRail,{passive:true});window.addEventListener('resize',updateRail,{passive:true});updateRail();
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',event=>{
+ const target=document.querySelector(a.getAttribute('href'));if(!target)return;
+ event.preventDefault();a.closest('details')?.removeAttribute('open');
+ window.scrollTo({top:target.getBoundingClientRect().top+window.scrollY-72,behavior:reduced.matches?'instant':'smooth'});
+ history.replaceState(null,'',a.getAttribute('href'));target.setAttribute('tabindex','-1');target.focus({preventScroll:true});
+}));
+let pending=false;
+function updateProgress(){pending=false;const total=document.documentElement.scrollHeight-window.innerHeight;document.querySelector('.reading-progress span').style.transform='scaleX('+Math.max(0,Math.min(1,total>0?window.scrollY/total:0))+')';}
+window.addEventListener('scroll',()=>{if(!pending){pending=true;requestAnimationFrame(updateProgress);}},{passive:true});window.addEventListener('resize',updateProgress);updateProgress();
+if('IntersectionObserver'in window){
+ const spy=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)document.querySelectorAll('.chapter-nav a').forEach(a=>{if(a.hash==='#'+entry.target.id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}),{rootMargin:'-15% 0px -65% 0px'});
+ document.querySelectorAll('main>section[id]').forEach(section=>spy.observe(section));
+ if(!reduced.matches){
+  const reveal=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');reveal.unobserve(entry.target);}}),{threshold:.08});
+  document.documentElement.classList.add('motion-ready');document.querySelectorAll('.reveal').forEach(el=>reveal.observe(el));
+ }
+}
+document.querySelector('#year').textContent=new Date().getFullYear();
+
+</script>
+</body>
+</html>

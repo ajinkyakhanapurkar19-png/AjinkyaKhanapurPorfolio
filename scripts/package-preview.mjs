@@ -9,17 +9,13 @@ const selectedPage=process.argv.find(arg=>arg.startsWith('--page='))?.slice(7);
 // Keep the story readable before JavaScript loads and in the file preview.
 const renderer=await createServer({server:{middlewareMode:true},appType:'custom'});
 const prerendered=new Map();
-const templateEntries={
- 'case-study.html':'/src/case-study.jsx',
- 'content-hub-case-study.html':'/src/templates/content-hub/Page.jsx',
- 'vr-case-study.html':'/src/templates/vr/Page.jsx',
- 'shotgun-case-study.html':'/src/templates/shotgun-original/Page.jsx',
+const caseStudyEntries={
  'pristine-forests-case-study.html':'/src/pristine/Page.jsx',
  'gsc-case-study.html':'/src/gsc/Page.jsx',
  'artist-studio-case-study.html':'/src/artist-studio/Page.jsx'
 };
 try{
- for(const [page,entry] of Object.entries(templateEntries)){
+ for(const [page,entry] of Object.entries(caseStudyEntries)){
   if(selectedPage && page!==selectedPage)continue;
   const {default:Page}=await renderer.ssrLoadModule(entry);
   prerendered.set(page,renderToString(React.createElement(Page)));
@@ -72,7 +68,5 @@ if(!selectedPage)await rm('bundles',{recursive:true,force:true});
 await mkdir('bundles',{recursive:true});
 await cp('dist/bundles','bundles',{recursive:true});
 // Path-based screenshot slots remain editable without adding JS imports.
-await cp('public/assets/pristine-forests','assets/pristine-forests',{recursive:true});
-await cp('public/assets/gsc','assets/gsc',{recursive:true});
-await cp('public/assets/artist-studio','assets/artist-studio',{recursive:true});
+await cp('public/assets','assets',{recursive:true});
 console.log(`Packaged ${pages.join(', ')} with inline CSS and local JS/asset bundles.`);

@@ -4,4 +4,4 @@ Current image bindings are in `app/src/artist-studio/evidence.json`. The exhibit
 
 The case study links to https://www.pristineforests.com/pages/artist-studio?gallery=artist-profile. An unused local gallery copy was removed during cleanup; the portfolio does not ship its large gallery model.
 
-Artwork: Pankaj Saroj. Gallery foundation: Art Gallery by denis_cliofas, licensed under CC BY 4.0. The case-study footer preserves these credits. The camera portfolio’s Pristine Forests logo lives in `assets/brand/pristine-forests.png`.
+Artwork: Pankaj Saroj. Gallery foundation: Art Gallery by denis_cliofas, licensed under CC BY 4.0. The case-study footer preserves these credits.

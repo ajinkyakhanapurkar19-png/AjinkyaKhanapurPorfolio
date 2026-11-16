@@ -19,8 +19,8 @@ Run `npm run build`. Vite copies this directory to `dist/assets/pristine-forests
 - Keep `src: ''` for missing screenshots. Missing or broken paths display labelled placeholders.
 - Existing website captures must be authentic. Do not reconstruct or infer the old UI.
 - `width` and `height` reserve the presentation area. Long screenshots scroll inside the device frame; enlargement controls are intentionally removed.
-- The mobile collection is in `app/src/pristine/mobile-screens.json`: 37 final-canvas designs grouped into six journeys. Original exports and presentation-only crop bounds are recorded in `reference/pristine/mobile-completion/`. The earlier navigation study remains available alongside these screens.
-- The same screenshot can appear in the hero, responsive comparison, and final showcase through a single content record.
+- The mobile collection and its Figma source IDs are in `app/src/pristine/mobile-screens.json`. `content.js` selects the screens shown on the current page.
+- The page keeps each UI showcase in its intended chapter; avoid repeating it in later showcases.
 - Research-board screenshots need attribution. They are external references, not original designs.
 - Role, duration, reflections, and outcomes are also in `app/src/pristine/content.js`.
 - The page remains `noindex` until its evidence and personal details are completed.

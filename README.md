@@ -1,6 +1,6 @@
 # Through the 35mm Lens
 
-Ajinkya Khanapurkar’s portfolio, built with React 18, Vite, Three.js, React Three Fiber and GSAP. Includes the Pristine Forests, Growth Supercharge and Artist Studio case studies.
+Ajinkya Khanapurkar’s portfolio, built with React 18, Vite, Three.js, React Three Fiber and GSAP. Includes the Pristine Forests, Growth Supercharge, Artist Studio and Chat PF case studies.
 
 ## Run locally
 
@@ -26,19 +26,21 @@ Deploy the contents of `dist/` to a static host. The build also creates root HTM
 
 | Page | Source |
 | --- | --- |
-| `index.html` | `app/src/main.jsx`, `content.js`, `project-stack.jsx` |
+| `index.html` | `app/src/main.jsx`, `content.js`, `work-gallery.jsx` |
 | `pristine-forests-case-study.html` | `app/src/pristine/` |
 | `gsc-case-study.html` | `app/src/gsc/` |
 | `artist-studio-case-study.html` | `app/src/artist-studio/` |
+| `chat-pf-case-study.html` | `app/chat-pf-case-study.html` (standalone HTML, inline CSS and JavaScript) |
 
-The original reference templates remain available separately: `case-study.html`, `content-hub-case-study.html`, `vr-case-study.html`, and `shotgun-case-study.html`. Their original author names and claims are reference content, not Ajinkya’s project claims. They are marked `noindex`.
+Only these five pages are built. Standalone reference pages and their unused components/assets have been removed. Shared case-study navigation, image viewing and styles live in `app/src/reference-case/`; `app/src/mount.jsx` provides their common page bootstrap.
 
 ## Assets
 
-- `assets/`: imported camera model, portfolio photographs, résumé, logos, fonts and template images.
-- `public/assets/`: path-based case-study screenshots, recordings and supporting evidence. These are copied into the build and the root preview.
+- `assets/`: imported camera model, portfolio photographs, résumé, fonts and the root preview’s case-study assets.
+- `public/assets/`: editable path-based case-study screenshots, recordings and supporting evidence. These are copied into `dist/assets/` and merged into `assets/` when packaging the root preview. These copies are required for the two output locations.
 - `app/assets`: relative symlink to `../assets` for source preview paths. Keep this symlink when copying the project.
-- `licenses/`, font license files and `reference/sony-asset-report.md`: attribution and model provenance.
+- `licenses/` and font license files: attribution and model provenance.
+- `assets/chat-pf/source-manifest.json`: Figma frame provenance. WebP files display the UI; the original PNG files serve the full-resolution download links.
 
 To replace case-study visuals, edit the relevant `content.js`, `evidence.json` or media component. Keep screenshot aspect ratios and existing presentation dimensions. Project role, duration and outcomes must reflect supplied evidence.
 
@@ -58,12 +60,12 @@ After building:
 node scripts/verify.mjs
 node --experimental-vm-modules scripts/verify-preview.mjs
 node scripts/verify-camera.mjs
-node scripts/verify-project-stack.mjs
+node scripts/verify-work-gallery.mjs
 node scripts/verify-mobile.mjs
 ```
 
-These check content, local asset paths, preview module loading, camera geometry, responsive font metrics and motion state calculations. They do not replace rendered visual review or real-device touch and performance testing.
+These check content, local asset paths, preview module loading, camera geometry, responsive font metrics and gallery lifecycle hooks. They do not replace rendered visual review or real-device touch and performance testing.
 
 ## Cleanup
 
-The October 2026 cleanup removed unused local gallery files, superseded source layouts, original recording uploads, session screenshots, old export scripts and design-session backups. The active source, current assets, original template components and licenses remain. A local recovery copy and checksummed removal manifest are kept outside Design Files; they are not part of this repository.
+The November 2026 cleanup removed standalone Shotgun, Content Hub, VR and generic reference pages, unused template assets, obsolete project-stack code, historical snapshots and redundant uploads. The build regenerates `dist/`, `bundles/` and root HTML previews. Active source, current assets and attribution remain.

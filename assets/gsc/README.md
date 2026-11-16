@@ -2,6 +2,6 @@
 
 Imported visual assets and source views from the corresponding Open Design project.
 
-Mappings: `app/src/gsc/evidence.json`. Full provenance, dates, model attribution and remaining gaps: `reference/source-import/README.md` and `manifest.json`.
+Current image mappings: `app/src/gsc/screenshot-surfaces.js`. Live HTML interface fragments: `app/src/gsc/source-surfaces.json`.
 
-Original template layouts are preserved. HTML evidence views are script-free static excerpts of the actual source; gallery images are dated captures, not new renders.
+The live interface fragments use images from `source-views/`. Standalone HTML captures used by the previous case-study version have been removed; the current screenshots and embedded interface fragments remain.

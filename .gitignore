@@ -27,8 +27,7 @@ node_modules/
 /*.mov
 /*.mp4
 /*.pdf
-/reference/*
-!/reference/sony-asset-report.md
+/reference/
 /PLAN.md
 /critique.json
 /premium-audit.json

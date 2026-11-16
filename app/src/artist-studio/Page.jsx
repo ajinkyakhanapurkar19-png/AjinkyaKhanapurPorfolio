@@ -8,7 +8,7 @@ import {PortfolioBackLink, NextProject} from '../reference-case/ProjectNavigatio
 import '../reference-case/case-mobile.css';
 import './mobile.css';
 
-// Smaller delivery copies of the existing project evidence; originals are retained.
+// Authentic project evidence in the current web delivery format.
 const images = Object.fromEntries(Object.entries({...sourceImages, ...presentation}).map(([key, value]) =>
  [key, {...sourceImages[key], ...value, experienceUrl:undefined}]));
 const works = ['AS_PAINTING_SEPIA', 'AS_PAINTING_MONO', 'AS_PAINTING_BLUE'];
